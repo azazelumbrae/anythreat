@@ -177,14 +177,35 @@ Wordlists ship with the project (`wordlists/`): `passwords.txt`, `rockyou.txt`,
 
 **Agent mode** runs a loop: the model emits a fenced `exec` block, the tool runs
 it in an isolated working directory, and the real `[STDOUT]/[STDERR]/[EXIT]` is
-fed back. The model works incrementally (recon → exploit → verify) until it
-emits `FINAL:`. The executor protocol also loads every arsenal helper into the
-shell before each command.
+fed back. The executor protocol also loads every arsenal helper into the shell
+before each command.
+
+### Two-phase execution (recon + plan → approval → attack)
+
+By default the agent runs in **two phases**:
+
+1. **Phase 1 — Recon + Plan.** The agent profiles the target with the arsenal
+   (`browse`, `websearch`, `nmap`, `whatweb`, `wpscan`, `subfinder`, `ffuf`,
+   `wafscan`, …). It runs `tools` to see what is installed, and installs anything
+   missing (`brew`/`apt`/`pip`/`gem`) or falls back to an equivalent. Findings
+   are cached to `findings.md`. When it has enough intel it emits `PLAN READY:`
+   and a **PLANNING** box is shown with four parts: findings, attack path, tools,
+   and risks.
+2. **Approval gate.** The operator reviews the recon + plan and decides. **Enter**
+   approves (attack proceeds); **n** rejects (nothing runs).
+3. **Phase 2 — Attack.** After approval the agent executes the plan step by step,
+   verifies every result, and emits `FINAL:`.
+
+In non-interactive runs (`--run <id> --task ...` with a TTY) the gate auto-approves.
+A mandatory `PLAN:` line and a tool-preference rule make the model consider its
+arsenal before acting.
 
 - **Interrupt/inject** — `Ctrl-C` during a run pauses at the next step boundary;
   type to inject an instruction into the model, `Enter` to continue, `q` to stop.
 - **Findings cache** — the agent appends each discovery to `findings.md`; the TUI
   shows a live `📋 N findings` counter and dumps the cache at the end.
+- **Loading spinner** — while the model is thinking, a red spinner cycles a
+  rotating dot-square and hacking words (`Hacking`, `Scanning`, `Exploiting`, …).
 - **Anonymity** — the `anon` profile injects `ALL_PROXY=socks5h://127.0.0.1:9050`
   into every command and starts Tor on demand.
 
