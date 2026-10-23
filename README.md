@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/ascii-art-text.png" alt="Any Threat" width="720">
+<img src="assets/any-threat-logo.png" alt="Any Threat" width="820">
 
 <b>An agentic security toolkit for any LLM</b><br>
 <sub>ranked jailbreak frameworks · real execution · attack / defense / opsec arsenal</sub>
