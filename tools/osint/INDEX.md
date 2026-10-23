@@ -1,0 +1,2050 @@
+# OSINT Arsenal — índice completo
+
+Total: **753** herramientas (fuente: rawfilejson/awesome-osint-arsenal).
+
+## blue-team-defensive (24)
+- **Atomic Red Team** [`git`] — Library of small detection-test scripts mapped to MITRE ATT&CK
+  - `git clone https://github.com/redcanaryco/atomic-red-team.git`
+  - https://github.com/redcanaryco/atomic-red-team
+- **Chainsaw** [`git`] — Hunt threats in Windows event logs — fast forensics
+  - `git clone https://github.com/WithSecureLabs/chainsaw.git`
+  - https://github.com/WithSecureLabs/chainsaw
+- **Cortex (TheHive)** [`docker`] — Observable analysis and active response engine
+  - `docker pull thehiveproject/cortex:latest`
+  - https://github.com/TheHive-Project/Cortex
+- **Elastic Stack (ELK)** [`docker`] — Elasticsearch + Logstash + Kibana — log analytics
+  - `docker pull docker.elastic.co/elasticsearch/elasticsearch:latest`
+  - https://www.elastic.co/elastic-stack
+- **Falco** [`git`] — Cloud-native runtime security
+  - `git clone https://github.com/falcosecurity/falco.git`
+  - https://falco.org
+- **Graylog** [`docker`] — Open-source log management / SIEM
+  - `docker pull graylog/graylog:latest`
+  - https://www.graylog.org
+- **Hayabusa** [`git`] — Windows event log fast forensics timeline generator
+  - `git clone https://github.com/Yamato-Security/hayabusa.git`
+  - https://github.com/Yamato-Security/hayabusa
+- **Loki** [`git`] — Simple IOC and YARA scanner by Florian Roth
+  - `git clone https://github.com/Neo23x0/Loki.git`
+  - https://github.com/Neo23x0/Loki
+- **MITRE ATT&CK** [`web`] — Adversary tactics, techniques, and procedures knowledge base
+  - `[attack.mitre.org](https://attack.mitre.org)`
+  - https://attack.mitre.org
+- **MITRE CALDERA** [`git`] — Cyber adversary emulation platform
+  - `git clone https://github.com/mitre/caldera.git`
+  - https://github.com/mitre/caldera
+- **MITRE D3FEND** [`web`] — Defensive countermeasure knowledge graph
+  - `[d3fend.mitre.org](https://d3fend.mitre.org)`
+  - https://d3fend.mitre.org
+- **RITA** [`git`] — Real Intelligence Threat Analytics — beaconing/long-conn detection
+  - `git clone https://github.com/activecm/rita.git`
+  - https://github.com/activecm/rita
+- **Security Onion** [`web`] — Linux distro for threat hunting, monitoring, and log management
+  - `[securityonionsolutions.com](https://securityonionsolutions.com)`
+  - https://securityonionsolutions.com
+- **Sigma** [`git`] — Generic signature format for SIEM detections
+  - `git clone https://github.com/SigmaHQ/sigma.git`
+  - https://github.com/SigmaHQ/sigma
+- **Snort** [`apt`] — Open-source intrusion-prevention/detection system
+  - `apt install snort`
+  - https://www.snort.org
+- **Suricata** [`apt`] — High-perf network IDS / IPS / NSM
+  - `apt install suricata`
+  - https://suricata.io
+- **TheHive** [`docker`] — Scalable, free, open-source case management for SOCs
+  - `docker pull strangebee/thehive:latest`
+  - https://thehive-project.org
+- **Tracee** [`git`] — Runtime security and forensics using eBPF (Aqua)
+  - `git clone https://github.com/aquasecurity/tracee.git`
+  - https://github.com/aquasecurity/tracee
+- **Velociraptor** [`git`] — Endpoint visibility and digital forensics — query-driven
+  - `git clone https://github.com/Velocidex/velociraptor.git`
+  - https://github.com/Velocidex/velociraptor
+- **Velociraptor Server** [`web`] — Centralized server for Velociraptor agents
+  - `[docs.velociraptor.app](https://docs.velociraptor.app)`
+  - https://docs.velociraptor.app
+- **Wazuh** [`git`] — Open-source XDR / SIEM platform
+  - `git clone https://github.com/wazuh/wazuh.git`
+  - https://wazuh.com
+- **Zeek (Bro)** [`apt`] — Powerful network analysis framework for security monitoring
+  - `apt install zeek`
+  - https://zeek.org
+- **osquery** [`apt`] — SQL-powered OS instrumentation/monitoring/analytics
+  - `apt install osquery`
+  - https://osquery.io
+- **sigma-cli** [`pip`] — Convert Sigma rules to native SIEM queries
+  - `pip3 install sigma-cli`
+  - https://github.com/SigmaHQ/sigma-cli
+
+## bug-bounty (12)
+- **Bugbase** [`web`] — Indian-origin bug-bounty + vulnerability disclosure platform
+  - `[bugbase.ai](https://bugbase.ai)`
+  - https://bugbase.ai
+- **Bugcrowd** [`web`] — Crowdsourced security platform — bug bounty + pentesting
+  - `[bugcrowd.com](https://bugcrowd.com)`
+  - https://bugcrowd.com
+- **Disclose.io** [`web`] — Standardized vulnerability-disclosure language and tools
+  - `[disclose.io](https://disclose.io)`
+  - https://disclose.io
+- **HackTrophy** [`web`] — European bug-bounty platform
+  - `[hacktrophy.com](https://hacktrophy.com)`
+  - https://hacktrophy.com
+- **HackerOne** [`web`] — Largest bug-bounty platform — public and private programs
+  - `[hackerone.com](https://hackerone.com)`
+  - https://hackerone.com
+- **Immunefi** [`web`] — Web3 / crypto-focused bug bounty platform
+  - `[immunefi.com](https://immunefi.com)`
+  - https://immunefi.com
+- **Intigriti** [`web`] — European bug-bounty platform with fast triage
+  - `[www.intigriti.com](https://www.intigriti.com)`
+  - https://www.intigriti.com
+- **Open Bug Bounty** [`web`] — Free coordinated-disclosure platform
+  - `[www.openbugbounty.org](https://www.openbugbounty.org)`
+  - https://www.openbugbounty.org
+- **Public Bug Bounty Programs (chaos)** [`web`] — ProjectDiscovery's free BBH program list
+  - `[chaos.projectdiscovery.io](https://chaos.projectdiscovery.io)`
+  - https://chaos.projectdiscovery.io
+- **Synack** [`web`] — Crowdsourced + vetted-researcher pentesting platform
+  - `[www.synack.com](https://www.synack.com)`
+  - https://www.synack.com
+- **YesWeHack** [`web`] — European-based bug-bounty and VDP platform
+  - `[www.yeswehack.com](https://www.yeswehack.com)`
+  - https://www.yeswehack.com
+- **Zerodium** [`web`] — Premium 0day acquisition platform
+  - `[zerodium.com](https://zerodium.com)`
+  - https://zerodium.com
+
+## company-business (13)
+- **Aleph (OCCRP)** [`manual`] — Global corporate & public records
+  - `Aleph (OCCRP)`
+- **BinCheck** [`web`] — Bank card BIN lookup
+  - `[bincheck.io](https://bincheck.io/)`
+  - https://bincheck.io/
+- **Blockchain.com** [`web`] — Bitcoin explorer
+  - `[blockchain.com/explorer](https://blockchain.com/explorer)`
+  - https://blockchain.com/explorer
+- **Companies House (UK)** [`manual`] — UK company register
+  - `Companies House (UK)`
+- **Crunchbase** [`manual`] — Company/startup database
+  - `Crunchbase`
+- **Etherscan** [`manual`] — Ethereum blockchain explorer
+  - `Etherscan`
+- **ICIJ Offshore Leaks** [`manual`] — Panama/Pandora/Paradise Papers
+  - `ICIJ Offshore Leaks`
+- **LEI Search** [`web`] — Legal Entity Identifier lookup
+  - `[search.gleif.org](https://search.gleif.org/)`
+  - https://search.gleif.org/
+- **OpenCorporates** [`manual`] — Global corporate database
+  - `OpenCorporates`
+- **OpenSanctions** [`web`] — Consolidated database of sanctioned entities across 200+ sources
+  - `[opensanctions.org](https://opensanctions.org)`
+  - https://opensanctions.org
+- **Orbit** [`git`] — Bitcoin address investigator
+  - `git clone https://github.com/s0md3v/Orbit`
+  - https://github.com/s0md3v/Orbit
+- **SEC EDGAR** [`manual`] — US company filings
+  - `SEC EDGAR`
+- **opencorporates-cli** [`pip`] — Command-line client for OpenCorporates API
+  - `pip3 install opencorporates`
+  - https://github.com/octohedron/opencorporates
+
+## crypto-blockchain (18)
+- **Arkham Intelligence** [`web`] — On-chain intel — labels, entities, historical flows
+  - `[www.arkhamintelligence.com](https://www.arkhamintelligence.com)`
+  - https://www.arkhamintelligence.com
+- **Bitquery** [`web`] — Blockchain data APIs for on-chain investigation
+  - `[bitquery.io](https://bitquery.io)`
+  - https://bitquery.io
+- **Blockchain.com Explorer** [`manual`] — Bitcoin blockchain explorer
+  - `Blockchain.com Explorer`
+- **Blockchair** [`manual`] — Universal blockchain explorer & search
+  - `Blockchair`
+- **Breadcrumbs** [`web`] — Free crypto investigation platform — visualize transaction flows
+  - `[breadcrumbs.app](https://breadcrumbs.app)`
+  - https://breadcrumbs.app
+- **BscScan** [`web`] — Binance Smart Chain explorer — same UX as Etherscan
+  - `[bscscan.com](https://bscscan.com)`
+  - https://bscscan.com
+- **Chainabuse** [`web`] — Public crypto-scam reporting database
+  - `[www.chainabuse.com](https://www.chainabuse.com)`
+  - https://www.chainabuse.com
+- **Chainalysis** [`manual`] — Blockchain analytics & investigation
+  - `Chainalysis`
+- **Chainalysis Reactor** [`web`] — Premium blockchain investigation platform
+  - `[www.chainalysis.com](https://www.chainalysis.com/product/reactor/)`
+  - https://www.chainalysis.com/product/reactor/
+- **Dune Analytics** [`web`] — SQL queries over indexed blockchain data
+  - `[dune.com](https://dune.com)`
+  - https://dune.com
+- **Elliptic** [`web`] — Crypto financial-crime detection and investigation
+  - `[www.elliptic.co](https://www.elliptic.co)`
+  - https://www.elliptic.co
+- **MetaSleuth** [`web`] — Free + paid crypto transaction tracing tool
+  - `[metasleuth.io](https://metasleuth.io)`
+  - https://metasleuth.io
+- **OXT (OpenXt)** [`web`] — Bitcoin transaction graph explorer with clustering
+  - `[oxt.me](https://oxt.me)`
+  - https://oxt.me
+- **OXT.me** [`manual`] — Bitcoin transaction graph analysis
+  - `OXT.me`
+- **PolygonScan** [`web`] — Polygon (Matic) blockchain explorer
+  - `[polygonscan.com](https://polygonscan.com)`
+  - https://polygonscan.com
+- **TRM Labs** [`web`] — Crypto compliance and investigation platform
+  - `[www.trmlabs.com](https://www.trmlabs.com)`
+  - https://www.trmlabs.com
+- **WalletExplorer** [`web`] — Smart bitcoin block explorer — clusters addresses by entity
+  - `[walletexplorer.com](https://walletexplorer.com)`
+  - https://walletexplorer.com
+- **etherscan-py** [`pip`] — Python wrapper for Etherscan API
+  - `pip3 install etherscan-python`
+  - https://github.com/pcko1/etherscan-python
+
+## dark-web (15)
+- **Ahmia** [`manual`] — Clearnet search engine for dark web
+  - `Ahmia`
+- **Aleph Open Search** [`web`] — Dark-web search engine by Aleph Networks
+  - `[open-search.aleph-networks.eu](https://open-search.aleph-networks.eu)`
+  - https://open-search.aleph-networks.eu
+- **Dark.fail** [`manual`] — Verified dark web links directory
+  - `Dark.fail`
+- **DarkScrape** [`git`] — Dark web scraping tool
+  - `git clone https://github.com/itsmehacker/DarkScrape`
+  - https://github.com/itsmehacker/DarkScrape
+- **DarkSearch** [`manual`] — Dark web search API (clearnet)
+  - `DarkSearch`
+- **DuckDuckGo Onion** [`manual`] — Private search on Tor
+  - `duckduckgogg42xjoc72x3sjasowoarfbgcmvfimaftt6twagswzczad.onion`
+- **Haystak** [`manual`] — Dark web search with filtering
+  - `haystak5njsmn2hqkewecpaxetahtwhsbsa64jom2k22z5afxhnpxfid.onion`
+- **OSINT-SPY** [`git`] — OSINT tool with Tor support
+  - `git clone https://github.com/SharadKumar97/OSINT-SPY`
+  - https://github.com/SharadKumar97/OSINT-SPY
+- **OnionLand Search** [`web`] — Search engine for dark-web content
+  - `[onionlandsearchengine.com](https://onionlandsearchengine.com)`
+  - https://onionlandsearchengine.com
+- **OnionScan** [`go`] — Scan & analyze .onion sites
+  - `go install github.com/s-rah/onionscan@latest`
+- **OnionSearch** [`pip`] — Search .onion URLs from multiple engines
+  - `pip3 install onionsearch`
+- **Phobos** [`manual`] — Dark web search engine
+  - `phobosxilamwcg75xt22id7aywkzol6q6rfl2flipcqoc4e4ahima5id.onion`
+- **The Hidden Wiki** [`web`] — Curated directory of dark-web sites (mirror-dependent)
+  - `[thehiddenwiki.org](https://thehiddenwiki.org)`
+  - https://thehiddenwiki.org
+- **Torch** [`manual`] — Oldest & largest dark web search engine
+  - `xmh57jrknzkhv6y3ls3ubitzfqnkrwxhopf5aygthi7d6rplyvk3noyd.onion`
+- **TorghostNG** [`git`] — Anonymize all OS traffic via Tor (Linux)
+  - `git clone https://github.com/githacktools/TorghostNG.git`
+  - https://github.com/githacktools/TorghostNG
+
+## data-breach (39)
+- **BreachDirectory** [`manual`] — Free breach search
+  - `🟢 Free`
+- **BreachForums Status** [`web`] — Status tracking for the rotating BreachForums mirrors
+  - `[www.breachforums.cx](https://www.breachforums.cx)`
+  - https://www.breachforums.cx
+- **CeWL** [`apt`] — Custom wordlist generator from website
+  - `apt install cewl`
+- **CheckLeaked** [`manual`] — Leak search engine (15B+ accounts)
+  - `🟡 Freemium`
+- **CredenShow** [`web`] — Identify your compromised credentials before others do
+  - `[credenshow.com](https://credenshow.com)`
+  - https://credenshow.com
+- **Crunch** [`apt`] — Pattern-based wordlist generator
+  - `apt install crunch`
+- **Cupp** [`git`] — Profile-based wordlist generator
+  - `git clone https://github.com/Mebus/cupp`
+  - https://github.com/Mebus/cupp
+- **DataBreach.com** [`manual`] — Data breach lookup
+  - `🟢 Free`
+- **DeHashed** [`manual`] — Breach search engine
+  - `💰 Paid`
+- **HIB Ransomed** [`web`] — Check if your data has been leaked by ransomware groups
+  - `[haveibeenransom.com](https://haveibeenransom.com)`
+  - https://haveibeenransom.com
+- **Hashcat** [`apt`] — Advanced password recovery (GPU-accelerated)
+  - `apt install hashcat`
+- **Have I Been Pwned** [`manual`] — Check email/phone in breaches
+  - `🟢 Free`
+- **Hudson Rock Cavalier** [`manual`] — Infostealer intelligence & breach data
+  - `🟡 Freemium`
+- **Hydra** [`apt`] — Network login brute-forcer
+  - `apt install hydra`
+- **IKnowYour.Dad** [`web`] — Data breach search engine
+  - `[iknowyour.dad](https://iknowyour.dad)`
+  - https://iknowyour.dad
+- **Intelligence X** [`manual`] — Search breaches, darknet, leaks
+  - `💰 Paid`
+- **John the Ripper** [`apt`] — Classic password cracker
+  - `apt install john`
+- **LaZagne** [`git`] — Credentials recovery tool (post-exploit)
+  - `git clone https://github.com/AlessandroZ/LaZagne`
+  - https://github.com/AlessandroZ/LaZagne
+- **LeakCheck** [`manual`] — Email/username/phone breach search
+  - `🟡 Freemium`
+- **LeakPeek** [`manual`] — Search leaked databases
+  - `🟡 Freemium`
+- **Medusa** [`apt`] — Parallel brute-force tool
+  - `apt install medusa`
+- **Mimikatz** [`git`] — Windows credential dumper
+  - `git clone https://github.com/gentilkiwi/mimikatz`
+  - https://github.com/gentilkiwi/mimikatz
+- **Ophcrack** [`web`] — Windows password cracker (rainbow tables)
+  - `[ophcrack.sourceforge.io](https://ophcrack.sourceforge.io/)`
+  - https://ophcrack.sourceforge.io/
+- **Pwndb** [`manual`] — Dark web breach database (Tor)
+  - `🟢 Free`
+- **RainbowCrack** [`web`] — Rainbow table cracker
+  - `[project-rainbowcrack.com](https://project-rainbowcrack.com/)`
+  - https://project-rainbowcrack.com/
+- **Responder** [`git`] — LLMNR/NBT-NS/MDNS poisoner
+  - `git clone https://github.com/lgandx/Responder`
+  - https://github.com/lgandx/Responder
+- **Revealer.cc** [`web`] — Discord-based account-checker & breach lookup
+  - `[revealer.cc](https://revealer.cc)`
+  - https://revealer.cc
+- **RockYou** [`manual`] — Classic leaked password list
+  - `Pre-installed in Kali (/usr/share/wordlists/)`
+- **ScatteredSecrets** [`manual`] — Breach notification service
+  - `🟡 Freemium`
+- **SecLists** [`git`] — The ultimate security wordlist collection
+  - `git clone https://github.com/danielmiessler/SecLists`
+  - https://github.com/danielmiessler/SecLists
+- **Snusbase** [`manual`] — Breach data search engine
+  - `💰 Paid`
+- **Snusbase API** [`web`] — API access to breach data (premium)
+  - `[snusbase.com](https://snusbase.com/api)`
+  - https://snusbase.com/api
+- **StealSeek** [`web`] — Search engine for finding and analyzing data breaches
+  - `[stealseek.io](https://stealseek.io)`
+  - https://stealseek.io
+- **The OSINT Rack** [`manual`] — Ransomware & data leak monitoring
+  - `🟢 Free`
+- **Venacus** [`web`] — Search for your data breaches and get notified when compromised
+  - `[venacus.com](https://venacus.com)`
+  - https://venacus.com
+- **Vigilante.pw** [`web`] — Index of dumped databases (educational)
+  - `[vigilante.pw](https://vigilante.pw)`
+  - https://vigilante.pw
+- **Weakpass** [`web`] — Massive wordlist collection
+  - `[weakpass.com](https://weakpass.com/)`
+  - https://weakpass.com/
+- **XposedOrNot** [`manual`] — Breach exposure check
+  - `🟢 Free`
+- **haveibeenzuckered** [`web`] — Check if a phone number is in the 533M Facebook breach
+  - `[haveibeenzuckered.com](https://haveibeenzuckered.com)`
+  - https://haveibeenzuckered.com
+
+## digital-forensics (16)
+- **Binary Ninja** [`web`] — Modern reverse engineering platform with API
+  - `[binary.ninja](https://binary.ninja)`
+  - https://binary.ninja
+- **Cutter** [`git`] — GUI for radare2/rizin reverse-engineering
+  - `git clone https://github.com/rizinorg/cutter.git`
+  - https://cutter.re
+- **Dissect** [`pip`] — Fox-IT framework for fast forensic image analysis
+  - `pip3 install dissect`
+  - https://docs.dissect.tools
+- **Eric Zimmerman's Tools** [`web`] — Suite of free Windows DFIR utilities
+  - `[ericzimmerman.github.io](https://ericzimmerman.github.io)`
+  - https://ericzimmerman.github.io
+- **FTK Imager** [`web`] — Forensic disk imaging tool by AccessData
+  - `[www.exterro.com](https://www.exterro.com/ftk-imager)`
+  - https://www.exterro.com/ftk-imager
+- **Ghidra** [`git`] — NSA's open-source software reverse engineering suite
+  - `git clone https://github.com/NationalSecurityAgency/ghidra.git`
+  - https://ghidra-sre.org
+- **IDA Free** [`web`] — Free version of IDA disassembler/decompiler
+  - `[hex-rays.com](https://hex-rays.com/ida-free/)`
+  - https://hex-rays.com/ida-free/
+- **KAPE** [`web`] — Kroll Artifact Parser and Extractor — fast triage collection
+  - `[www.kroll.com](https://www.kroll.com/kape)`
+  - https://www.kroll.com/kape
+- **PhotoRec** [`apt`] — File data recovery — focuses on multimedia
+  - `apt install testdisk`
+  - https://www.cgsecurity.org/wiki/PhotoRec
+- **Plaso (log2timeline)** [`pip`] — Super-timeline creation from forensic artifacts
+  - `pip3 install plaso`
+  - https://github.com/log2timeline/plaso
+- **RegRipper** [`git`] — Open-source Windows registry parsing tool
+  - `git clone https://github.com/keydet89/RegRipper3.0.git`
+  - https://github.com/keydet89/RegRipper3.0
+- **Rekall** [`pip`] — Memory forensics tooling (legacy fork of Volatility)
+  - `pip3 install rekall`
+  - https://github.com/google/rekall
+- **The Sleuth Kit** [`apt`] — Library and CLI tools for forensic disk analysis
+  - `apt install sleuthkit`
+  - https://www.sleuthkit.org
+- **Volatility 3** [`pip`] — Memory forensics framework
+  - `pip3 install volatility3`
+  - https://github.com/volatilityfoundation/volatility3
+- **radare2** [`apt`] — Reverse engineering framework
+  - `apt install radare2`
+  - https://www.radare.org
+- **rizin** [`git`] — Modern fork of radare2 with cleaner API
+  - `git clone https://github.com/rizinorg/rizin.git`
+  - https://rizin.re
+
+## document-metadata (24)
+- **Archive.today** [`web`] — Web archive — saves snapshots even when robots.txt blocks Wayback
+  - `[archive.ph](https://archive.ph)`
+  - https://archive.ph
+- **Autopsy** [`apt`] — Full digital forensics platform
+  - `apt install autopsy`
+- **Binwalk** [`apt`] — Firmware analysis & extraction
+  - `apt install binwalk`
+- **Bulk Extractor** [`apt`] — Extract features from disk images
+  - `apt install bulk-extractor`
+- **CachedView** [`web`] — View Google/Bing/Yandex cached versions of any page
+  - `[cachedview.com](https://cachedview.com)`
+  - https://cachedview.com
+- **CyberChef** [`manual`] — Data analysis swiss army knife
+  - `CyberChef`
+- **DocumentCloud** [`web`] — Platform for analyzing, annotating, publishing documents
+  - `[www.documentcloud.org](https://www.documentcloud.org)`
+  - https://www.documentcloud.org
+- **Epstein Exposed** [`web`] — Searchable database of 2M+ DOJ Epstein case docs and network graphs
+  - `[epsteinexposed.com](https://epsteinexposed.com)`
+  - https://epsteinexposed.com
+- **Foremost** [`apt`] — File carving (recover deleted files)
+  - `apt install foremost`
+- **Get-Metadata.com** [`web`] — Online EXIF extractor — handles .DOCX/.PDF too
+  - `[www.get-metadata.com](https://www.get-metadata.com)`
+  - https://www.get-metadata.com
+- **Memento Time Travel** [`web`] — Federated search across multiple web archives
+  - `[timetravel.mementoweb.org](https://timetravel.mementoweb.org)`
+  - https://timetravel.mementoweb.org
+- **Metadata2Go** [`web`] — Free online metadata extractor for any file
+  - `[www.metadata2go.com](https://www.metadata2go.com)`
+  - https://www.metadata2go.com
+- **Metagoofil** [`pip`] — Document metadata harvester from public docs
+  - `pip install metagoofil`
+- **Offshore Leaks Database** [`web`] — Panama/Pandora/Paradise Papers searchable database
+  - `[offshoreleaks.icij.org](https://offshoreleaks.icij.org)`
+  - https://offshoreleaks.icij.org
+- **Peekalink** [`web`] — Preview any URL — title, description, screenshot via API
+  - `[www.peekalink.io](https://www.peekalink.io)`
+  - https://www.peekalink.io
+- **RECAP Archive** [`web`] — Public archive of PACER court documents
+  - `[www.courtlistener.com](https://www.courtlistener.com/recap/)`
+  - https://www.courtlistener.com/recap/
+- **Scalpel** [`apt`] — File carving tool
+  - `apt install scalpel`
+- **Scribd** [`web`] — Search for documents, presentations, sheet music, ebooks
+  - `[www.scribd.com](https://www.scribd.com)`
+  - https://www.scribd.com
+- **SlideShare** [`web`] — Search public PowerPoint/PDF presentations
+  - `[www.slideshare.net](https://www.slideshare.net)`
+  - https://www.slideshare.net
+- **Volatility** [`pip`] — Memory forensics framework
+  - `pip install volatility3`
+- **XeuleDoc** [`pip`] — Fetch info on Google Docs/Sheets/Slides/Drawings without auth
+  - `pip3 install xeuledoc`
+  - https://github.com/Malfrats/xeuledoc
+- **Yumpu** [`web`] — Document publishing — sometimes leaks via search
+  - `[www.yumpu.com](https://www.yumpu.com)`
+  - https://www.yumpu.com
+- **git-hound** [`go`] — Find sensitive data exposed via GitHub code search
+  - `go install github.com/tillson/git-hound@latest`
+  - https://github.com/tillson/git-hound
+- **gitleaks** [`go`] — Detect secrets, credentials, and API keys in git repos
+  - `go install github.com/gitleaks/gitleaks/v8@latest`
+  - https://github.com/gitleaks/gitleaks
+
+## domain-ip-network (112)
+- **ARIN WHOIS** [`web`] — IP registration database
+  - `[whois.arin.net](https://whois.arin.net/)`
+  - https://whois.arin.net/
+- **AbuseIPDB** [`manual`] — IP address reputation database
+  - `AbuseIPDB`
+- **Aircrack-ng** [`apt`] — Wi-Fi security auditing suite
+  - `apt install aircrack-ng`
+- **Amass** [`go`] — In-depth DNS enumeration and network mapping
+  - `go install github.com/owasp-amass/amass/v4/...@master`
+- **Aquatone** [`go`] — Visual inspection of websites across hosts (HTTP screenshots, attack-surface flyovers)
+  - `go install github.com/michenriksen/aquatone@latest`
+  - https://github.com/michenriksen/aquatone
+- **AutoRecon** [`pip`] — Multi-threaded network reconnaissance and enumeration framework
+  - `pip3 install git+https://github.com/Tib3rius/AutoRecon.git`
+  - https://github.com/Tib3rius/AutoRecon
+- **Axiom** [`git`] — Dynamic infra framework for parallel cloud-based recon
+  - `git clone https://github.com/pry0cc/axiom.git`
+  - https://github.com/pry0cc/axiom
+- **BBOT** [`pip`] — Recursive internet scanner for attack surface
+  - `pip3 install bbot`
+- **BGP Toolkit** [`web`] — BGP/ASN/IP intelligence
+  - `[bgp.he.net](https://bgp.he.net/)`
+  - https://bgp.he.net/
+- **BGP.tools** [`web`] — Modern BGP toolkit for network reconnaissance
+  - `[bgp.tools](https://bgp.tools)`
+  - https://bgp.tools
+- **BeVigil** [`web`] — Search subdomains, URLs, parameters from mobile applications
+  - `[bevigil.com](https://bevigil.com/search)`
+  - https://bevigil.com/search
+- **Bettercap** [`apt`] — MITM framework (ARP, DNS, HTTP)
+  - `apt install bettercap`
+- **BuiltWith** [`manual`] — Web technology profiler
+  - `BuiltWith`
+- **Burp Suite** [`manual`] — Web app security testing proxy
+  - `burpsuite`
+- **Censys** [`manual`] — Internet-wide scan search
+  - `Censys`
+- **CertKit Certificate Search** [`web`] — Fast search for public SSL/TLS certificate records
+  - `[www.certkit.io](https://www.certkit.io/tools/ct-logs/)`
+  - https://www.certkit.io/tools/ct-logs/
+- **Cloudflare Radar** [`web`] — Internet traffic patterns, attacks, technology trends
+  - `[radar.cloudflare.com](https://radar.cloudflare.com)`
+  - https://radar.cloudflare.com
+- **Commix** [`git`] — Command injection exploiter
+  - `git clone https://github.com/commixproject/commix`
+  - https://github.com/commixproject/commix
+- **Criminal IP** [`manual`] — AI-powered cyber threat intelligence
+  - `Criminal IP`
+- **DB-IP** [`web`] — IP geolocation database
+  - `[db-ip.com](https://db-ip.com/)`
+  - https://db-ip.com/
+- **DNS History** [`web`] — Historical DNS records lookup
+  - `[dnshistory.org](https://dnshistory.org)`
+  - https://dnshistory.org
+- **DNSDumpster** [`manual`] — DNS reconnaissance & mapping
+  - `DNSDumpster`
+- **Dirb** [`apt`] — Web directory brute-forcer
+  - `apt install dirb`
+- **Ettercap** [`apt`] — MITM attack suite
+  - `apt install ettercap-common`
+- **ExploitDB** [`web`] — Exploit database (searchsploit)
+  - `[exploit-db.com](https://www.exploit-db.com/)`
+  - https://www.exploit-db.com/
+- **FOFA** [`manual`] — Asset search and analysis tool
+  - `FOFA`
+- **Fern Wifi Cracker** [`apt`] — GUI-based Wi-Fi audit tool
+  - `apt install fern-wifi-cracker`
+- **Feroxbuster** [`apt`] — Fast recursive content discovery
+  - `apt install feroxbuster`
+- **Findomain** [`git`] — Cross-platform subdomain enumerator with monitoring features
+  - `git clone https://github.com/Findomain/Findomain.git`
+  - https://github.com/Findomain/Findomain
+- **Fluxion** [`git`] — Wi-Fi social engineering (evil twin)
+  - `git clone https://github.com/FluxionNetwork/fluxion`
+  - https://github.com/FluxionNetwork/fluxion
+- **FullHunt** [`manual`] — External attack surface management
+  - `FullHunt`
+- **GoSpider** [`go`] — Fast Go web spider for crawling/audit
+  - `go install github.com/jaeles-project/gospider@latest`
+  - https://github.com/jaeles-project/gospider
+- **Gobuster** [`go`] — URI/DNS brute-forcer (Go)
+  - `go install github.com/OJ/gobuster/v3@latest`
+- **GoldenEye** [`git`] — HTTP DoS tool (authorized load testing)
+  - `git clone https://github.com/jseidl/GoldenEye`
+  - https://github.com/jseidl/GoldenEye
+- **GrayhatWarfare** [`web`] — Index of open Amazon S3 buckets — find exposed cloud data
+  - `[grayhatwarfare.com](https://grayhatwarfare.com)`
+  - https://grayhatwarfare.com
+- **GreyNoise** [`manual`] — Search exposed internet assets and malicious IPs
+  - `GreyNoise`
+- **HTTPx** [`go`] — Fast HTTP toolkit / probing
+  - `go install github.com/projectdiscovery/httpx/cmd/httpx@latest`
+- **IPGeoLocation** [`git`] — IP address geolocation
+  - `git clone https://github.com/maldevel/IPGeoLocation`
+  - https://github.com/maldevel/IPGeoLocation
+- **IPinfo** [`manual`] — IP address data & geolocation
+  - `IPinfo`
+- **Interlace** [`git`] — Easily turn single-threaded CLI apps into multi-threaded jobs
+  - `git clone https://github.com/codingo/Interlace.git`
+  - https://github.com/codingo/Interlace
+- **JSFinder** [`git`] — Find JS files referenced from a URL — endpoints / API paths
+  - `git clone https://github.com/Threezh1/JSFinder.git`
+  - https://github.com/Threezh1/JSFinder
+- **Katana** [`go`] — Web crawler
+  - `go install github.com/projectdiscovery/katana/cmd/katana@latest`
+- **Kismet** [`apt`] — Wireless network detector & sniffer
+  - `apt install kismet`
+- **Knockpy** [`pip`] — Subdomain enumeration scan with virtual host discovery
+  - `pip3 install knock-subdomains`
+  - https://github.com/guelfoweb/knock
+- **LinkFinder** [`git`] — Discover endpoints in JavaScript
+  - `git clone https://github.com/GerbenJavado/LinkFinder`
+  - https://github.com/GerbenJavado/LinkFinder
+- **Masscan** [`apt`] — Fastest internet port scanner
+  - `apt install masscan`
+- **Metasploit** [`apt`] — Industry-standard pen testing framework
+  - `apt install metasploit-framework`
+- **Mnemonic Passive DNS** [`web`] — Free passive-DNS query tool
+  - `[passivedns.mnemonic.no](https://passivedns.mnemonic.no)`
+  - https://passivedns.mnemonic.no
+- **Naabu** [`go`] — Fast Go-based port scanner from ProjectDiscovery
+  - `go install github.com/projectdiscovery/naabu/v2/cmd/naabu@latest`
+  - https://github.com/projectdiscovery/naabu
+- **Netcat** [`apt`] — The TCP/IP swiss army knife
+  - `apt install netcat-openbsd`
+- **Netcraft Site Report** [`web`] — Web technology, hosting history, takedown service
+  - `[sitereport.netcraft.com](https://sitereport.netcraft.com)`
+  - https://sitereport.netcraft.com
+- **Netlas.io** [`manual`] — Internet scanning and intelligence
+  - `Netlas.io`
+- **Nikto** [`apt`] — Web server vulnerability scanner
+  - `apt install nikto`
+- **Nmap** [`apt`] — Network scanner & mapper
+  - `apt install nmap`
+- **Nuclei** [`go`] — Template-based fast vulnerability scanner
+  - `go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest`
+- **ODIN** [`web`] — Search hosts, CVEs, exposed buckets — 10 free searches/day
+  - `[search.odin.io](https://search.odin.io)`
+  - https://search.odin.io
+- **ONYPHE** [`manual`] — OSINT engine indexing exposed assets
+  - `ONYPHE`
+- **OWASP ZAP** [`web`] — Open-source web app scanner
+  - `[zaproxy.org](https://zaproxy.org/)`
+  - https://zaproxy.org/
+- **OpenVAS** [`apt`] — Open-source vulnerability scanner
+  - `apt install openvas`
+- **ParamSpider** [`pip`] — Parameter discovery from web archives
+  - `pip install paramspider`
+- **PassiveTotal (RiskIQ)** [`web`] — Passive DNS, WHOIS, SSL cert pivots — now Microsoft Defender TI
+  - `[community.riskiq.com](https://community.riskiq.com)`
+  - https://community.riskiq.com
+- **Pentest-Tools Scanner** [`manual`] — Website vulnerability scanner
+  - `Pentest-Tools Scanner`
+- **Photon** [`git`] — Web crawler for OSINT data
+  - `git clone https://github.com/s0md3v/Photon`
+  - https://github.com/s0md3v/Photon
+- **Quttera** [`manual`] — Online website malware scanner
+  - `Quttera`
+- **Reaver** [`apt`] — WPS brute force tool
+  - `apt install reaver`
+- **Robtex** [`manual`] — DNS lookup visualization
+  - `Robtex`
+- **RustScan** [`git`] — Modern port scanner — finds open ports, then pipes to Nmap
+  - `git clone https://github.com/RustScan/RustScan.git`
+  - https://github.com/RustScan/RustScan
+- **SQLMap** [`apt`] — Automated SQL injection tool
+  - `apt install sqlmap`
+- **SSL Labs** [`manual`] — SSL/TLS server testing
+  - `SSL Labs`
+- **SecurityTrails** [`manual`] — DNS & domain intelligence
+  - `SecurityTrails`
+- **Shodan** [`pip`] — Internet-connected device search
+  - `pip3 install shodan`
+- **Sn1per** [`git`] — Automated pentest reconnaissance scanner
+  - `git clone https://github.com/1N3/Sn1per.git`
+  - https://github.com/1N3/Sn1per.git
+- **Subfinder** [`go`] — Fast passive subdomain discovery
+  - `go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest`
+- **Sublist3r** [`pip`] — Subdomain enumeration
+  - `pip install sublist3r`
+- **Sucuri SiteCheck** [`manual`] — Free website malware scanner
+  - `Sucuri SiteCheck`
+- **URLCrazy** [`git`] — Generate domain typos and check availability/registration
+  - `git clone https://github.com/urbanadventurer/urlcrazy.git`
+  - https://github.com/urbanadventurer/urlcrazy
+- **ViewDNS** [`manual`] — Multiple DNS investigation tools
+  - `ViewDNS`
+- **VirusTotal** [`manual`] — Domain/IP/file analysis
+  - `VirusTotal`
+- **WHOIS.com** [`manual`] — WHOIS domain registration lookup
+  - `WHOIS.com`
+- **WPScan** [`manual`] — WordPress vulnerability scanner
+  - `gem install wpscan`
+- **Wappalyzer** [`manual`] — Technology profiler (browser ext)
+  - `Browser Extension`
+- **Web-Check** [`manual`] — All-in-one website analysis
+  - `Web-Check`
+- **WebHack** [`git`] — Web hacking toolkit
+  - `git clone https://github.com/yan4ikyt/webhack`
+  - https://github.com/yan4ikyt/webhack
+- **Wfuzz** [`pip`] — Web fuzzer
+  - `pip install wfuzz`
+- **Whatweb** [`apt`] — Web technology identifier
+  - `apt install whatweb`
+- **Whoisology** [`web`] — Reverse WHOIS — find domains by registrant
+  - `[whoisology.com](https://whoisology.com)`
+  - https://whoisology.com
+- **Whoxy** [`web`] — WHOIS lookup with reverse-WHOIS, history, and bulk API
+  - `[www.whoxy.com](https://www.whoxy.com)`
+  - https://www.whoxy.com
+- **Wifite** [`apt`] — Automated Wi-Fi auditing tool
+  - `apt install wifite`
+- **Wireshark** [`apt`] — Network protocol analyzer
+  - `apt install wireshark`
+- **ZoomEye** [`manual`] — Cyberspace search engine for IoT
+  - `ZoomEye`
+- **altdns** [`pip`] — Generates permutations, alterations and mutations of subdomains
+  - `pip3 install py-altdns`
+  - https://github.com/infosec-au/altdns
+- **anew** [`go`] — Append lines from stdin to a file only if not already there
+  - `go install github.com/tomnomnom/anew@latest`
+  - https://github.com/tomnomnom/anew
+- **assetfinder** [`go`] — Find domains and subdomains related to a given domain
+  - `go install github.com/tomnomnom/assetfinder@latest`
+  - https://github.com/tomnomnom/assetfinder
+- **crt.sh** [`manual`] — Certificate transparency search
+  - `crt.sh`
+- **dirsearch** [`pip`] — Web path scanner — advanced wordlist-based directory bruteforce
+  - `pip3 install dirsearch`
+  - https://github.com/maurosoria/dirsearch
+- **dnsrecon** [`pip`] — DNS enumeration and reconnaissance
+  - `pip install dnsrecon`
+- **dnstwist** [`pip`] — Domain name permutation engine for phishing detection
+  - `pip3 install dnstwist`
+- **ffuf** [`go`] — Fast Go-based web fuzzer — directory, parameter, vhost discovery
+  - `go install github.com/ffuf/ffuf/v2@latest`
+  - https://github.com/ffuf/ffuf
+- **gau (getallurls)** [`go`] — Fetch URLs from AlienVault OTX, Wayback, Common Crawl, URLScan
+  - `go install github.com/lc/gau/v2/cmd/gau@latest`
+  - https://github.com/lc/gau
+- **gf** [`go`] — Wrapper around grep with patterns for bug-bounty workflow
+  - `go install github.com/tomnomnom/gf@latest`
+  - https://github.com/tomnomnom/gf
+- **gowitness** [`go`] — Modern Go-based web screenshot utility (Aquatone successor)
+  - `go install github.com/sensepost/gowitness@latest`
+  - https://github.com/sensepost/gowitness
+- **hakrawler** [`go`] — Fast Go web crawler for endpoint and asset discovery
+  - `go install github.com/hakluke/hakrawler@latest`
+  - https://github.com/hakluke/hakrawler
+- **hcxtools** [`apt`] — Wi-Fi packet capture conversion
+  - `apt install hcxtools`
+- **httprobe** [`go`] — Take a list of domains and probe for working HTTP/HTTPS
+  - `go install github.com/tomnomnom/httprobe@latest`
+  - https://github.com/tomnomnom/httprobe
+- **knock** [`git`] — Domain knock — security testing via DNS
+  - `git clone https://github.com/guelfoweb/knock.git`
+  - https://github.com/guelfoweb/knock
+- **massdns** [`git`] — High-performance DNS stub resolver for bulk lookups
+  - `git clone https://github.com/blechschmidt/massdns.git`
+  - https://github.com/blechschmidt/massdns
+- **meg** [`go`] — Fetch many paths for many hosts without flooding
+  - `go install github.com/tomnomnom/meg@latest`
+  - https://github.com/tomnomnom/meg
+- **reconFTW** [`git`] — Full-suite domain recon — subdomain enum, port scan, vuln scan in one pipeline
+  - `git clone https://github.com/six2dez/reconftw.git`
+  - https://github.com/six2dez/reconftw
+- **smap** [`go`] — Drop-in replacement for nmap powered by shodan.io
+  - `go install github.com/s0md3v/smap/cmd/smap@latest`
+  - https://github.com/s0md3v/Smap
+- **tcpdump** [`apt`] — Command-line packet analyzer
+  - `apt install tcpdump`
+- **urlscan.io** [`manual`] — URL/domain analysis & screenshots
+  - `urlscan.io`
+- **waybackurls** [`go`] — Fetch all URLs the Wayback Machine knows about a domain
+  - `go install github.com/tomnomnom/waybackurls@latest`
+  - https://github.com/tomnomnom/waybackurls
+
+## email-phone (35)
+- **CallerIDTest** [`web`] — Reverse phone lookup
+  - `[calleridtest.com](https://calleridtest.com/)`
+  - https://calleridtest.com/
+- **Email-Checker** [`web`] — Email validation tool
+  - `[email-checker.net](https://email-checker.net/)`
+  - https://email-checker.net/
+- **EmailAnalyzer** [`git`] — Analyze suspicious .eml files
+  - `git clone https://github.com/keraattin/EmailAnalyzer`
+  - https://github.com/keraattin/EmailAnalyzer
+- **EmailHeader-Analyzer** [`git`] — CLI email header parser + OSINT
+  - `git clone https://github.com/Giritharram/EmailHeader-Analyzer-CLI-Python`
+  - https://github.com/Giritharram/EmailHeader-Analyzer-CLI-Python
+- **EmailRep** [`manual`] — Email address reputation and risk scoring
+  - `EmailRep`
+- **EmailRep.io** [`web`] — Free email reputation API by Sublime Security
+  - `[emailrep.io](https://emailrep.io)`
+  - https://emailrep.io
+- **Epieos** [`manual`] — Get info linked to any email address
+  - `Epieos`
+- **GHunt** [`pip`] — Investigate Google emails and documents
+  - `pip3 install ghunt`
+- **GetContact** [`web`] — See how number is saved by others
+  - `[getcontact.com](https://getcontact.com/)`
+  - https://getcontact.com/
+- **GetNotify** [`web`] — Email open tracking + geolocation
+  - `[getnotify.com](https://getnotify.com/)`
+  - https://getnotify.com/
+- **Hlr-Lookups** [`web`] — HLR phone number lookup
+  - `[hlr-lookups.com](https://www.hlr-lookups.com/)`
+  - https://www.hlr-lookups.com/
+- **Hunter.io** [`manual`] — Find professional email addresses by domain
+  - `Hunter.io`
+- **Ignorant** [`pip`] — Check phone registrations on sites
+  - `pip install ignorant`
+- **Infoga** [`git`] — Email OSINT gathering
+  - `git clone https://github.com/m4ll0k/Infoga`
+  - https://github.com/m4ll0k/Infoga
+- **MXToolbox** [`manual`] — Email header analysis & DNS checks
+  - `MXToolbox`
+- **MailHeaderDetective** [`git`] — Email header forensics
+  - `git clone https://github.com/akajhon/MailHeaderDetective`
+  - https://github.com/akajhon/MailHeaderDetective
+- **National Cellular Directory** [`web`] — Phone owner lookup
+  - `[nationalcellulardirectory.com](https://www.nationalcellulardirectory.com/)`
+  - https://www.nationalcellulardirectory.com/
+- **NumLookup** [`web`] — Free reverse phone lookup
+  - `[numlookup.com](https://www.numlookup.com/)`
+  - https://www.numlookup.com/
+- **NumVerify** [`manual`] — Phone number validation API
+  - `NumVerify`
+- **PhoneInfoga** [`pip`] — Advanced phone number scanner
+  - `pip install phoneinfoga`
+- **PhoneSploit** [`git`] — ADB-based phone exploitation
+  - `git clone https://github.com/aerosol-can/PhoneSploit`
+  - https://github.com/aerosol-can/PhoneSploit
+- **Phonebook.cz** [`manual`] — Email, domain & URL search
+  - `Phonebook.cz`
+- **Prowl** [`git`] — Email & domain reconnaissance
+  - `git clone https://github.com/nettitude/Prowl`
+  - https://github.com/nettitude/Prowl
+- **SimpleLogin** [`web`] — Email alias service for OSINT
+  - `[simplelogin.io](https://simplelogin.io/)`
+  - https://simplelogin.io/
+- **Snov.io** [`web`] — Email finder & verifier
+  - `[snov.io](https://snov.io/)`
+  - https://snov.io/
+- **SpyDialer** [`web`] — Free reverse phone lookup
+  - `[spydialer.com](https://spydialer.com/)`
+  - https://spydialer.com/
+- **Sync.me** [`web`] — Phone number lookup
+  - `[sync.me](https://sync.me/)`
+  - https://sync.me/
+- **TelPoisk** [`web`] — Russian phone directory
+  - `[telpoisk.com](https://telpoisk.com/)`
+  - https://telpoisk.com/
+- **Truecaller** [`manual`] — Global reverse phone number lookup
+  - `Truecaller`
+- **Voila Norbert** [`web`] — Find anyone's email
+  - `[voilanorbert.com](https://voilanorbert.com/)`
+  - https://voilanorbert.com/
+- **WhatMail** [`git`] — Email header analysis CLI
+  - `git clone https://github.com/z0m31en7/WhatMail`
+  - https://github.com/z0m31en7/WhatMail
+- **ZeroBounce** [`web`] — Email validation and deliverability service
+  - `[www.zerobounce.net](https://www.zerobounce.net)`
+  - https://www.zerobounce.net
+- **h8mail** [`pip`] — Email OSINT & breach hunting
+  - `pip install h8mail`
+- **mailtoanalyzer** [`pip`] — Email exposure analysis
+  - `pip install mailto-analyzer`
+- **theHarvester** [`pip`] — Email, subdomain & IP harvesting tool
+  - `pip install theHarvester`
+
+## frameworks (14)
+- **FinalRecon** [`git`] — The last web recon tool you'll need
+  - `git clone https://github.com/thewhiteh4t/FinalRecon`
+  - https://github.com/thewhiteh4t/FinalRecon
+- **Hackingtool** [`git`] — All-in-one hacking tool (100+ categories)
+  - `git clone https://github.com/Z4nzu/hackingtool`
+  - https://github.com/Z4nzu/hackingtool
+- **Harpoon** [`pip`] — CLI tool for OSINT investigations
+  - `pip3 install harpoon`
+- **Maltego** [`apt`] — Visual OSINT link analysis platform
+  - `apt install maltego`
+- **Mitaka** [`git`] — Browser extension for OSINT — extract IoCs from highlighted text
+  - `git clone https://github.com/ninoseki/mitaka.git`
+  - https://github.com/ninoseki/mitaka
+- **OSINT Framework (Web)** [`manual`] — Visual map of all OSINT tools
+  - `OSINT Framework (Web)`
+- **OSINT-SAN** [`git`] — OSINT Swiss Army Knife framework
+  - `git clone https://github.com/Bafomet666/OSINT-SAN`
+  - https://github.com/Bafomet666/OSINT-SAN
+- **Oblivion** [`git`] — OSINT framework
+  - `git clone https://github.com/loseys/Oblivion.git`
+  - https://github.com/loseys/Oblivion
+- **Recon-ng** [`pip`] — Module-based web reconnaissance framework
+  - `pip3 install recon-ng`
+- **SET** [`manual`] — Social engineering toolkit
+  - `setoolkit`
+- **SpiderFoot** [`pip`] — OSINT automation platform (200+ modules)
+  - `pip3 install spiderfoot`
+- **fsociety** [`git`] — Mr. Robot-inspired hacking framework
+  - `git clone https://github.com/Manisso/fsociety`
+  - https://github.com/Manisso/fsociety
+- **osmedeus** [`git`] — Full automated reconnaissance workflow
+  - `git clone https://github.com/j3ssie/osmedeus`
+  - https://github.com/j3ssie/osmedeus
+- **sn0int** [`apt`] — Semi-automatic OSINT framework in Rust
+  - `apt install sn0int`
+
+## geolocation (26)
+- **Canary Tokens** [`web`] — Tracking tokens (URL, email, DNS, files)
+  - `[canarytokens.org](https://canarytokens.org/)`
+  - https://canarytokens.org/
+- **F4map** [`manual`] — 3D interactive world map
+  - `F4map`
+- **FIRMS** [`manual`] — NASA fire/thermal hotspots
+  - `FIRMS`
+- **GeoGuessr** [`web`] — Geolocation training game
+  - `[geoguessr.com](https://geoguessr.com/)`
+  - https://geoguessr.com/
+- **GeoHints** [`web`] — Browser-based satellite/streetview geolocation training & investigation
+  - `[geohints.com](https://geohints.com)`
+  - https://geohints.com
+- **GeoSpy** [`manual`] — AI-powered image geolocation
+  - `GeoSpy`
+- **GeoSpy Pro** [`web`] — Premium AI image geolocation by Graylark
+  - `[geospy.ai](https://geospy.ai/pro)`
+  - https://geospy.ai/pro
+- **Geocreepy** [`web`] — Geolocation aggregator — pulls geotagged posts across networks
+  - `[www.geocreepy.com](http://www.geocreepy.com)`
+  - http://www.geocreepy.com
+- **Google Earth Pro** [`manual`] — Advanced satellite imagery
+  - `Google Earth Pro`
+- **Grabify** [`web`] — IP grabber & URL shortener
+  - `[grabify.link](https://grabify.link/)`
+  - https://grabify.link/
+- **IP-API** [`web`] — IP geolocation API
+  - `[ip-api.com](http://ip-api.com/)`
+  - http://ip-api.com/
+- **IPLogger** [`web`] — IP logging URL shortener
+  - `[iplogger.org](https://iplogger.org/)`
+  - https://iplogger.org/
+- **KartaView** [`manual`] — Street-level imagery (OpenStreetCam)
+  - `KartaView`
+- **Mapillary** [`manual`] — Street-level imagery
+  - `Mapillary`
+- **MaxMind GeoIP** [`web`] — IP geolocation database
+  - `[maxmind.com](https://maxmind.com/)`
+  - https://maxmind.com/
+- **Maxar** [`web`] — Commercial satellite imagery
+  - `[maxar.com](https://maxar.com/)`
+  - https://maxar.com/
+- **Mylnikov Geolocation** [`web`] — BSSID/Wi-Fi MAC to coordinates lookup
+  - `[www.mylnikov.org](https://www.mylnikov.org)`
+  - https://www.mylnikov.org
+- **OpenCellID** [`web`] — Largest public database of cell-tower IDs
+  - `[opencellid.org](https://opencellid.org)`
+  - https://opencellid.org
+- **OpenStreetMap** [`manual`] — Free collaborative world map
+  - `OpenStreetMap`
+- **Overpass Turbo** [`manual`] — OpenStreetMap data query
+  - `Overpass Turbo`
+- **Picarta.ai** [`web`] — AI-powered photo geolocation predictor
+  - `[picarta.ai](https://picarta.ai)`
+  - https://picarta.ai
+- **Sentinel Hub** [`manual`] — Multi-source satellite imagery access
+  - `Sentinel Hub`
+- **ShadowMap** [`manual`] — Shadow analysis for time estimation
+  - `ShadowMap`
+- **SunCalc** [`manual`] — Sun position/time calculator from photos
+  - `SunCalc`
+- **Wikimapia** [`manual`] — Collaborative world map with annotations
+  - `Wikimapia`
+- **Zoom Earth** [`manual`] — Real-time satellite & weather
+  - `Zoom Earth`
+
+## hardware-hacking (16)
+- **Alfa Network Adapters** [`web`] — Wi-Fi adapters known to support monitor/inject mode (AWUS036ACH etc.)
+  - `[www.alfa.com.tw](https://www.alfa.com.tw)`
+  - https://www.alfa.com.tw
+- **Attify Badge** [`web`] — Hardware tool for IoT firmware/UART/JTAG analysis
+  - `[www.attify-store.com](https://www.attify-store.com)`
+  - https://www.attify-store.com
+- **Bus Pirate** [`web`] — Universal serial-protocol probe (I2C, SPI, UART, JTAG)
+  - `[dangerousprototypes.com](http://dangerousprototypes.com/docs/Bus_Pirate)`
+  - http://dangerousprototypes.com/docs/Bus_Pirate
+- **Firmadyne** [`git`] — Automated and scalable system for firmware emulation
+  - `git clone https://github.com/firmadyne/firmadyne.git`
+  - https://github.com/firmadyne/firmadyne
+- **Flipper Zero** [`web`] — Multi-tool for pentesters and geeks — RF/RFID/NFC/IR/GPIO
+  - `[flipperzero.one](https://flipperzero.one)`
+  - https://flipperzero.one
+- **GNU Radio** [`apt`] — Toolkit for building software-defined radio systems
+  - `apt install gnuradio`
+  - https://www.gnuradio.org
+- **Gqrx SDR** [`apt`] — Software-defined radio receiver GUI
+  - `apt install gqrx-sdr`
+  - https://gqrx.dk
+- **HackRF One** [`apt`] — SDR transceiver covering 1 MHz to 6 GHz
+  - `apt install hackrf`
+  - https://greatscottgadgets.com/hackrf/
+- **Hak5 Tools (Bash Bunny, Rubber Ducky, Wi-Fi Pineapple)** [`web`] — Premium offensive hardware tools
+  - `[shop.hak5.org](https://shop.hak5.org)`
+  - https://shop.hak5.org
+- **OpenOCD** [`apt`] — Open On-Chip Debugger — JTAG/SWD interface for embedded
+  - `apt install openocd`
+  - https://openocd.org
+- **Proxmark3** [`git`] — RFID/NFC research and exploitation hardware + software
+  - `git clone https://github.com/RfidResearchGroup/proxmark3.git`
+  - https://github.com/RfidResearchGroup/proxmark3
+- **RTL-SDR** [`apt`] — Cheap ($30) SDR receiver — entry into RF
+  - `apt install rtl-sdr`
+  - https://www.rtl-sdr.com
+- **Ubertooth One** [`apt`] — Open-source 2.4 GHz wireless dev platform — Bluetooth research
+  - `apt install ubertooth`
+  - https://greatscottgadgets.com/ubertoothone/
+- **Wi-Fi Pineapple** [`web`] — Hak5's wireless auditing platform
+  - `[shop.hak5.org](https://shop.hak5.org/products/wifi-pineapple)`
+  - https://shop.hak5.org/products/wifi-pineapple
+- **firmwalker** [`git`] — Script for searching extracted firmware filesystems
+  - `git clone https://github.com/craigz28/firmwalker.git`
+  - https://github.com/craigz28/firmwalker
+- **flashrom** [`apt`] — Tool for identifying/reading/writing flash chips
+  - `apt install flashrom`
+  - https://www.flashrom.org
+
+## image-facial (37)
+- **AI or Not** [`web`] — Detect AI-generated images
+  - `[aiornot.com](https://aiornot.com/)`
+  - https://aiornot.com/
+- **Aletheia (image forensics)** [`web`] — Detect manipulated/AI-generated images
+  - `[www.aletheia.ai](https://www.aletheia.ai)`
+  - https://www.aletheia.ai
+- **BeenVerified** [`manual`] — People search & background check
+  - `BeenVerified`
+- **DeepFace** [`pip`] — AI face analysis (age, gender, emotion)
+  - `pip install deepface`
+- **Depix** [`git`] — Recover pixelated text from screenshots
+  - `git clone https://github.com/beurtschipper/Depix`
+  - https://github.com/beurtschipper/Depix
+- **ExifTool** [`apt`] — Complete metadata extraction from images/docs
+  - `apt install libimage-exiftool-perl`
+- **FOCA** [`git`] — Metadata extraction from documents
+  - `git clone https://github.com/ElevenPaths/FOCA`
+  - https://github.com/ElevenPaths/FOCA
+- **FaceCheck.ID** [`manual`] — Face recognition search engine
+  - `FaceCheck.ID`
+- **FaceSeek** [`manual`] — AI-powered reverse face search
+  - `FaceSeek`
+- **Fake Image Detector** [`web`] — AI-based fake image detection
+  - `[fakeimagedetector.com](https://www.fakeimagedetector.com/)`
+  - https://www.fakeimagedetector.com/
+- **FastPeopleSearch** [`manual`] — Free people finder
+  - `FastPeopleSearch`
+- **Flickr** [`web`] — Photo-sharing — geosearch + license + camera EXIF intact
+  - `[www.flickr.com](https://www.flickr.com)`
+  - https://www.flickr.com
+- **Forensically** [`manual`] — Online image forensics suite
+  - `Forensically`
+- **Forensically Beta** [`web`] — Online image forensics — clone detection, level sweep
+  - `[29a.ch](https://29a.ch/photo-forensics)`
+  - https://29a.ch/photo-forensics
+- **FotoForensics** [`manual`] — Image forensic analysis (ELA)
+  - `FotoForensics`
+- **Ghiro** [`web`] — Automated digital image forensics
+  - `[www.getghiro.org](https://www.getghiro.org)`
+  - https://www.getghiro.org
+- **Google Reverse Image** [`web`] — Google image search
+  - `[images.google.com](https://images.google.com/)`
+  - https://images.google.com/
+- **Hive Moderation** [`web`] — AI content detection
+  - `[hivemoderation.com](https://hivemoderation.com/)`
+  - https://hivemoderation.com/
+- **IDCrawl** [`manual`] — Free people search engine
+  - `IDCrawl`
+- **Illuminarty** [`web`] — AI image detection
+  - `[illuminarty.ai](https://illuminarty.ai/)`
+  - https://illuminarty.ai/
+- **Imgur** [`web`] — Image hosting — meme tracing and reverse search
+  - `[imgur.com](https://imgur.com)`
+  - https://imgur.com
+- **InVID** [`manual`] — Video verification toolkit (browser extension)
+  - `InVID`
+- **Lenso.ai** [`manual`] — Reverse image search with facial recognition
+  - `Lenso.ai`
+- **OSINT Industries** [`manual`] — People search + social media lookup
+  - `OSINT Industries`
+- **Open-Source Intelligence (Reverse Image)** [`web`] — Yandex/Bing/TinEye combined reverse-image search
+  - `[oosint.com](https://oosint.com)`
+  - https://oosint.com
+- **PimEyes** [`manual`] — Face search engine from photos
+  - `PimEyes`
+- **Pinterest** [`web`] — Visual search engine — alternate reverse-image source
+  - `[www.pinterest.com](https://www.pinterest.com)`
+  - https://www.pinterest.com
+- **Pipl** [`manual`] — Deep people search engine
+  - `Pipl`
+- **Search by Image** [`manual`] — Multi-engine reverse image (browser ext)
+  - `Chrome / Firefox extension`
+- **Search4faces** [`manual`] — Face search in VK/OK social networks
+  - `Search4faces`
+- **Sherloq** [`git`] — Open-source image forensics toolset
+  - `git clone https://github.com/GuidoBartoli/sherloq.git`
+  - https://github.com/GuidoBartoli/sherloq
+- **Spokeo** [`manual`] — People search aggregator
+  - `Spokeo`
+- **ThatsThem** [`manual`] — Free people search by name/email/phone
+  - `ThatsThem`
+- **TinEye** [`manual`] — Reverse image search
+  - `TinEye`
+- **WebMii** [`web`] — People search engine
+  - `[webmii.com](https://webmii.com/)`
+  - https://webmii.com/
+- **Yandex Images** [`manual`] — Best reverse image search for faces/places
+  - `Yandex Images`
+- **facerecognition** [`pip`] — Python face recognition library
+  - `pip install face_recognition`
+
+## iot-devices (17)
+- **AhMyth Android RAT** [`git`] — Android remote access tool
+  - `git clone https://github.com/AhMyth/AhMyth-Android-RAT`
+  - https://github.com/AhMyth/AhMyth-Android-RAT
+- **Apktool** [`apt`] — Android APK decompiler/rebuilder
+  - `apt install apktool`
+- **BinaryEdge** [`web`] — Cyber risk and attack-surface intelligence
+  - `[www.binaryedge.io](https://www.binaryedge.io)`
+  - https://www.binaryedge.io
+- **Frida** [`pip`] — Dynamic instrumentation toolkit
+  - `pip install frida-tools`
+- **GreyNoise CLI** [`pip`] — Command-line tool for GreyNoise mass-scanner intel
+  - `pip3 install greynoise`
+  - https://github.com/GreyNoise-Intelligence/pygreynoise
+- **GreyNoise Visualizer** [`web`] — Tells you which IPs are noise vs targeted threats
+  - `[viz.greynoise.io](https://viz.greynoise.io)`
+  - https://viz.greynoise.io
+- **Hunter.how** [`manual`] — Internet asset search and discovery
+  - `Hunter.how`
+- **Insecam** [`manual`] — Live cameras directory
+  - `Insecam`
+- **MSFPC** [`git`] — MSF payload creator
+  - `git clone https://github.com/g0tmi1k/msfpc`
+  - https://github.com/g0tmi1k/msfpc
+- **MobSF** [`web`] — Mobile Security Framework (static+dynamic)
+  - `[github.com/MobSF/Mobile-Security-Framework-MobSF](https://github.com/MobSF/Mobile-Security-Framework-MobSF)`
+  - https://github.com/MobSF/Mobile-Security-Framework-MobSF
+- **Objection** [`pip`] — Runtime mobile exploration
+  - `pip install objection`
+- **Quake (360.cn)** [`web`] — Chinese internet asset search engine
+  - `[quake.360.net](https://quake.360.net)`
+  - https://quake.360.net
+- **Shodan (IoT)** [`pip`] — IoT and device search engine
+  - `pip3 install shodan`
+- **ShodanSpider** [`git`] — Shodan scanning automation tool
+  - `git clone https://github.com/shubhamrooter/ShodanSpider`
+  - https://github.com/shubhamrooter/ShodanSpider
+- **WiGLE** [`manual`] — Wireless network mapping database
+  - `WiGLE`
+- **ZoomEye CLI** [`pip`] — Command-line interface for ZoomEye internet asset search
+  - `pip3 install zoomeye`
+  - https://github.com/knownsec/ZoomEye
+- **jadx** [`apt`] — Android APK decompiler (GUI)
+  - `apt install jadx`
+
+## learning-resources (20)
+- **0xdf hacks stuff** [`web`] — HTB writeups and pentesting writeups
+  - `[0xdf.gitlab.io](https://0xdf.gitlab.io)`
+  - https://0xdf.gitlab.io
+- **BTFM: Blue Team Field Manual** [`web`] — Concise blue-team incident response reference
+  - `[www.amazon.com](https://www.amazon.com/dp/154101636X)`
+  - https://www.amazon.com/dp/154101636X
+- **Bellingcat's Online Investigations Toolkit** [`web`] — Bellingcat-curated tools and methodology guide
+  - `[www.bellingcat.com](https://www.bellingcat.com/resources/)`
+  - https://www.bellingcat.com/resources/
+- **Hacking: The Art of Exploitation (book)** [`web`] — Classic by Jon Erickson — low-level attack fundamentals
+  - `[nostarch.com](https://nostarch.com/hacking2.htm)`
+  - https://nostarch.com/hacking2.htm
+- **IppSec.rocks** [`web`] — Indexed walkthroughs of HackTheBox machines (video)
+  - `[ippsec.rocks](https://ippsec.rocks)`
+  - https://ippsec.rocks
+- **John Hammond** [`web`] — Cybersecurity YouTube — CTFs, malware, walkthroughs
+  - `[www.youtube.com](https://www.youtube.com/@_JohnHammond)`
+  - https://www.youtube.com/@_JohnHammond
+- **Linux for OSINT (cipher387)** [`git`] — 21-day Linux-for-OSINT course (free)
+  - `git clone https://github.com/cipher387/linux-for-OSINT-21-days.git`
+  - https://github.com/cipher387/linux-for-OSINT-21-days
+- **LiveOverflow** [`web`] — Hacking and security YouTube — deep technical content
+  - `[www.youtube.com](https://www.youtube.com/@LiveOverflow)`
+  - https://www.youtube.com/@LiveOverflow
+- **NahamSec** [`web`] — Bug bounty and offensive security YouTube content
+  - `[www.youtube.com](https://www.youtube.com/@nahamsec)`
+  - https://www.youtube.com/@nahamsec
+- **Netlas Cookbook** [`web`] — Free OSINT automation cookbook
+  - `[academy.netlas.io](https://academy.netlas.io)`
+  - https://academy.netlas.io
+- **OSINT Curious** [`web`] — Community blog, podcast, and learning resources
+  - `[osintcurio.us](https://osintcurio.us)`
+  - https://osintcurio.us
+- **OSINT Techniques** [`web`] — Michael Bazzell's resources, books, and search tools
+  - `[inteltechniques.com](https://inteltechniques.com)`
+  - https://inteltechniques.com
+- **Python for OSINT (cipher387)** [`git`] — 21-day Python-for-OSINT course (free)
+  - `git clone https://github.com/cipher387/python-for-OSINT-21-days.git`
+  - https://github.com/cipher387/python-for-OSINT-21-days
+- **RTFM: Red Team Field Manual** [`web`] — Concise red-team command reference
+  - `[www.amazon.com](https://www.amazon.com/dp/B07RJG62SJ)`
+  - https://www.amazon.com/dp/B07RJG62SJ
+- **Real-World Bug Hunting (book)** [`web`] — Peter Yaworski — bug bounty methodology and real reports
+  - `[nostarch.com](https://nostarch.com/bughunting)`
+  - https://nostarch.com/bughunting
+- **The Web Application Hacker's Handbook (book)** [`web`] — Stuttard & Pinto — appsec bible
+  - `[www.amazon.com](https://www.amazon.com/dp/1118026470)`
+  - https://www.amazon.com/dp/1118026470
+- **awesome-hacking-resources** [`web`] — Beginner-friendly hacking learning resources
+  - `[github.com](https://github.com/vitalysim/Awesome-Hacking-Resources)`
+  - https://github.com/vitalysim/Awesome-Hacking-Resources
+- **awesome-incident-response** [`web`] — Curated list of IR tools and resources
+  - `[github.com](https://github.com/meirwah/awesome-incident-response)`
+  - https://github.com/meirwah/awesome-incident-response
+- **awesome-malware-analysis** [`web`] — Curated list of malware-analysis tools
+  - `[github.com](https://github.com/rshipp/awesome-malware-analysis)`
+  - https://github.com/rshipp/awesome-malware-analysis
+- **awesome-pentest** [`web`] — Massive curated list of pentesting tools and resources
+  - `[github.com](https://github.com/enaqx/awesome-pentest)`
+  - https://github.com/enaqx/awesome-pentest
+
+## malware-threat-intel (31)
+- **ANY.RUN** [`web`] — Interactive online malware sandbox
+  - `[any.run](https://any.run)`
+  - https://any.run
+- **APT Groups and Operations** [`web`] — Spreadsheet of threat actors, sponsoring countries, TTPs
+  - `[docs.google.com](https://docs.google.com/spreadsheets/u/0/d/1H9_xaxQHpWaa4O_Son4Gx0YOIzlcBWMsdvePFX68EKU/pubhtml)`
+  - https://docs.google.com/spreadsheets/u/0/d/1H9_xaxQHpWaa4O_Son4Gx0YOIzlcBWMsdvePFX68EKU/pubhtml
+- **AlienVault OTX** [`manual`] — Open threat exchange platform
+  - `AlienVault OTX`
+- **BrightCloud URL/IP Lookup** [`web`] — Reputation, category, and threat checks for URLs/IPs
+  - `[brightcloud.com](https://brightcloud.com/tools/url-ip-lookup.php)`
+  - https://brightcloud.com/tools/url-ip-lookup.php
+- **CIRCL Hashlookup** [`web`] — Free public hashlookup for known software files
+  - `[www.circl.lu](https://www.circl.lu/services/hashlookup)`
+  - https://www.circl.lu/services/hashlookup
+- **Cisco Talos Intelligence** [`web`] — IP and Domain Reputation Center for real-time detection
+  - `[talosintelligence.com](https://talosintelligence.com/reputation_center)`
+  - https://talosintelligence.com/reputation_center
+- **ETDA APT Groups** [`web`] — Search threat-actor groups and their tools
+  - `[apt.etda.or.th](https://apt.etda.or.th/cgi-bin/listgroups.cgi)`
+  - https://apt.etda.or.th/cgi-bin/listgroups.cgi
+- **Filesec.io** [`web`] — Catalog of malicious file extensions, risks, OS-level mitigations
+  - `[filesec.io](https://filesec.io)`
+  - https://filesec.io
+- **Hatching Triage** [`web`] — Modern malware sandbox with kernel-level monitoring
+  - `[tria.ge](https://tria.ge)`
+  - https://tria.ge
+- **Hybrid Analysis** [`web`] — Free advanced malware analysis service by CrowdStrike
+  - `[www.hybrid-analysis.com](https://www.hybrid-analysis.com)`
+  - https://www.hybrid-analysis.com
+- **Intel 471** [`manual`] — Cybercrime intelligence platform
+  - `Intel 471`
+- **Joe Sandbox** [`web`] — Deep automated malware analysis (free tier)
+  - `[www.joesandbox.com](https://www.joesandbox.com)`
+  - https://www.joesandbox.com
+- **MISP** [`git`] — Malware Information Sharing Platform
+  - `git clone https://github.com/MISP/MISP`
+  - https://github.com/MISP/MISP
+- **MISP Galaxy** [`web`] — Adversary group identification used by SOCs/ISACs
+  - `[www.misp-galaxy.org](https://www.misp-galaxy.org)`
+  - https://www.misp-galaxy.org
+- **MalShare** [`web`] — Free malware sample repository for researchers
+  - `[malshare.com](https://malshare.com)`
+  - https://malshare.com
+- **Malpedia** [`web`] — Threat-actor groups, malware families, and analysis by Fraunhofer
+  - `[malpedia.caad.fkie.fraunhofer.de](https://malpedia.caad.fkie.fraunhofer.de)`
+  - https://malpedia.caad.fkie.fraunhofer.de
+- **MalwareBazaar** [`manual`] — Search & download confirmed malware samples
+  - `MalwareBazaar`
+- **MetaDefender Cloud** [`web`] — Multi-engine file/URL/IP scanning by OPSWAT
+  - `[metadefender.com](https://metadefender.com)`
+  - https://metadefender.com
+- **OpenPhish** [`web`] — Live phishing URL feed
+  - `[openphish.com](https://openphish.com)`
+  - https://openphish.com
+- **PhishStats** [`web`] — Live phishing intelligence feed and search
+  - `[phishstats.info](https://phishstats.info)`
+  - https://phishstats.info
+- **PhishTank** [`web`] — Anti-phishing community — verified phishing URLs
+  - `[phishtank.org](https://phishtank.org)`
+  - https://phishtank.org
+- **Pulsedive** [`manual`] — Threat intelligence enrichment
+  - `Pulsedive`
+- **Recorded Future** [`manual`] — Threat intelligence platform
+  - `Recorded Future`
+- **ScamAdviser** [`web`] — Check website trustworthiness scores
+  - `[www.scamadviser.com](https://www.scamadviser.com)`
+  - https://www.scamadviser.com
+- **Shadowserver Dashboard** [`web`] — Global statistics on cyber threats by Shadowserver Foundation
+  - `[dashboard.shadowserver.org](https://dashboard.shadowserver.org/)`
+  - https://dashboard.shadowserver.org/
+- **URLhaus (abuse.ch)** [`web`] — Database of malicious URLs used for malware distribution
+  - `[urlhaus.abuse.ch](https://urlhaus.abuse.ch)`
+  - https://urlhaus.abuse.ch
+- **VMRay Analyzer** [`web`] — Malware sandbox analysis platform
+  - `[www.vmray.com](https://www.vmray.com)`
+  - https://www.vmray.com
+- **VirusTotal (Threat)** [`manual`] — File/URL/domain malware analysis
+  - `VirusTotal (Threat)`
+- **YARA** [`apt`] — Pattern matching for malware research
+  - `apt install yara`
+- **YARAify** [`web`] — Collaborative YARA engine for open threat intel via file pattern matching
+  - `[yaraify.abuse.ch](https://yaraify.abuse.ch/scan/)`
+  - https://yaraify.abuse.ch/scan/
+- **abuse.ch Hunting** [`web`] — Hunt across all abuse.ch malware platforms with one query
+  - `[hunting.abuse.ch](https://hunting.abuse.ch)`
+  - https://hunting.abuse.ch
+
+## misc (22)
+- **ChatGPT** [`manual`] — OpenAI's AI assistant
+  - `✅ GPT-4o mini`
+- **Claude** [`manual`] — Best for reasoning & analysis
+  - `✅ Free tier`
+- **DeepSeek** [`manual`] — Open-source, strong reasoning
+  - `✅ Free`
+- **Disboard** [`manual`] — Discord server discovery platform
+  - `Disboard`
+- **Discord History Tracker** [`manual`] — Save Discord chat history
+  - `Discord History Tracker`
+- **DiscordBee** [`manual`] — Discord user and server search engine
+  - `DiscordBee`
+- **DiscordHub** [`manual`] — Discord user search platform
+  - `DiscordHub`
+- **EyeWitness** [`git`] — Take screenshots of web pages
+  - `git clone https://github.com/RedSiege/EyeWitness`
+  - https://github.com/RedSiege/EyeWitness
+- **Google Gemini** [`manual`] — Google AI with web search
+  - `✅ Free`
+- **Grok** [`manual`] — Real-time X/Twitter data
+  - `✅ Free on X`
+- **HARPA AI** [`web`] — AI browser agent for OSINT
+  - `[harpa.ai](https://harpa.ai/)`
+  - https://harpa.ai/
+- **HuggingChat** [`manual`] — Open-source AI chat
+  - `✅ Free`
+- **Microsoft Copilot** [`manual`] — AI with Bing search integration
+  - `✅ Free`
+- **NotebookLM** [`manual`] — Google's document analysis AI
+  - `✅ Free`
+- **OpenCV** [`pip`] — Computer vision library
+  - `pip install opencv-python`
+- **Perplexity AI** [`manual`] — AI search with cited sources
+  - `✅ 5 Pro/day`
+- **Phind** [`manual`] — AI search for developers
+  - `✅ Free`
+- **ReconAIzer** [`web`] — AI-enhanced Burp Suite extension
+  - `[github.com/hisxo/ReconAIzer](https://github.com/hisxo/ReconAIzer)`
+  - https://github.com/hisxo/ReconAIzer
+- **TelegramDB** [`manual`] — Telegram user & group lookup database
+  - `TelegramDB`
+- **Unfurl** [`manual`] — URL & data artifact analysis tool
+  - `Unfurl`
+- **Wayback Machine** [`manual`] — Web archive - explore website history
+  - `Wayback Machine`
+- **trufflehog** [`pip`] — Find secrets in git repos
+  - `pip3 install trufflehog`
+
+## people-identity (37)
+- **AdvPhishing** [`git`] — Advanced phishing tool
+  - `git clone https://github.com/Ignitetch/AdvPhishing`
+  - https://github.com/Ignitetch/AdvPhishing
+- **Apollo.io** [`web`] — B2B phone/email finder — 1200 free credits/yr
+  - `[www.apollo.io](https://www.apollo.io)`
+  - https://www.apollo.io
+- **BackgroundChecks.com** [`web`] — Background check aggregator (BeenVerified family)
+  - `[www.backgroundchecks.com](https://www.backgroundchecks.com)`
+  - https://www.backgroundchecks.com
+- **Black Book Online** [`web`] — Free nationwide directory of public-record lookups
+  - `[www.blackbookonline.info](https://www.blackbookonline.info)`
+  - https://www.blackbookonline.info
+- **BlackEye** [`git`] — 32+ phishing template builder for credential capture (lab-only)
+  - `git clone https://github.com/An0nUD4Y/blackeye.git`
+  - https://github.com/An0nUD4Y/blackeye
+- **Castrick** [`web`] — Find social media accounts via email, username, phone
+  - `[castrickclues.com](https://castrickclues.com)`
+  - https://castrickclues.com
+- **Clearbit Connect** [`web`] — Email finder browser extension with company data
+  - `[connect.clearbit.com](https://connect.clearbit.com)`
+  - https://connect.clearbit.com
+- **Clustrmaps** [`web`] — Find people and address information
+  - `[clustrmaps.com](https://clustrmaps.com)`
+  - https://clustrmaps.com
+- **Constella Intelligence** [`web`] — Identity threat intel from breaches and dark web
+  - `[constellaintelligence.com](https://constellaintelligence.com)`
+  - https://constellaintelligence.com
+- **ContactOut** [`web`] — Find emails and phones for 300M+ professionals
+  - `[contactout.com](https://contactout.com)`
+  - https://contactout.com
+- **CrossLinked** [`pip`] — LinkedIn enumeration — generate username lists from LinkedIn profiles
+  - `pip3 install crosslinked`
+  - https://github.com/m8sec/CrossLinked
+- **DBpedia** [`web`] — Structured Wikipedia data — SPARQL endpoint
+  - `[www.dbpedia.org](https://www.dbpedia.org)`
+  - https://www.dbpedia.org
+- **DaProfiler** [`git`] — OSINT profiling tool with reports
+  - `git clone https://github.com/daprofiler/DaProfiler`
+  - https://github.com/daprofiler/DaProfiler
+- **DomainEye Reverse WHOIS** [`web`] — Search domains by registrant data
+  - `[domaineye.com](https://domaineye.com/reverse-whois)`
+  - https://domaineye.com/reverse-whois
+- **Epieos Tools** [`web`] — Reverse-lookup email/phone for Google profile data
+  - `[tools.epieos.com](https://tools.epieos.com)`
+  - https://tools.epieos.com
+- **Evilginx2** [`go`] — Man-in-the-middle reverse proxy
+  - `go install github.com/kgretzky/evilginx2@latest`
+- **FamilyTreeNow** [`web`] — Free genealogy search — addresses, phones, emails
+  - `[familytreenow.com](https://familytreenow.com)`
+  - https://familytreenow.com
+- **FullContact** [`web`] — Identity-resolution API and person enrichment
+  - `[www.fullcontact.com](https://www.fullcontact.com)`
+  - https://www.fullcontact.com
+- **Gophish** [`web`] — Enterprise phishing simulation platform
+  - `[getgophish.com](https://getgophish.com/)`
+  - https://getgophish.com/
+- **Hudson Rock** [`web`] — Free infostealer-compromise check tools (domain/email/IP)
+  - `[www.hudsonrock.com](https://www.hudsonrock.com/free-tools)`
+  - https://www.hudsonrock.com/free-tools
+- **King Phisher** [`web`] — Phishing campaign toolkit
+  - `[github.com/rsmusllp/king-phisher](https://github.com/rsmusllp/king-phisher)`
+  - https://github.com/rsmusllp/king-phisher
+- **Modlishka** [`go`] — Reverse proxy phishing framework
+  - `go install github.com/drk1wi/Modlishka@latest`
+- **Mr.Holmes** [`git`] — OSINT investigation tool
+  - `git clone https://github.com/Lucksi/Mr.Holmes`
+  - https://github.com/Lucksi/Mr.Holmes
+- **NexPhisher** [`git`] — Multi-platform phishing tool
+  - `git clone https://github.com/htr-tech/nexphisher`
+  - https://github.com/htr-tech/nexphisher
+- **Predicta Search** [`web`] — Search social accounts by email or phone
+  - `[predictasearch.com](https://predictasearch.com)`
+  - https://predictasearch.com
+- **RocketReach** [`web`] — Find professional emails/phones for 700M+ profiles
+  - `[rocketreach.co](https://rocketreach.co)`
+  - https://rocketreach.co
+- **SET (Social Engineering Toolkit)** [`apt`] — Complete SE framework
+  - `apt install set`
+- **Seeker** [`git`] — Geolocation by phishing — collects precise GPS via WebRTC + browser geolocation
+  - `git clone https://github.com/thewhiteh4t/seeker.git`
+  - https://github.com/thewhiteh4t/seeker
+- **SocialFish** [`git`] — Social media phishing
+  - `git clone https://github.com/UndeadSec/SocialFish`
+  - https://github.com/UndeadSec/SocialFish
+- **SpyCloud** [`web`] — Account-takeover prevention + identity exposure data
+  - `[spycloud.com](https://spycloud.com)`
+  - https://spycloud.com
+- **Storm-Breaker** [`git`] — Access webcam/mic/location (SE)
+  - `git clone https://github.com/ultrasecurity/Storm-Breaker`
+  - https://github.com/ultrasecurity/Storm-Breaker
+- **URLCADIZ** [`git`] — URL masking tool
+  - `git clone https://github.com/PerezMascato/URLCADIZ`
+  - https://github.com/PerezMascato/URLCADIZ
+- **Wikidata** [`web`] — Wikipedia's structured-data backbone — query via SPARQL
+  - `[www.wikidata.org](https://www.wikidata.org)`
+  - https://www.wikidata.org
+- **Wikipedia** [`web`] — Free encyclopedia — start of every people/place investigation
+  - `[en.wikipedia.org](https://en.wikipedia.org)`
+  - https://en.wikipedia.org
+- **Zehef** [`pip`] — OSINT tool for email/phone/name investigations
+  - `pip3 install zehef`
+- **Zphisher** [`git`] — 30+ phishing templates
+  - `git clone https://github.com/htr-tech/zphisher`
+  - https://github.com/htr-tech/zphisher
+- **linkedin2username** [`git`] — Generate usernames from a target's LinkedIn employees
+  - `git clone https://github.com/initstring/linkedin2username.git`
+  - https://github.com/initstring/linkedin2username
+
+## red-team-offensive (35)
+- **AD Attack & Defense** [`git`] — Comprehensive Active Directory attack reference
+  - `git clone https://github.com/infosecn1nja/AD-Attack-Defense.git`
+  - https://github.com/infosecn1nja/AD-Attack-Defense
+- **Arjun** [`pip`] — HTTP parameter discovery suite
+  - `pip3 install arjun`
+  - https://github.com/s0md3v/Arjun
+- **BloodHound** [`git`] — AD attack-path graph analysis
+  - `git clone https://github.com/BloodHoundAD/BloodHound.git`
+  - https://github.com/BloodHoundAD/BloodHound
+- **BloodHound CE** [`docker`] — Community Edition of BloodHound — modernized stack
+  - `docker pull specterops/bloodhound:latest`
+  - https://github.com/SpecterOps/BloodHound
+- **Brute Ratel C4** [`web`] — Premium C2 with strong AV/EDR evasion
+  - `[bruteratel.com](https://bruteratel.com)`
+  - https://bruteratel.com
+- **CRLFuzz** [`go`] — Fast CRLF-injection scanner in Go
+  - `go install github.com/dwisiswant0/crlfuzz/cmd/crlfuzz@latest`
+  - https://github.com/dwisiswant0/crlfuzz
+- **Certipy** [`pip`] — Active Directory Certificate Services enumeration and abuse
+  - `pip3 install certipy-ad`
+  - https://github.com/ly4k/Certipy
+- **Cobalt Strike** [`web`] — Premium adversary simulation / red team framework
+  - `[www.cobaltstrike.com](https://www.cobaltstrike.com)`
+  - https://www.cobaltstrike.com
+- **CrackMapExec** [`pip`] — Post-exploitation tool for AD networks
+  - `pip3 install crackmapexec`
+  - https://github.com/byt3bl33d3r/CrackMapExec
+- **Dalfox** [`go`] — Fast, intelligent XSS scanner
+  - `go install github.com/hahwul/dalfox/v2@latest`
+  - https://github.com/hahwul/dalfox
+- **Evil-WinRM** [`apt`] — Ultimate WinRM shell for hacking/pentesting
+  - `apt install evil-winrm`
+  - https://github.com/Hackplayers/evil-winrm
+- **Ghauri** [`git`] — Advanced cross-platform tool to detect/exploit SQLi
+  - `git clone https://github.com/r0oth3x49/ghauri.git`
+  - https://github.com/r0oth3x49/ghauri
+- **Gxss** [`go`] — Test parameters for cross-site scripting reflection
+  - `go install github.com/KathanP19/Gxss@latest`
+  - https://github.com/KathanP19/Gxss
+- **HackTricks** [`web`] — Pentesting / hacking knowledge base by carlospolop
+  - `[book.hacktricks.xyz](https://book.hacktricks.xyz)`
+  - https://book.hacktricks.xyz
+- **Havoc** [`git`] — Modern, malleable post-exploitation C2 framework
+  - `git clone https://github.com/HavocFramework/Havoc.git`
+  - https://github.com/HavocFramework/Havoc
+- **Impacket** [`pip`] — Python classes for working with network protocols (Windows attacks)
+  - `pip3 install impacket`
+  - https://github.com/fortra/impacket
+- **Kerbrute** [`go`] — Tool for performing Kerberos pre-auth bruteforcing
+  - `go install github.com/ropnop/kerbrute@latest`
+  - https://github.com/ropnop/kerbrute
+- **Merlin** [`go`] — Cross-platform HTTP/2 post-exploitation server and agent in Go
+  - `go install github.com/Ne0nd0g/merlin@latest`
+  - https://github.com/Ne0nd0g/merlin
+- **Metasploit Framework** [`apt`] — Industry-standard exploitation framework with 2000+ modules
+  - `apt install metasploit-framework`
+  - https://github.com/rapid7/metasploit-framework
+- **Mythic** [`git`] — Cross-platform, post-exploit, multi-user red team framework
+  - `git clone https://github.com/its-a-feature/Mythic.git`
+  - https://github.com/its-a-feature/Mythic
+- **NetExec (nxc)** [`pip`] — CrackMapExec maintained successor — AD network exploitation
+  - `pip3 install git+https://github.com/Pennyw0rth/NetExec`
+  - https://github.com/Pennyw0rth/NetExec
+- **Nighthawk** [`web`] — Premium evasive C2 by MDSec (Cobalt Strike alt)
+  - `[www.mdsec.co.uk](https://www.mdsec.co.uk/nighthawk/)`
+  - https://www.mdsec.co.uk/nighthawk/
+- **NoSQLMap** [`git`] — Automated NoSQL database enumeration and exploitation
+  - `git clone https://github.com/codingo/NoSQLMap.git`
+  - https://github.com/codingo/NoSQLMap
+- **Nuclei Templates** [`git`] — Community-curated templates for Nuclei
+  - `git clone https://github.com/projectdiscovery/nuclei-templates.git`
+  - https://github.com/projectdiscovery/nuclei-templates
+- **ParamMiner (Burp ext)** [`git`] — Discover hidden, unlinked HTTP parameters in Burp
+  - `git clone https://github.com/PortSwigger/param-miner.git`
+  - https://github.com/PortSwigger/param-miner
+- **PayloadsAllTheThings** [`git`] — Web app pentest payloads, bypasses, and methodology
+  - `git clone https://github.com/swisskyrepo/PayloadsAllTheThings.git`
+  - https://github.com/swisskyrepo/PayloadsAllTheThings
+- **PetitPotam** [`git`] — PoC tool to coerce Windows hosts to authenticate to attacker
+  - `git clone https://github.com/topotam/PetitPotam.git`
+  - https://github.com/topotam/PetitPotam
+- **PowerShell Empire** [`git`] — Post-exploitation framework with PS-based agents
+  - `git clone https://github.com/BC-SECURITY/Empire.git`
+  - https://github.com/BC-SECURITY/Empire
+- **Rubeus** [`git`] — C# toolset for raw Kerberos interaction and abuse
+  - `git clone https://github.com/GhostPack/Rubeus.git`
+  - https://github.com/GhostPack/Rubeus
+- **SSRFmap** [`git`] — Automated SSRF detection and exploitation framework
+  - `git clone https://github.com/swisskyrepo/SSRFmap.git`
+  - https://github.com/swisskyrepo/SSRFmap
+- **SharpHound** [`git`] — C# data collector for BloodHound
+  - `git clone https://github.com/BloodHoundAD/SharpHound.git`
+  - https://github.com/BloodHoundAD/SharpHound
+- **Sliver** [`go`] — Open-source adversary emulation/red-team framework (Cobalt Strike alt)
+  - `go install github.com/bishopfox/sliver/server@latest`
+  - https://github.com/BishopFox/sliver
+- **Villain** [`git`] — High-level stage 0/1 C2 framework for handling sibling agents
+  - `git clone https://github.com/t3l3machus/Villain.git`
+  - https://github.com/t3l3machus/Villain
+- **XSStrike** [`git`] — Advanced XSS scanner with crawler and payload generator
+  - `git clone https://github.com/s0md3v/XSStrike.git`
+  - https://github.com/s0md3v/XSStrike
+- **kiterunner** [`go`] — Contextual content-discovery for modern API endpoints
+  - `go install github.com/assetnote/kiterunner/cmd/kr@latest`
+  - https://github.com/assetnote/kiterunner
+
+## search-dorking (29)
+- **Baidu** [`web`] — Major Chinese search engine — essential for China-focused OSINT
+  - `[www.baidu.com](https://www.baidu.com)`
+  - https://www.baidu.com
+- **Brave Search** [`web`] — Independent, transparent, ad-free search engine
+  - `[search.brave.com](https://search.brave.com)`
+  - https://search.brave.com
+- **BrightCloud Threat Intelligence** [`web`] — URL/IP/threat reputation database
+  - `[brightcloud.com](https://brightcloud.com)`
+  - https://brightcloud.com
+- **Censys CLI** [`pip`] — Official Python wrapper and CLI for Censys
+  - `pip3 install censys`
+  - https://github.com/censys/censys-python
+- **Commander Search** [`web`] — Boolean search builder for OSINT investigators
+  - `[www.commandersearch.com](https://www.commandersearch.com)`
+  - https://www.commandersearch.com
+- **DorkGPT** [`manual`] — Generate Google Dorks with AI
+  - `DorkGPT`
+- **DorkGenius** [`web`] — AI-powered search query generator for Google, Bing, DuckDuckGo
+  - `[dorkgenius.com](https://dorkgenius.com)`
+  - https://dorkgenius.com
+- **DorkSearch** [`manual`] — Google dork search engine
+  - `DorkSearch`
+- **Dorky** [`web`] — Online dork builder for Google/Bing/DuckDuckGo
+  - `[dorky.io](https://dorky.io)`
+  - https://dorky.io
+- **GooFuzz** [`git`] — Google dorking fuzzer
+  - `git clone https://github.com/m3n0sd0n4ld/GooFuzz`
+  - https://github.com/m3n0sd0n4ld/GooFuzz
+- **Google Guide Advanced Operators** [`web`] — Reference for Google search operators
+  - `[www.googleguide.com](http://www.googleguide.com/advanced_operators_reference.html)`
+  - http://www.googleguide.com/advanced_operators_reference.html
+- **Google Hacking DB** [`manual`] — Exploit-DB Google dork database
+  - `Google Hacking DB`
+- **Google Hacking Database (GHDB)** [`web`] — Index of dorks for finding publicly exposed info
+  - `[www.exploit-db.com](https://www.exploit-db.com/google-hacking-database)`
+  - https://www.exploit-db.com/google-hacking-database
+- **Grep.app** [`manual`] — Search code across all public GitHub repos
+  - `Grep.app`
+- **Intelligence X (intelx.io)** [`web`] — Selective archive search — emails, leaks, paste sites, dark-web
+  - `[intelx.io](https://intelx.io)`
+  - https://intelx.io
+- **Kagi Search** [`web`] — Premium privacy-respecting search engine, no ads, no tracking
+  - `[kagi.com](https://kagi.com)`
+  - https://kagi.com
+- **Mojeek** [`web`] — Independent search engine that doesn't track users
+  - `[www.mojeek.com](https://www.mojeek.com)`
+  - https://www.mojeek.com
+- **Naver** [`web`] — South Korean search engine — local content not on Google
+  - `[www.naver.com](https://www.naver.com)`
+  - https://www.naver.com
+- **NerdyData** [`web`] — Search engine for source code across the public web
+  - `[nerdydata.com](https://nerdydata.com)`
+  - https://nerdydata.com
+- **Pagodo** [`git`] — Automated Google dorking tool
+  - `git clone https://github.com/opsdisk/pagodo`
+  - https://github.com/opsdisk/pagodo
+- **PublicWWW** [`web`] — Search the web's source code (HTML/JS/CSS) for snippets, trackers, scripts
+  - `[publicwww.com](https://publicwww.com)`
+  - https://publicwww.com
+- **SearXNG** [`manual`] — Privacy-respecting metasearch engine
+  - `SearXNG`
+- **Shodan CLI** [`pip`] — Official Shodan command-line client
+  - `pip3 install shodan`
+  - https://github.com/achillean/shodan-python
+- **SourceGraph** [`web`] — Search code from millions of open-source repos
+  - `[sourcegraph.com](https://sourcegraph.com/search)`
+  - https://sourcegraph.com/search
+- **Startpage** [`web`] — Privacy-focused search — Google results with no tracking
+  - `[www.startpage.com](https://www.startpage.com)`
+  - https://www.startpage.com
+- **Yandex** [`web`] — Russian search engine — strong reverse-image and Cyrillic support
+  - `[www.yandex.com](https://www.yandex.com)`
+  - https://www.yandex.com
+- **dork-cli** [`git`] — Run Google dorks from the command line
+  - `git clone https://github.com/jgor/dork-cli.git`
+  - https://github.com/jgor/dork-cli
+- **searchcode** [`web`] — Search 75+ billion lines of public source code across GitHub/GitLab/Bitbucket
+  - `[searchcode.com](https://searchcode.com)`
+  - https://searchcode.com
+- **uncover** [`go`] — ProjectDiscovery — quickly find exposed hosts via Shodan/Censys/Fofa
+  - `go install github.com/projectdiscovery/uncover/cmd/uncover@latest`
+  - https://github.com/projectdiscovery/uncover
+
+## threat-intel-platforms (14)
+- **Anomali ThreatStream** [`web`] — Enterprise threat intel aggregation platform
+  - `[www.anomali.com](https://www.anomali.com)`
+  - https://www.anomali.com
+- **CrowdStrike Falcon Intelligence** [`web`] — Premium adversary intel from CrowdStrike
+  - `[www.crowdstrike.com](https://www.crowdstrike.com/products/threat-intelligence/)`
+  - https://www.crowdstrike.com/products/threat-intelligence/
+- **Digital Shadows SearchLight** [`web`] — Brand protection + dark web monitoring (now ReliaQuest GreyMatter DRP)
+  - `[www.reliaquest.com](https://www.reliaquest.com)`
+  - https://www.reliaquest.com
+- **EclecticIQ Intelligence Center** [`web`] — STIX/TAXII-native threat intel platform
+  - `[www.eclecticiq.com](https://www.eclecticiq.com)`
+  - https://www.eclecticiq.com
+- **Flashpoint** [`web`] — Business risk intel from criminal forums and dark web
+  - `[flashpoint.io](https://flashpoint.io)`
+  - https://flashpoint.io
+- **IntSights** [`web`] — External threat protection and intel (now part of Rapid7)
+  - `[intsights.com](https://intsights.com)`
+  - https://intsights.com
+- **Intel471** [`web`] — Premium adversary intelligence and underground monitoring platform
+  - `[intel471.com](https://intel471.com)`
+  - https://intel471.com
+- **KELA** [`web`] — Cybercrime intelligence and dark-web monitoring
+  - `[kelacyber.com](https://kelacyber.com)`
+  - https://kelacyber.com
+- **Mandiant Advantage** [`web`] — Threat intel from Google's Mandiant team
+  - `[www.mandiant.com](https://www.mandiant.com/advantage)`
+  - https://www.mandiant.com/advantage
+- **OpenCTI** [`docker`] — Open-source CTI platform structured around STIX2
+  - `docker pull opencti/platform`
+  - https://www.opencti.io
+- **SOCRadar** [`web`] — Extended threat intel — attack surface + dark web + brand
+  - `[socradar.io](https://socradar.io)`
+  - https://socradar.io
+- **ThreatConnect** [`web`] — Threat intel platform combining intel and SOAR
+  - `[threatconnect.com](https://threatconnect.com)`
+  - https://threatconnect.com
+- **ThreatQ** [`web`] — Threat intel platform for SOCs
+  - `[www.threatq.com](https://www.threatq.com)`
+  - https://www.threatq.com
+- **Yeti** [`git`] — Open distributed threat intelligence platform
+  - `git clone https://github.com/yeti-platform/yeti.git`
+  - https://yeti-platform.io
+
+## training-ctf (21)
+- **BugBountyHunter** [`web`] — Web hacking training and labs
+  - `[www.bugbountyhunter.com](https://www.bugbountyhunter.com)`
+  - https://www.bugbountyhunter.com
+- **CTFtime** [`web`] — Calendar of upcoming and past CTF events
+  - `[ctftime.org](https://ctftime.org)`
+  - https://ctftime.org
+- **Cybrary** [`web`] — Free + paid cybersecurity courses
+  - `[www.cybrary.it](https://www.cybrary.it)`
+  - https://www.cybrary.it
+- **DVWA** [`git`] — Damn Vulnerable Web Application — classic appsec lab
+  - `git clone https://github.com/digininja/DVWA.git`
+  - https://github.com/digininja/DVWA
+- **Hack The Box** [`web`] — Online pentesting labs and CTFs
+  - `[www.hackthebox.com](https://www.hackthebox.com)`
+  - https://www.hackthebox.com
+- **Hacker101** [`web`] — Free HackerOne course library and CTF
+  - `[www.hacker101.com](https://www.hacker101.com)`
+  - https://www.hacker101.com
+- **Immersive Labs** [`web`] — Cyber skills platform with hands-on exercises
+  - `[www.immersivelabs.com](https://www.immersivelabs.com)`
+  - https://www.immersivelabs.com
+- **Metasploitable** [`web`] — Intentionally vulnerable Linux VM for Metasploit practice
+  - `[docs.rapid7.com](https://docs.rapid7.com/metasploit/metasploitable-2/)`
+  - https://docs.rapid7.com/metasploit/metasploitable-2/
+- **OWASP Juice Shop** [`docker`] — Modern, intentionally insecure web app — covers OWASP Top 10
+  - `docker pull bkimminich/juice-shop`
+  - https://github.com/juice-shop/juice-shop
+- **OWASP WebGoat** [`docker`] — Deliberately insecure Java-based web app for training
+  - `docker pull webgoat/webgoat`
+  - https://github.com/WebGoat/WebGoat
+- **OffSec Proving Grounds** [`web`] — OSCP-style training labs by Offensive Security
+  - `[www.offsec.com](https://www.offsec.com/labs/individual/)`
+  - https://www.offsec.com/labs/individual/
+- **OverTheWire Wargames** [`web`] — Free wargames for learning offensive security from scratch
+  - `[overthewire.org](https://overthewire.org)`
+  - https://overthewire.org
+- **PentesterLab** [`web`] — Hands-on web-app pentesting training
+  - `[pentesterlab.com](https://pentesterlab.com)`
+  - https://pentesterlab.com
+- **PortSwigger Web Security Academy** [`web`] — Free, world-class web security training (by Burp Suite team)
+  - `[portswigger.net](https://portswigger.net/web-security)`
+  - https://portswigger.net/web-security
+- **PwnedHub** [`git`] — Intentionally-vulnerable web app for hands-on appsec training
+  - `git clone https://github.com/practisec/pwnedhub.git`
+  - https://github.com/practisec/pwnedhub
+- **Root-Me** [`web`] — 500+ challenges and 100+ virtual labs
+  - `[www.root-me.org](https://www.root-me.org)`
+  - https://www.root-me.org
+- **TryHackMe** [`web`] — Beginner-friendly cybersecurity training platform
+  - `[tryhackme.com](https://tryhackme.com)`
+  - https://tryhackme.com
+- **VulnHub** [`web`] — Free downloadable vulnerable VMs for offline practice
+  - `[www.vulnhub.com](https://www.vulnhub.com)`
+  - https://www.vulnhub.com
+- **VulnYX** [`web`] — Online platform with vulnerable boxes (free + premium)
+  - `[vulnyx.com](https://vulnyx.com)`
+  - https://vulnyx.com
+- **picoCTF** [`web`] — Free CTF and learning platform built by CMU
+  - `[picoctf.org](https://picoctf.org)`
+  - https://picoctf.org
+- **pwn.college** [`web`] — Free college-level cybersecurity education from ASU
+  - `[pwn.college](https://pwn.college)`
+  - https://pwn.college
+
+## username-social (82)
+- **Arctic Shift** [`git`] — Tool for accessing large dumps of Reddit data via API/web
+  - `git clone https://github.com/ArthurHeitmann/arctic_shift.git`
+  - https://github.com/ArthurHeitmann/arctic_shift
+- **Blackbird** [`pip`] — Fast username search tool across 600+ websites
+  - `pip install blackbird-osint`
+- **BrandWatch** [`manual`] — Social listening platform
+  - `💰 Paid`
+- **CheckUser** [`web`] — Search username across multiple social networks
+  - `[checkuser.vercel.app](https://checkuser.vercel.app)`
+  - https://checkuser.vercel.app
+- **CheckUserNames** [`manual`] — Check username across multiple platforms
+  - `CheckUserNames`
+- **Digital Footprint Check** [`web`] — Free username check on hundreds of sites
+  - `[www.digitalfootprintcheck.com](https://www.digitalfootprintcheck.com/free-checker.html)`
+  - https://www.digitalfootprintcheck.com/free-checker.html
+- **Discord Lookup** [`web`] — Look up Discord user info via ID
+  - `[discordlookup.com](https://discordlookup.com)`
+  - https://discordlookup.com
+- **DiscordHistory** [`web`] — Search public Discord servers and messages
+  - `[disboard.org](https://disboard.org)`
+  - https://disboard.org
+- **ExportData** [`web`] — Historical tweet, follower, and trend export tool
+  - `[www.exportdata.io](https://www.exportdata.io)`
+  - https://www.exportdata.io
+- **Foller.me** [`web`] — Twitter analytics — bio, languages, hashtags, mentions
+  - `[foller.me](https://foller.me)`
+  - https://foller.me
+- **Gitrecon** [`pip`] — GitHub OSINT reconnaissance
+  - `pip install gitrecon`
+- **GoSearch** [`go`] — Fast username search tool in Go
+  - `go install github.com/ibnaleem/gosearch@latest`
+- **Google Alerts** [`manual`] — Free web monitoring
+  - `✅ Free`
+- **Holehe** [`pip`] — Check if email is registered on 120+ sites
+  - `pip install holehe`
+- **Hootsuite** [`manual`] — Social media management
+  - `🟡 Freemium`
+- **Instaloader** [`pip`] — Instagram data downloader
+  - `pip install instaloader`
+- **Instant Username Search** [`manual`] — Real-time username availability checker
+  - `Instant Username Search`
+- **Investigo** [`go`] — Username checker (Go-based)
+  - `go install github.com/tdh8316/investigo@latest`
+- **KnowEm** [`manual`] — Username search on 500+ sites
+  - `KnowEm`
+- **LinkedInDumper** [`git`] — Dump/scrape company employees from LinkedIn API
+  - `git clone https://github.com/l4rm4nd/LinkedInDumper.git`
+  - https://github.com/l4rm4nd/LinkedInDumper
+- **Maigret** [`pip`] — Advanced username search across 3000+ sites with reports
+  - `pip install maigret`
+- **Mention** [`manual`] — Social media monitoring
+  - `🟡 Freemium`
+- **NExfil** [`pip`] — Find profiles by username on various platforms
+  - `pip install nexfil`
+- **Name Checkr** [`web`] — Check domain and username across many platforms
+  - `[www.namecheckr.com](https://www.namecheckr.com)`
+  - https://www.namecheckr.com
+- **Name Checkup** [`web`] — Check username availability across social media
+  - `[namecheckup.com](https://namecheckup.com)`
+  - https://namecheckup.com
+- **NameKetchup** [`web`] — Check domain + username on popular social media
+  - `[nameketchup.com](https://nameketchup.com)`
+  - https://nameketchup.com
+- **Namechk** [`manual`] — Username & domain availability checker
+  - `Namechk`
+- **OSINT Framework** [`web`] — Visual map of all OSINT tools
+  - `[osintframework.com](https://osintframework.com/)`
+  - https://osintframework.com/
+- **OSRFramework** [`pip`] — Username research framework with multiple tools
+  - `pip install osrframework`
+- **Osintgram** [`git`] — Instagram OSINT tool
+  - `git clone https://github.com/Datalux/Osintgram`
+  - https://github.com/Datalux/Osintgram
+- **PullPush** [`web`] — Index/retrieval service for Reddit (incl. deleted content)
+  - `[pullpush.io](https://pullpush.io)`
+  - https://pullpush.io
+- **Pushshift API** [`web`] — Historical Reddit data — posts, comments, metadata
+  - `[pushshift.io](https://pushshift.io)`
+  - https://pushshift.io
+- **Reddit Investigator** [`web`] — Reddit user analysis
+  - `[reddit-user-analyser.netlify.app](https://reddit-user-analyser.netlify.app/)`
+  - https://reddit-user-analyser.netlify.app/
+- **RedditMetis** [`web`] — Reddit user analysis — summary, top posts, activity stats
+  - `[redditmetis.com](https://redditmetis.com)`
+  - https://redditmetis.com
+- **RedditSearch.io** [`web`] — Search archived Reddit content via Pushshift mirror
+  - `[redditsearch.io](https://redditsearch.io)`
+  - https://redditsearch.io
+- **Seekr** [`git`] — Multi-purpose OSINT toolkit with web interface
+  - `git clone https://github.com/seekr-osint/seekr`
+  - https://github.com/seekr-osint/seekr
+- **Sherlock** [`pip`] — Hunt down social media accounts by username across 400+ sites
+  - `pip install sherlock-project`
+- **SherlockEye** [`manual`] — Search publicly available info connected to a username
+  - `SherlockEye`
+- **Snoop** [`pip`] — Username search with Russian-focused platforms
+  - `pip install snoop`
+- **Social Analyzer** [`pip`] — API-based social media profiler for 1000+ sites
+  - `pip install social-analyzer`
+- **Social Mention** [`manual`] — Social media aggregator
+  - `✅ Yes`
+- **Social Searcher** [`manual`] — Real-time social media search
+  - `✅ Yes`
+- **Social-Searcher** [`web`] — Free social media search engine
+  - `[social-searcher.com](https://www.social-searcher.com/)`
+  - https://www.social-searcher.com/
+- **SocialBlade** [`web`] — Social media analytics
+  - `[socialblade.com](https://socialblade.com/)`
+  - https://socialblade.com/
+- **Socid-extractor** [`pip`] — Extract user info from web page source code
+  - `pip install socid-extractor`
+- **SubredditStats** [`web`] — Subreddit user-overlap, growth, top posts
+  - `[subredditstats.com](https://subredditstats.com)`
+  - https://subredditstats.com
+- **TGStat** [`web`] — Telegram channel analytics — post stats, audience overlap
+  - `[tgstat.com](https://tgstat.com)`
+  - https://tgstat.com
+- **TOsint** [`git`] — Extract info from Telegram bots and channels
+  - `git clone https://github.com/drego85/tosint.git`
+  - https://github.com/drego85/tosint
+- **Talkwalker** [`manual`] — Social listening & analytics
+  - `💰 Paid`
+- **TeleGram-OSINTer** [`git`] — Telegram profile investigation
+  - `git clone https://github.com/Alb-310/TeleGram-OSINTer`
+  - https://github.com/Alb-310/TeleGram-OSINTer
+- **Telegago** [`web`] — Google CSE for finding public/private Telegram channels
+  - `[cse.google.com](https://cse.google.com/cse?cx=006368593537057042503:efxu7xprihg)`
+  - https://cse.google.com/cse?cx=006368593537057042503:efxu7xprihg
+- **Telegram Nearby Map** [`git`] — Find positions of nearby Telegram users via OSM
+  - `git clone https://github.com/tejado/telegram-nearby-map.git`
+  - https://github.com/tejado/telegram-nearby-map
+- **Telegram Search (lyzem.com)** [`web`] — Search public Telegram messages and channels
+  - `[lyzem.com](https://lyzem.com)`
+  - https://lyzem.com
+- **Telemetr** [`web`] — Telegram channel/group analytics
+  - `[telemetr.io](https://telemetr.io)`
+  - https://telemetr.io
+- **Telepathy** [`pip`] — Telegram OSINT analysis
+  - `pip install telepathy`
+- **Telerecon** [`git`] — Reconnaissance framework for investigating Telegram
+  - `git clone https://github.com/sockysec/Telerecon.git`
+  - https://github.com/sockysec/Telerecon
+- **Teleteg** [`web`] — Telegram search engine — 10 free results
+  - `[teleteg.com](https://teleteg.com)`
+  - https://teleteg.com
+- **Telethon** [`pip`] — Python Telegram API library
+  - `pip install telethon`
+- **TikTok Finder Country** [`web`] — Free OSINT lookup for TikTok account country/language
+  - `[tiktokfindercountry.xyz](https://tiktokfindercountry.xyz)`
+  - https://tiktokfindercountry.xyz
+- **TikTok Scraper** [`manual`] — TikTok data extraction
+  - `npm install -g tiktok-scraper`
+- **Toutatis** [`pip`] — Instagram OSINT by phone/email
+  - `pip install toutatis`
+- **Trace** [`web`] — Search usernames, emails, phones across 600+ platforms with risk scoring
+  - `[trace.manus.space](https://trace.manus.space)`
+  - https://trace.manus.space
+- **Trends24** [`web`] — Twitter trends history per country
+  - `[trends24.in](https://trends24.in)`
+  - https://trends24.in
+- **Twayback** [`pip`] — Find deleted tweets
+  - `pip install twayback`
+- **TweetBinder** [`web`] — Twitter/X analytics dashboards
+  - `[www.tweetbinder.com](https://www.tweetbinder.com)`
+  - https://www.tweetbinder.com
+- **Twint** [`pip`] — Twitter OSINT (no API needed)
+  - `pip install twint`
+- **Twitch Search** [`web`] — Search live streams by category, language, viewer count
+  - `[www.twitch.tv](https://www.twitch.tv/directory)`
+  - https://www.twitch.tv/directory
+- **Twiteur** [`web`] — Twitter/X advanced search wrapper — geo, date, sentiment
+  - `[twiteur.com](https://twiteur.com)`
+  - https://twiteur.com
+- **U-Find** [`web`] — Reddit user comment / submission scraper
+  - `[u-find.com](https://u-find.com)`
+  - https://u-find.com
+- **User-Searcher** [`web`] — Search a username across 2000+ websites
+  - `[www.user-searcher.com](https://www.user-searcher.com)`
+  - https://www.user-searcher.com
+- **UserRecon** [`git`] — Bash-based username finder across platforms
+  - `git clone https://github.com/wishihab/userrecon.git`
+  - https://github.com/wishihab/userrecon.git
+- **Usersearch.org** [`web`] — Free social network search
+  - `[usersearch.org](https://usersearch.org/)`
+  - https://usersearch.org/
+- **WhatsMyName** [`manual`] — Web-based username enumeration
+  - `WhatsMyName`
+- **Who Posted What** [`manual`] — Facebook keyword search
+  - `✅ Free`
+- **github_monitor** [`git`] — Real-time tracking of GitHub user activity and repo changes
+  - `git clone https://github.com/misiektoja/github_monitor.git`
+  - https://github.com/misiektoja/github_monitor
+- **insta-dl** [`pip`] — Async Instagram downloader for profiles, posts, reels, stories, highlights, hashtags, and comments
+  - `pip install instagram-dl`
+  - https://github.com/subzeroid/insta-dl
+- **instagram_monitor** [`git`] — Real-time tracking of Instagram users with email alerts and CSV logs
+  - `git clone https://github.com/misiektoja/instagram_monitor.git`
+  - https://github.com/misiektoja/instagram_monitor
+- **insto** [`pip`] — Interactive Instagram OSINT CLI with REPL, one-shot mode, snapshots, diffs, and Maltego-ready exports
+  - `pip install insto`
+  - https://github.com/subzeroid/insto
+- **snscrape** [`pip`] — Social media scraper (Twitter, Reddit, etc.)
+  - `pip install snscrape`
+- **socialscan** [`pip`] — Check email/username availability
+  - `pip install socialscan`
+- **the-endorser** [`git`] — Map LinkedIn endorsements/skills to draw out person relationships
+  - `git clone https://github.com/eth0izzle/the-endorser.git`
+  - https://github.com/eth0izzle/the-endorser
+- **user-scanner** [`git`] — Check username presence across dev/social/gaming sites
+  - `git clone https://github.com/kaifcodec/user-scanner.git`
+  - https://github.com/kaifcodec/user-scanner.git
+
+## vehicle-aviation-maritime (18)
+- **ADS-B Exchange** [`manual`] — Unfiltered flight tracking data
+  - `ADS-B Exchange`
+- **AutoCheck** [`web`] — Vehicle history reports
+  - `[autocheck.com](https://autocheck.com/)`
+  - https://autocheck.com/
+- **Court Listener** [`web`] — Free US court opinion search
+  - `[courtlistener.com](https://courtlistener.com/)`
+  - https://courtlistener.com/
+- **FAXVIN** [`manual`] — Free VIN decoder and vehicle history
+  - `FAXVIN`
+- **FOIA.gov** [`web`] — Freedom of Information Act portal
+  - `[foia.gov](https://foia.gov/)`
+  - https://foia.gov/
+- **FlightAware** [`manual`] — Flight tracking and data platform
+  - `FlightAware`
+- **FlightRadar24** [`manual`] — Real-time flight tracking
+  - `FlightRadar24`
+- **MarineTraffic** [`manual`] — Real-time ship tracking
+  - `MarineTraffic`
+- **NICB VINCheck** [`web`] — Stolen vehicle check
+  - `[nicb.org/vincheck](https://www.nicb.org/vincheck)`
+  - https://www.nicb.org/vincheck
+- **OpenRailwayMap** [`web`] — Worldwide rail network map — rolling stock, infrastructure, signals
+  - `[www.openrailwaymap.org](https://www.openrailwaymap.org)`
+  - https://www.openrailwaymap.org
+- **PACER** [`web`] — US federal court records
+  - `[pacer.uscourts.gov](https://pacer.uscourts.gov/)`
+  - https://pacer.uscourts.gov/
+- **Public Transport Maps** [`web`] — 20+ online public transport maps by country
+  - `[cipher387.github.io](https://cipher387.github.io/public_transport_maps/)`
+  - https://cipher387.github.io/public_transport_maps/
+- **Transit Visualisation Client** [`web`] — Real-time public transport across 700+ cities
+  - `[tracker.geops.ch](https://tracker.geops.ch)`
+  - https://tracker.geops.ch
+- **Vehicle Number Search Toolbox** [`web`] — Search 14 country license plates from one page
+  - `[cipher387.github.io](https://cipher387.github.io/venicle_number_search_toolbox/)`
+  - https://cipher387.github.io/venicle_number_search_toolbox/
+- **VesselFinder** [`manual`] — Free AIS vessel tracking
+  - `VesselFinder`
+- **Who Owns What** [`web`] — NYC landlord portfolio lookup
+  - `[whoownswhat.justfix.org](https://whoownswhat.justfix.org/en/)`
+  - https://whoownswhat.justfix.org/en/
+- **WorldLicensePlates** [`web`] — Graphic index of license plates by country
+  - `[www.worldlicenseplates.com](http://www.worldlicenseplates.com)`
+  - http://www.worldlicenseplates.com
+- **Zillow** [`web`] — Property records & estimates
+  - `[zillow.com](https://zillow.com/)`
+  - https://zillow.com/
+
+## vpn-privacy (26)
+- **Algo VPN** [`git`] — Self-hosted cloud VPN — sets up WireGuard/IPsec automatically
+  - `git clone https://github.com/trailofbits/algo`
+  - https://github.com/trailofbits/algo
+- **Anon-SMS** [`git`] — Anonymous SMS sending
+  - `git clone https://github.com/HACK3RY2J/Anon-SMS.git`
+  - https://github.com/HACK3RY2J/Anon-SMS.git
+- **Anonsurf** [`git`] — Anonymize entire OS traffic through Tor
+  - `git clone https://github.com/Und3rf10w/kali-anonsurf`
+  - https://github.com/Und3rf10w/kali-anonsurf
+- **BleachBit** [`apt`] — Digital footprint cleaner
+  - `apt install bleachbit`
+- **Brave Browser** [`web`] — Privacy-focused browser with built-in Tor/IPFS support
+  - `[brave.com](https://brave.com)`
+  - https://brave.com
+- **CalyxVPN** [`manual`] — Free VPN by Calyx Institute — no accounts required
+  - `Website`
+- **IVPN** [`manual`] — Privacy-first VPN — open-source, audited, no email signup
+  - `Website`
+- **KeePassXC** [`web`] — Offline password manager
+  - `[keepassxc.org](https://keepassxc.org/)`
+  - https://keepassxc.org/
+- **Lantern** [`manual`] — Free censorship circumvention tool — peer-to-peer
+  - `Website`
+- **MAC Changer** [`apt`] — Change/spoof MAC address
+  - `apt install macchanger`
+- **Mullvad VPN** [`apt`] — Privacy-first VPN — no email needed, cash accepted
+  - `apt install mullvad-vpn`
+- **OnionShare** [`web`] — Anonymous file sharing via Tor
+  - `[onionshare.org](https://onionshare.org/)`
+  - https://onionshare.org/
+- **OpenVPN** [`apt`] — Industry-standard open-source VPN protocol
+  - `apt install openvpn`
+- **Outline VPN** [`manual`] — Google Jigsaw's self-hosted VPN — censorship circumvention
+  - `Website`
+- **PrivadoVPN Free** [`manual`] — Free VPN with 10GB/month and zero-log policy
+  - `Website`
+- **Proton VPN Free** [`pip`] — Best free VPN — unlimited data, no-log, open-source, Swiss privacy
+  - `pip3 install protonvpn-cli`
+- **ProtonMail** [`web`] — Encrypted email
+  - `[proton.me](https://proton.me/)`
+  - https://proton.me/
+- **ProtonVPN** [`web`] — Free encrypted VPN
+  - `[protonvpn.com](https://protonvpn.com/)`
+  - https://protonvpn.com/
+- **RiseupVPN** [`apt`] — Free VPN by Riseup collective — no accounts, no tracking
+  - `apt install riseup-vpn`
+- **Signal** [`web`] — Encrypted messaging
+  - `[signal.org](https://signal.org/)`
+  - https://signal.org/
+- **Tails OS** [`manual`] — Amnesic live OS (no trace)
+  - `Tails OS`
+- **Tor Browser** [`apt`] — Anonymous web browsing via Tor network
+  - `apt install torbrowser-launcher`
+- **VeraCrypt** [`apt`] — Disk encryption
+  - `apt install veracrypt`
+- **Whonix** [`manual`] — Anonymous OS via Tor (VM-based)
+  - `Whonix`
+- **Windscribe Free** [`manual`] — Generous free VPN with 10GB/month and ad blocking
+  - `Website`
+- **WireGuard** [`apt`] — Modern VPN protocol — ultra-fast, minimal attack surface
+  - `apt install wireguard`

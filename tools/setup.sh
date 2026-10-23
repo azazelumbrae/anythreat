@@ -43,15 +43,10 @@ mkdir -p "$GEMS"
 gem install wpscan --install-dir "$GEMS" --no-document >/dev/null 2>&1
 [ -d "$HERE/whatweb" ] || git clone --depth 1 https://github.com/urbanadventurer/WhatWeb.git "$HERE/whatweb" >/dev/null 2>&1
 
-# ---------- 3b) OSINT (email/usuario -> cuentas y breaches) ----------
-echo "[3b] OSINT (holehe h8mail sherlock maigret socialscan)"
-if [ ! -x "$ROOT/tools/osint/.venv/bin/holehe" ]; then
-  mkdir -p "$ROOT/tools/osint"
-  if command -v uv >/dev/null 2>&1; then
-    ( cd "$ROOT/tools/osint" && uv venv --python 3.12 .venv >/dev/null 2>&1 && uv pip install --python .venv/bin/python -q h8mail holehe maigret sherlock-project socialscan toutatis >/dev/null 2>&1 )
-  else
-    ( cd "$ROOT/tools/osint" && python3 -m venv .venv && ./.venv/bin/pip install -q --upgrade pip && ./.venv/bin/pip install -q h8mail holehe maigret sherlock-project socialscan toutatis )
-  fi
+# ---------- 3b) OSINT completo (todo awesome-osint-arsenal) ----------
+echo "[3b] OSINT (pip + go + git — todo el catálogo)"
+if [ -f "$HERE/osint/tools.json" ] && [ -x "$HERE/install-osint.sh" ]; then
+  "$HERE/install-osint.sh" >/dev/null 2>&1 || true
 fi
 
 # ---------- 4) wordlists (dentro del proyecto) ----------

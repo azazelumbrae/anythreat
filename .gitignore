@@ -10,7 +10,14 @@ tools/camofox/data/
 tools/camofox/package.json
 tools/camofox/package-lock.json
 tools/evilwaf/
-tools/osint/
+tools/osint/.venv/
+tools/osint/git/
+tools/osint/.install.log
+tools/osint/.plan.tsv
+tools/osint/.pip.list
+tools/osint/.go.list
+tools/osint/.git.list
+tools/bin/
 tools/whatweb/
 tools/tor-data/
 
