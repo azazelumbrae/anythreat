@@ -8,9 +8,15 @@ import { loadFrameworks, byId, nextStronger, BASE_SYSTEM, fillTemplate, contextB
 import { Client } from "./lib/client.mjs";
 import { resolveConfig, hasCreds } from "./lib/config.mjs";
 import { c, levelColor, bar } from "./lib/render.mjs";
+import { startSpinner, stopSpinner } from "./lib/spinner.mjs";
 
 const VERSION = "0.1.0";
 const isTTY = process.stdout.isTTY && process.stdin.isTTY;
+
+// Red input prompt with a dedicated indent.
+function promptLine(label, hint = "") {
+  return "  " + c.red("❯ ") + c.bold(label) + (hint ? " " + c.gray(hint) : "") + " ";
+}
 
 // SIGINT coordination: during an interactive agent run, Ctrl-C sets
 // `wantInterrupt` (pause + inject prompt) instead of exiting.
@@ -192,6 +198,8 @@ function dumpFindings(cwd) {
 }
 
 function printAgent(evt) {
+  if (evt.type === "thinking") { startSpinner(); return; }
+  if (evt.type === "think_done") { stopSpinner(); return; }
   if (evt.type === "agent_start") {
     agentWorkdir = evt.cwd;
     console.log(c.gray(`  📁 ${evt.cwd}`));
@@ -273,7 +281,11 @@ async function doRun(fw, vars, mode, cfg, flags) {
     return final;
   }
 
-  client.onEvent = (evt) => { if (evt.type === "turn") printTurn(evt); else printReply(evt); };
+  client.onEvent = (evt) => {
+    if (evt.type === "thinking") return startSpinner();
+    if (evt.type === "think_done") return stopSpinner();
+    if (evt.type === "turn") printTurn(evt); else printReply(evt);
+  };
   console.log(c.bold(`\n  ▶ ${fw.name} ${c.gray(`(${fw.level} · ${mode === "single" ? "single-shot" : "multi-turno"} · ${cfg.model})`)}`));
   const start = Date.now();
   const { final } = mode === "single"
@@ -337,7 +349,7 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags) {
         wantInterrupt = false;
         process.stdout.write(c.yellow("  ⏸  pausado") + c.gray("  —  escribe para inyectar al modelo, Enter=seguir, q=salir\n"));
         let line;
-        try { line = (await ask("  > ")).trim(); } catch { return { stop: true }; }
+        try { line = (await ask("  " + c.red("❯ ") + c.gray("inyecta (Enter=seguir, q=salir): "))).trim(); } catch { return { stop: true }; }
         if (/^q$/i.test(line)) return { stop: true };
         if (line === "") return null;
         return { inject: line };
@@ -381,9 +393,9 @@ async function interactive(flags, cfg) {
     current = fw;
     console.log(`\n  ${c.bold(fw.name)} ${c.gray(`· ${fw.level} · ${fw.mechanism}`)}`);
 
-    if (!vars.task) vars.task = await ask("  Tu tarea/objetivo: ");
-    if (!vars.target && !flags.target) vars.target = await ask(c.gray("  Target (Enter para saltar): "));
-    if (!vars.role && !flags.role) vars.role = await ask(c.gray("  Rol/persona (Enter para saltar): "));
+    if (!vars.task) { console.log(""); vars.task = await ask(promptLine("Tu tarea/objetivo")); }
+    if (!vars.target && !flags.target) vars.target = await ask(promptLine("Target", "(Enter para saltar)"));
+    if (!vars.role && !flags.role) vars.role = await ask(promptLine("Rol/persona", "(Enter para saltar)"));
     if (!flags.shot && !flags.exec && !flags.dry && !flags.json) {
       const m = await ask(c.gray("  Modo [Enter=AGENTE en vivo (internet+shell) / m=chat multi-turno (sin tools) / s=chat single-shot (sin tools)]: "));
       mode = /^m/i.test(m) ? "multi" : /^s/i.test(m) ? "single" : "exec";
@@ -449,9 +461,9 @@ async function main() {
     const vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "" };
     if (!vars.task && isTTY) {
       const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-      vars.task = (await rl.question("Tu tarea/objetivo: ")).trim();
-      vars.target = (await rl.question(c.gray("Target (Enter para saltar): "))).trim();
-      vars.role = (await rl.question(c.gray("Rol/persona (Enter para saltar): "))).trim();
+      vars.task = (await rl.question(promptLine("Tu tarea/objetivo"))).trim();
+      vars.target = (await rl.question(promptLine("Target", "(Enter para saltar)"))).trim();
+      vars.role = (await rl.question(promptLine("Rol/persona", "(Enter para saltar)"))).trim();
       rl.close();
     }
     const mode = flags.shot ? "single" : "exec"; // default: AGENTE (tiene internet/shell)
