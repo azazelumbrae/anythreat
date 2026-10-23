@@ -1,0 +1,18 @@
+{
+  "name": "any-threat",
+  "version": "0.1.0",
+  "description": "Any Threat — ranked jailbreak frameworks for any AI API. Pick one (soft to strong), give it a task, escalate if it refuses.",
+  "type": "module",
+  "bin": {
+    "at": "./at.mjs"
+  },
+  "scripts": {
+    "start": "node at.mjs",
+    "list": "node at.mjs --list"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "dependencies": {}
+}
