@@ -1,4 +1,23 @@
-# Any Threat (`at`)
+<div align="center">
+
+<pre>
+  ▄████████ ███▄▄▄▄   ▄██   ▄            ███        ▄█    █▄       ▄████████    ▄████████    ▄████████     ███
+  ███    ███ ███▀▀▀██▄ ███   ██▄      ▀█████████▄   ███    ███     ███    ███   ███    ███   ███    ███ ▀█████████▄
+  ███    ███ ███   ███ ███▄▄▄███         ▀███▀▀██   ███    ███     ███    ███   ███    █▀    ███    ███    ▀███▀▀██
+  ███    ███ ███   ███ ▀▀▀▀▀▀███          ███   ▀  ▄███▄▄▄▄███▄▄  ▄███▄▄▄▄██▀  ▄███▄▄▄       ███    ███     ███   ▀
+▀███████████ ███   ███ ▄██   ███          ███     ▀▀███▀▀▀▀███▀  ▀▀███▀▀▀▀▀   ▀▀███▀▀▀     ▀███████████     ███
+  ███    ███ ███   ███ ███   ███          ███       ███    ███   ▀███████████   ███    █▄    ███    ███     ███
+  ███    ███ ███   ███ ███   ███          ███       ███    ███     ███    ███   ███    ███   ███    ███     ███
+  ███    █▀   ▀█   █▀   ▀█████▀          ▄████▀     ███    █▀      ███    ███   ██████████   ███    █▀     ▄████▀
+                                                                   ███    ███
+</pre>
+
+<b>An agentic security toolkit for any LLM</b><br>
+<sub>ranked jailbreak frameworks · real execution · attack / defense / opsec arsenal</sub>
+
+</div>
+
+---
 
 **Any Threat** is a command-line security toolkit that drives **any OpenAI-compatible
 LLM** to perform real, hands-on security work. It combines three things into one tool:
