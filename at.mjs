@@ -17,6 +17,17 @@ const isTTY = process.stdout.isTTY && process.stdin.isTTY;
 function promptLine(label, hint = "") {
   return "  " + c.red("❯ ") + c.bold(label) + (hint ? " " + c.gray(hint) : "") + " ";
 }
+// Draws a framed input field (top + left + bottom) and returns the answer.
+async function boxedInput(ask, label, hint = "") {
+  const cols = Number(process.env.AT_COLS) || process.stdout.columns || 80;
+  const w = Math.max(40, Math.min(cols - 4, 110));
+  const bar = c.gray("  ╭" + "─".repeat(w));
+  console.log("");
+  console.log(bar);
+  const ans = await ask("  " + c.gray("│ ") + c.red("❯ ") + c.bold(label) + (hint ? " " + c.gray(hint) : "") + " ");
+  console.log(c.gray("  ╰" + "─".repeat(w)) );
+  return ans;
+}
 
 // SIGINT coordination: during an interactive agent run, Ctrl-C sets
 // `wantInterrupt` (pause + inject prompt) instead of exiting.
@@ -47,6 +58,7 @@ function parseArgs(argv) {
       case "-t": case "--task": i += next(i, "task"); break;
       case "-T": case "--target": i += next(i, "target"); break;
       case "-R": case "--role": i += next(i, "role"); break;
+      case "--constraints": i += next(i, "constraints"); break;
       case "-s": case "--shot": case "--single": flags.shot = true; break;
       case "-x": case "--exec": case "--agent": flags.exec = true; break;
       case "--cwd": i += next(i, "cwd"); break;
@@ -86,6 +98,7 @@ ${c.bold("Opciones")}
   -t, --task <t>       Tu objetivo (ej: "pentest https://x y explota el SQLi")
   -T, --target <x>     Target específico (opcional)
   -R, --role <r>       Rol/persona que interpretas (opcional)
+      --constraints <c>  Restricciones / qué NO hacer (se respeta en el agente)
   -s, --shot           Single-shot (1 mensaje) en vez de multi-turno
   -x, --exec           EJECUTA de verdad: le da un shell al modelo y corre el
                        objetivo paso a paso (recon→exploit→verifica) hasta FINAL:
@@ -252,22 +265,28 @@ function printPlanBox(text) {
 }
 
 function printAgent(evt) {
-  if (evt.type === "thinking") { startSpinner(); return; }
-  if (evt.type === "think_done") { stopSpinner(); return; }
-  if (evt.type === "plan_ready") { printPlanBox(evt.plan); return; }
-  if (evt.type === "attack_start") { console.log(c.bold(c.red("\n  ▶ FASE 2 — ATAQUE"))); return; }
+  // Spinner is continuous during the whole agent run; we only pause it around prints.
+  if (evt.type === "thinking" || evt.type === "think_done") return;
+  stopSpinner();
+  const resume = () => startSpinner();
+
   if (evt.type === "agent_start") {
     agentWorkdir = evt.cwd;
     console.log(c.gray(`  📁 ${evt.cwd}`));
+    resume(); return;
   }
+  if (evt.type === "plan_ready") { printPlanBox(evt.plan); resume(); return; }
+  if (evt.type === "attack_start") { console.log(c.bold(c.red("\n  ▶ FASE 2 — ATAQUE"))); resume(); return; }
   if (evt.type === "step") {
     if (evt.i > 0) console.log(c.gray("  │"));
     const ph = evt.phase === "attack" ? c.red("ataque") : c.magenta("recon");
     console.log(`  ${c.bold(c.cyan("◆"))} ${c.bold(c.cyan("paso " + (evt.i + 1)))} ${c.gray("·")} ${ph}`);
+    resume(); return;
   }
   if (evt.type === "reply") {
     const reasoning = oneline(stripExecBlock(evt.reply));
     if (reasoning) console.log(c.gray("  │ 💭 ") + c.gray(clip(reasoning, 500)));
+    resume(); return;
   }
   if (evt.type === "exec") {
     const ok = evt.result.exit === 0;
@@ -288,13 +307,18 @@ function printAgent(evt) {
       (ok ? c.green("✓ " + evt.result.ms + "ms") : c.red("✗ exit " + evt.result.exit + " · " + evt.result.ms + "ms")) +
       (n ? c.gray("   📋 " + n + " hallazgo" + (n === 1 ? "" : "s") + " en cache") : "")
     );
+    resume(); return;
   }
   if (evt.type === "inject") {
     console.log(c.bold(c.cyan(`\n  ➤ inyectado: ${clip(evt.text, 200)}`)));
+    resume(); return;
   }
   if (evt.type === "agent_done") {
     console.log(c.gray("  ╰─") + c.bold(c.green(" FINAL")));
+    return; // stop spinner (no resume)
   }
+  if (evt.type === "agent_maxiters") { return; }
+  resume();
 }
 
 async function doRun(fw, vars, mode, cfg, flags) {
@@ -304,7 +328,7 @@ async function doRun(fw, vars, mode, cfg, flags) {
   if (isExec && flags.dry) {
     console.log(c.bold(`\n  [dry] EXEC agéntico · ${fw.name} · ${cfg.model}`));
     console.log(c.gray(`  El modelo recibirá un shell real y ejecutará el objetivo paso a paso hasta emitir FINAL:`));
-    console.log(c.bold(`\n  Objective:\n    ${vars.task}${vars.target ? " | TARGET: " + vars.target : ""}`));
+    console.log(c.bold(`\n  Objective:\n    ${vars.task}${vars.target ? " | TARGET: " + vars.target : ""}${vars.constraints ? "\n    CONSTRAINTS: " + vars.constraints : ""}`));
     return "";
   }
   if (flags.json) {
@@ -443,7 +467,7 @@ async function interactive(flags, cfg) {
   printLogo();
   cfg = await chooseModel(ask, cfg);
 
-  let vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "" };
+  let vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "", constraints: flags.constraints || "" };
   let mode = flags.exec ? "exec" : flags.shot ? "single" : "exec"; // default: agente en vivo
   let current = null;
 
@@ -459,9 +483,10 @@ async function interactive(flags, cfg) {
     current = fw;
     console.log(`\n  ${c.bold(fw.name)} ${c.gray(`· ${fw.level} · ${fw.mechanism}`)}`);
 
-    if (!vars.task) { console.log(""); vars.task = await ask(promptLine("Tu tarea/objetivo")); }
-    if (!vars.target && !flags.target) vars.target = await ask(promptLine("Target", "(Enter para saltar)"));
-    if (!vars.role && !flags.role) vars.role = await ask(promptLine("Rol/persona", "(Enter para saltar)"));
+    if (!vars.task) vars.task = await boxedInput(ask, "Tu tarea/objetivo");
+    if (!vars.target && !flags.target) vars.target = await boxedInput(ask, "Target", "(Enter para saltar)");
+    if (!vars.role && !flags.role) vars.role = await boxedInput(ask, "Rol/persona", "(Enter para saltar)");
+    if (!vars.constraints && !flags.constraints) vars.constraints = await boxedInput(ask, "Restricciones (qué NO hacer)", "(Enter para saltar)");
     if (!flags.shot && !flags.exec && !flags.dry && !flags.json) {
       const m = await ask(c.gray("  Modo [Enter=AGENTE en vivo (internet+shell) / m=chat multi-turno (sin tools) / s=chat single-shot (sin tools)]: "));
       mode = /^m/i.test(m) ? "multi" : /^s/i.test(m) ? "single" : "exec";
@@ -478,6 +503,7 @@ async function interactive(flags, cfg) {
         await doRun(fw, vars, mode, cfg, flags);
       }
     } catch (e) {
+      stopSpinner();
       console.log(c.red(`\n  ✗ ${e.message}`));
     }
 
@@ -524,12 +550,14 @@ async function main() {
       console.error(c.red("Falta --task (o corre en un terminal interactivo)."));
       process.exit(1);
     }
-    const vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "" };
+    const vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "", constraints: flags.constraints || "" };
     if (!vars.task && isTTY) {
       const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-      vars.task = (await rl.question(promptLine("Tu tarea/objetivo"))).trim();
-      vars.target = (await rl.question(promptLine("Target", "(Enter para saltar)"))).trim();
-      vars.role = (await rl.question(promptLine("Rol/persona", "(Enter para saltar)"))).trim();
+      const ask = (q) => rl.question(q).then((s) => s.trim());
+      vars.task = await boxedInput(ask, "Tu tarea/objetivo");
+      vars.target = await boxedInput(ask, "Target", "(Enter para saltar)");
+      vars.role = await boxedInput(ask, "Rol/persona", "(Enter para saltar)");
+      vars.constraints = await boxedInput(ask, "Restricciones (qué NO hacer)", "(Enter para saltar)");
       rl.close();
     }
     const mode = flags.shot ? "single" : "exec"; // default: AGENTE (tiene internet/shell)
