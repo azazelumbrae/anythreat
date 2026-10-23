@@ -197,26 +197,58 @@ function dumpFindings(cwd) {
   } catch {}
 }
 
-function wrapLine(s, w) {
-  s = String(s).replace(/\r/g, "");
-  if (s.length <= w) return [s];
-  const out = [];
-  let cur = "";
-  for (const word of s.split(/\s+/)) {
-    if ((cur + (cur ? " " : "") + word).length > w) { if (cur) out.push(cur); cur = word; }
-    else cur += (cur ? " " : "") + word;
+const ANSI_RE = /\x1b\[[0-9;]*m/g;
+function vlen(s) { return String(s).replace(ANSI_RE, "").length; }
+function mdToAnsi(s) {
+  s = String(s || "");
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)");
+  s = s.replace(/^\s{0,3}#{1,6}\s+(.*)$/gm, (_, t) => "\x1b[1m" + t + "\x1b[0m");
+  s = s.replace(/\*\*([^*]+)\*\*/g, (_, t) => "\x1b[1m" + t + "\x1b[0m");
+  s = s.replace(/`([^`]+)`/g, (_, t) => "\x1b[36m" + t + "\x1b[0m");
+  return s;
+}
+function wrapAnsi(str, w) {
+  const lines = [];
+  let cur = "", curLen = 0;
+  const parts = [];
+  let idx = 0, m;
+  ANSI_RE.lastIndex = 0;
+  while ((m = ANSI_RE.exec(str))) {
+    if (m.index > idx) parts.push({ t: str.slice(idx, m.index) });
+    parts.push({ a: m[0] });
+    idx = ANSI_RE.lastIndex;
   }
-  if (cur) out.push(cur);
-  return out.length ? out : [""];
+  if (idx < str.length) parts.push({ t: str.slice(idx) });
+  for (const p of parts) {
+    if (p.a) { cur += p.a; continue; }
+    for (const word of p.t.split(/(\s+)/)) {
+      const wl = word.length;
+      if (curLen + wl > w && curLen > 0 && word.trim()) {
+        lines.push(cur + "\x1b[0m");
+        cur = ""; curLen = 0;
+      }
+      if (!cur && /^\s+$/.test(word)) continue;
+      cur += word; curLen += wl;
+    }
+  }
+  if (cur) lines.push(cur + "\x1b[0m");
+  return lines;
 }
 function printPlanBox(text) {
-  const W = 62;
+  const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
+  const W = Math.max(60, cols - 6);
   const inner = String(text || "").replace(/^\s*PLAN\s*READY\s*:?\s*/i, "").trim();
-  const lines = inner.split("\n").flatMap((l) => (l.trim() === "" ? [""] : wrapLine(l, W)));
+  const lines = [];
+  for (const raw of inner.split("\n")) {
+    if (raw.trim() === "") { lines.push(""); continue; }
+    for (const w of wrapAnsi(mdToAnsi(raw), W)) lines.push(w);
+  }
+  const head = "  ╭─ 🎯 PLANNING ";
+  const topBar = "─".repeat(Math.max(0, W + 4 - vlen(head)));
   console.log("");
-  console.log(c.bold(c.red("  ╭─ 🎯 PLANNING " + "─".repeat(W - 12))));
+  console.log(c.bold(c.red(head + topBar)));
   for (const l of lines) console.log(c.red("  │ ") + l);
-  console.log(c.bold(c.red("  ╰" + "─".repeat(W + 2))));
+  console.log(c.bold(c.red("  ╰" + "─".repeat(W + 4))));
 }
 
 function printAgent(evt) {
