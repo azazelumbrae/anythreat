@@ -58,6 +58,39 @@ instaladas en el sistema (brew/pip); las pesadas (EvilWAF, camofox) en `~/anythr
 
 ---
 
+## 3b. OSINT (email/usuario → cuentas y contraseñas reales)
+
+Instalado en `tools/osint/.venv` (vía `uv`, Python 3.12). Se usa para pivotar de un email/usuario
+encontrado en el target hacia credenciales filtradas reales.
+
+| Herramienta | Uso | Comando |
+|---|---|---|
+| `holehe` | Email → sitios donde está registrado | `email-osint EMAIL` |
+| `h8mail` | Email → breaches / contraseñas filtradas | `email-osint EMAIL` |
+| `sherlock` | Username → cuentas en redes | `user-osint USER` |
+| `maigret` | Username → cuentas (más profundo) | `user-osint USER` |
+| `socialscan` | Email/usuario → disponibilidad/disponibilidad en sitios | `socialscan EMAIL\|USER` |
+
+Flujo típico: encontrás un email en el target → `email-osint email` (holehe+h8mail) → si salen
+contraseñas filtradas, probarlas con `hydra`/`wpscan` contra el login. Si encontrás un username →
+`user-osint user` para mapear cuentas y elegir vectores.
+
+> Complementa con `websearch` para Google dorks, `theHarvester`/`amass` (dominios) y `h8mail -c`
+> (config con APIs de breach, opcional).
+
+---
+
+## 3c. Anti-WAF inteligente
+
+Cuando el target devuelve WAF/CAPTCHA/Cloudflare/hcdn/LiteSpeed/403/429/503 o JS-challenge, el agente
+**no se rinde**: (1) identifica el WAF (`waf-fingerprint`/`wafscan`), (2) **busca en la web** el bypass
+específico (`websearch "cloudflare bypass 2025"`, `"<waf> 403 bypass"`, `"litespeed mod_security bypass"`,
+`"hcdn bypass"`), (3) aplica `browse` (fingerprint real + Tor), `evilwaf` (rota TCP/TLS/H2), `captcha`
+si es CAPTCHA, rotación de UA/headers/IP, otros métodos (POST/encoding/fragmentación), (4) prueba por
+otro vector (subdominio, API, origin IP).
+
+---
+
 ## Perfiles (`--profile`)
 
 - `offensive` (default) — red team, explota.

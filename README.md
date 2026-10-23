@@ -169,10 +169,17 @@ audit against the Parrot OS tool catalog.
 | **Attack** | `nmap`, `sqlmap`, `ffuf`, `nuclei`, `gobuster`, `wfuzz`, `hydra`, `john`, `hashcat`, `subfinder`, `amass`, `paramspider`, `wpscan`, `whatweb`, `evilwaf` (MITM WAF bypass), `wafscan`, `browse` (stealth browser), `captcha` |
 | **Defense** | `harden-audit` (lynis), `ioc-scan` (yara), `forensics` (binwalk/exiftool/hashdeep), `pcap-analyze` (tshark), `rootkit-check`, `waf-fingerprint` (wafw00f) |
 | **Anonymity** | `anon` (Tor on/off), `anon-curl`, `opsec-check`, `stripmeta`, `encrypt`/`decrypt` (gpg), `proxychains4`, `tor` |
+| **OSINT** | `email-osint` (holehe + h8mail: email → accounts & leaked passwords), `user-osint` (sherlock/maigret), `socialscan` |
 | **Internet** | `websearch` (local SearXNG), `webfetch` (URL → clean text), `browse` |
 
 Wordlists ship with the project (`wordlists/`): `passwords.txt`, `rockyou.txt`,
 `dirs.txt`, `subdomains.txt`, `usernames.txt`.
+
+**Smart anti-WAF:** when a target throws a WAF / CAPTCHA / Cloudflare / hcdn / LiteSpeed /
+403/429/503 / JS-challenge, the agent does not give up — it fingerprints the WAF
+(`waf-fingerprint`/`wafscan`), **searches the web for the specific bypass**, then applies
+`browse` (real fingerprint + Tor), `evilwaf` (TCP/TLS/H2 rotation), `captcha`, UA/header/IP
+rotation and alternate vectors (subdomain, API, origin IP).
 
 ---
 

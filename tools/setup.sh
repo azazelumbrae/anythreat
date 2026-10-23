@@ -43,6 +43,17 @@ mkdir -p "$GEMS"
 gem install wpscan --install-dir "$GEMS" --no-document >/dev/null 2>&1
 [ -d "$HERE/whatweb" ] || git clone --depth 1 https://github.com/urbanadventurer/WhatWeb.git "$HERE/whatweb" >/dev/null 2>&1
 
+# ---------- 3b) OSINT (email/usuario -> cuentas y breaches) ----------
+echo "[3b] OSINT (holehe h8mail sherlock maigret socialscan)"
+if [ ! -x "$ROOT/tools/osint/.venv/bin/holehe" ]; then
+  mkdir -p "$ROOT/tools/osint"
+  if command -v uv >/dev/null 2>&1; then
+    ( cd "$ROOT/tools/osint" && uv venv --python 3.12 .venv >/dev/null 2>&1 && uv pip install --python .venv/bin/python -q h8mail holehe maigret sherlock-project socialscan toutatis >/dev/null 2>&1 )
+  else
+    ( cd "$ROOT/tools/osint" && python3 -m venv .venv && ./.venv/bin/pip install -q --upgrade pip && ./.venv/bin/pip install -q h8mail holehe maigret sherlock-project socialscan toutatis )
+  fi
+fi
+
 # ---------- 4) wordlists (dentro del proyecto) ----------
 echo "[4/6] wordlists ($WL)"
 mkdir -p "$WL"
@@ -81,6 +92,7 @@ echo "=== resumen ==="
 echo "  ATAQUE   : nmap sqlmap ffuf nuclei gobuster wfuzz hydra john hashcat subfinder amass wpscan whatweb paramspider evilwaf camofox"
 echo "  DEFENSA  : lynis yara binwalk exiftool foremost hashdeep ssdeep rkhunter tshark wafw00f"
 echo "  ANONIMATO: tor torsocks proxychains4 (mat2/clamav omitidos: mac/opcional)"
+echo "  OSINT    : holehe h8mail sherlock maigret socialscan"
 echo "  WORDLISTS: $WL  (passwords.txt rockyou.txt dirs.txt subdomains.txt usernames.txt)"
 echo "  NopeCHA  : opcional, export NOPECHA_KEY=..."
 echo "Listo. Probá: at -x --profile anon --task \"...\""

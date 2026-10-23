@@ -10,6 +10,7 @@ tools/camofox/data/
 tools/camofox/package.json
 tools/camofox/package-lock.json
 tools/evilwaf/
+tools/osint/
 tools/whatweb/
 tools/tor-data/
 
