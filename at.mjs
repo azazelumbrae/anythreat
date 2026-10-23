@@ -197,16 +197,41 @@ function dumpFindings(cwd) {
   } catch {}
 }
 
+function wrapLine(s, w) {
+  s = String(s).replace(/\r/g, "");
+  if (s.length <= w) return [s];
+  const out = [];
+  let cur = "";
+  for (const word of s.split(/\s+/)) {
+    if ((cur + (cur ? " " : "") + word).length > w) { if (cur) out.push(cur); cur = word; }
+    else cur += (cur ? " " : "") + word;
+  }
+  if (cur) out.push(cur);
+  return out.length ? out : [""];
+}
+function printPlanBox(text) {
+  const W = 62;
+  const inner = String(text || "").replace(/^\s*PLAN\s*READY\s*:?\s*/i, "").trim();
+  const lines = inner.split("\n").flatMap((l) => (l.trim() === "" ? [""] : wrapLine(l, W)));
+  console.log("");
+  console.log(c.bold(c.red("  ╭─ 🎯 PLANNING " + "─".repeat(W - 12))));
+  for (const l of lines) console.log(c.red("  │ ") + l);
+  console.log(c.bold(c.red("  ╰" + "─".repeat(W + 2))));
+}
+
 function printAgent(evt) {
   if (evt.type === "thinking") { startSpinner(); return; }
   if (evt.type === "think_done") { stopSpinner(); return; }
+  if (evt.type === "plan_ready") { printPlanBox(evt.plan); return; }
+  if (evt.type === "attack_start") { console.log(c.bold(c.red("\n  ▶ FASE 2 — ATAQUE"))); return; }
   if (evt.type === "agent_start") {
     agentWorkdir = evt.cwd;
     console.log(c.gray(`  📁 ${evt.cwd}`));
   }
   if (evt.type === "step") {
     if (evt.i > 0) console.log(c.gray("  │"));
-    console.log(`  ${c.bold(c.cyan("◆"))} ${c.bold(c.cyan("paso " + (evt.i + 1)))}`);
+    const ph = evt.phase === "attack" ? c.red("ataque") : c.magenta("recon");
+    console.log(`  ${c.bold(c.cyan("◆"))} ${c.bold(c.cyan("paso " + (evt.i + 1)))} ${c.gray("·")} ${ph}`);
   }
   if (evt.type === "reply") {
     const reasoning = oneline(stripExecBlock(evt.reply));
@@ -273,7 +298,7 @@ async function doRun(fw, vars, mode, cfg, flags) {
     client.onEvent = (evt) => printAgent(evt);
     console.log(c.bold(`\n  ▶ EXEC ${fw.name} ${c.gray(`(${fw.level} · ${cfg.model} · ${timeoutMs / 1000}s/cmd)`)}`));
     const start = Date.now();
-    const { final, cwd, done } = await client.runAgent(fw, vars, { maxIters, cwd: flags.cwd || "", timeoutMs, onStep: (e) => printAgent(e), profile: flags.profile || "offensive" });
+    const { final, cwd, done } = await client.runAgent(fw, vars, { maxIters, cwd: flags.cwd || "", timeoutMs, onStep: (e) => printAgent(e), profile: flags.profile || "offensive", approve: async () => true });
     console.log(c.gray(`\n  ${done ? "✓ terminado" : "⏸ llegó al límite de pasos"} en ${((Date.now() - start) / 1000).toFixed(1)}s · workdir ${cwd}`));
     console.log(c.bold(`\n${done ? c.green("  ◂ RESULTADO FINAL") : c.yellow("  ◂ último output")}:\n`));
     console.log(stripFinalMarker(final));
@@ -344,6 +369,10 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags) {
       timeoutMs,
       profile: flags.profile || "offensive",
       onStep: (e) => printAgent(e),
+      approve: async () => {
+        const ans = (await ask(c.bold("\n  ¿Aceptás el ataque? ") + c.gray("[Enter=sí / n=no]: "))).trim();
+        return !/^n/i.test(ans);
+      },
       userInput: async () => {
         if (!wantInterrupt) return null;
         wantInterrupt = false;
@@ -359,6 +388,11 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags) {
     sigintHandler = prevHandler;
   }
   const secs = ((Date.now() - start) / 1000).toFixed(1);
+  if (res.rejected) {
+    console.log(c.gray(`\n  ⏸ ataque NO aprobado (${secs}s). No se ejecutó nada.`));
+    dumpFindings(res.cwd);
+    return res.final;
+  }
   console.log(c.gray(`\n  ${res.done ? "✓ FINAL" : res.interrupted ? "⏸ lo detuviste" : "⏸ límite de pasos"} en ${secs}s`));
   console.log(c.bold(`\n${res.done ? c.green("  ◂ RESULTADO FINAL") : c.yellow("  ◂ último output")}:\n`));
   console.log(stripFinalMarker(res.final));
