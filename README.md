@@ -93,8 +93,11 @@ at --run <id> --task "..." --dry         # inspect composed messages (no API cal
 at --run <id> --task "..." --json        # dump messages as JSON
 ```
 
-In the interactive menu the flow is: **logo → model → framework → task → target →
-role → mode** (default is the live agent).
+In the interactive menu the flow is: **logo → model → framework → objective →
+target → role → constraints → mode** (default is the live agent). Each field is a
+framed input; **constraints** is free-text for things the agent must **not** do
+(e.g. "don't touch production, no destructive payloads") and is injected into the
+run as hard constraints (also available as `--constraints "..."`).
 
 ### Modes
 
