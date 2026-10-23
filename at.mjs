@@ -9,6 +9,7 @@ import { Client } from "./lib/client.mjs";
 import { resolveConfig, hasCreds } from "./lib/config.mjs";
 import { c, levelColor, bar } from "./lib/render.mjs";
 import { startSpinner, stopSpinner } from "./lib/spinner.mjs";
+import { cleanupSync } from "./lib/exec.mjs";
 
 const VERSION = "0.1.0";
 const isTTY = process.stdout.isTTY && process.stdin.isTTY;
@@ -574,6 +575,8 @@ async function main() {
 }
 
 process.on("SIGINT", () => sigintHandler());
+// Limpieza final garantizada al salir (síncrona).
+process.on("exit", () => { try { cleanupSync(); } catch {} });
 main().catch((e) => {
   if (/Aborted|EOF|Ctrl\+D/i.test(String(e?.message || ""))) { console.log(c.gray("\n  (salido)")); process.exit(0); }
   console.error(c.red(`\n  ✗ ${e.message}`));
