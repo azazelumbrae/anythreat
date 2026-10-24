@@ -30,6 +30,72 @@ async function boxedInput(ask, label, hint = "") {
   return ans;
 }
 
+// Multiple-choice prompt. options = [{k,label}]. Returns array of chosen labels.
+async function askChoice(ask, title, options, { multi = true, hint = "" } = {}) {
+  console.log("\n  " + c.bold(title) + (hint ? " " + c.gray(hint) : ""));
+  options.forEach((o, i) => console.log(`   ${c.cyan(String(i + 1).padStart(2))}. ${o.label}`));
+  const ans = await ask("  " + c.red("❯ ") + c.gray(multi ? "números separados por espacio (Enter=ninguno): " : "número (Enter=ninguno): "));
+  const picks = ans.split(/[\s,]+/).map((x) => parseInt(x, 10)).filter((n) => n >= 1 && n <= options.length);
+  const chosen = picks.map((n) => options[n - 1].label);
+  return multi ? chosen : chosen.slice(0, 1);
+}
+
+// Punto 1: preguntas dinámicas ligadas al objetivo, para cubrir lo que NO se dijo.
+async function askClarifications(ask, vars) {
+  console.log("\n  " + c.bold(c.magenta("◈ Aclaraciones")) + c.gray("  — lo que no dijiste pero importa (Enter = saltar)"));
+  const q = [
+    ["¿Tenés algún acceso o credencial al target? (usuario/clave, token, VPN, sesión, insider)", "access"],
+    ["¿Hay pistas o indicios? (emails, nombres de usuario, versiones, endpoints, repo, subdominios)", "clues"],
+    ["¿Algún alcance/limitación de scope? (solo tal rango, no tocar X, ventana horaria, rate-limit)", "scope"],
+    ["¿Necesitás deep research previo? (CVE/vulns del stack, OSINT del dueño, filtraciones, historial)", "research"],
+  ];
+  const notes = [];
+  for (const [label, key] of q) {
+    const ans = (await ask("  " + c.red("❯ ") + c.bold(label) + " " + c.gray("→ "))).trim();
+    if (ans) notes.push(`${key}: ${ans}`);
+  }
+  vars.recon_notes = notes.join("\n");
+  vars._clarified = true;
+}
+
+// Punto 2: cómo querés que actúe (estilo de operación).
+async function askOpStyle(ask, vars) {
+  const sel = {};
+  sel.pace = await askChoice(ask, "⏱  Horizonte de la operación", [
+    { label: "Corto plazo — golpe rápido, un vector" },
+    { label: "Largo plazo — persistencia, múltiples vectores, sigilo" },
+  ], { multi: false });
+  sel.noise = await askChoice(ask, "🔊 Nivel de ruido", [
+    { label: "Silencioso — bajo perfil, evadir detección/IDS" },
+    { label: "Ruidoso — velocidad sobre sigilo" },
+  ], { multi: false });
+  sel.anon = await askChoice(ask, "🕵️  Anonimato", [
+    { label: "Anónimo — todo por Tor / rotación de identidad" },
+    { label: "Normal — sin Tor" },
+  ], { multi: false });
+  sel.style = await askChoice(ask, "🎭 Estilo / ética operativa", [
+    { label: "Profesional — reporte claro, no destructivo" },
+    { label: "Agresivo — máximo impacto / explotación profunda" },
+    { label: "Sigiloso — solo lo necesario, sin dejar rastro" },
+    { label: "Bug-bounty — PoC mínima + impacto demostrable" },
+  ], { multi: true });
+  sel.ethics = await askChoice(ask, "⛔ Límites duros", [
+    { label: "No destructivo (nada de drop/borrar/DoS)" },
+    { label: "Sin exfiltración de datos reales" },
+    { label: "Sin DoS / stress / flooding" },
+    { label: "Sin tocar producción / usuarios reales" },
+  ], { multi: true });
+  const lines = [];
+  if (sel.pace.length) lines.push("pace: " + sel.pace[0]);
+  if (sel.noise.length) lines.push("noise: " + sel.noise[0]);
+  if (sel.anon.length) lines.push("anon: " + sel.anon[0]);
+  if (sel.style.length) lines.push("style: " + sel.style.join("; "));
+  if (sel.ethics.length) lines.push("hard limits: " + sel.ethics.join("; "));
+  vars.op_style = lines.join("\n");
+  if (sel.anon.length && /Anónimo/.test(sel.anon[0])) vars.preferAnon = true;
+  vars._styled = true;
+}
+
 // SIGINT coordination: during an interactive agent run, Ctrl-C sets
 // `wantInterrupt` (pause + inject prompt) instead of exiting.
 let wantInterrupt = false;
@@ -353,7 +419,7 @@ async function doRun(fw, vars, mode, cfg, flags) {
     const timeoutMs = flags.timeout ? parseInt(flags.timeout, 10) * 1000 : 60000;
     const maxIters = flags.maxIters ? parseInt(flags.maxIters, 10) : 500;
     client.onEvent = (evt) => printAgent(evt);
-    console.log(c.bold(`\n  ▶ EXEC ${fw.name} ${c.gray(`(${fw.level} · ${cfg.model} · ${timeoutMs / 1000}s/cmd)`)}`));
+    console.log(c.bold(`\n  ▶ EXEC ${fw.name} ${c.gray(`(${fw.level} · ${cfg.model} · ${timeoutMs / 1000}s/cmd${(flags.profile && flags.profile!=="offensive")?" · profile:"+flags.profile:""})`)}`));
     const start = Date.now();
     const { final, cwd, done } = await client.runAgent(fw, vars, { maxIters, cwd: flags.cwd || "", timeoutMs, onStep: (e) => printAgent(e), profile: flags.profile || "offensive", approve: async () => true });
     console.log(c.gray(`\n  ${done ? "✓ terminado" : "⏸ llegó al límite de pasos"} en ${((Date.now() - start) / 1000).toFixed(1)}s · workdir ${cwd}`));
@@ -412,7 +478,7 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags) {
   const timeoutMs = flags.timeout ? parseInt(flags.timeout, 10) * 1000 : 90000;
   const maxIters = flags.maxIters ? parseInt(flags.maxIters, 10) : 500;
   client.onEvent = (e) => printAgent(e);
-  console.log(c.bold(`\n  ▶ AGENTE ${fw.name} ${c.gray(`(${cfg.model} · ${timeoutMs / 1000}s/cmd)`)}`));
+  console.log(c.bold(`\n  ▶ AGENTE ${fw.name} ${c.gray(`(${cfg.model} · ${timeoutMs / 1000}s/cmd${(flags.profile && flags.profile!=="offensive")?" · profile:"+flags.profile:""})`)}`));
   console.log(c.gray("  " + "Ctrl-C = pausar · escribir = inyectar al modelo · Enter = seguir · q = salir\n"));
   wantInterrupt = false;
   const prevHandler = sigintHandler;
@@ -488,6 +554,9 @@ async function interactive(flags, cfg) {
     if (!vars.target && !flags.target) vars.target = await boxedInput(ask, "Target", "(Enter para saltar)");
     if (!vars.role && !flags.role) vars.role = await boxedInput(ask, "Rol/persona", "(Enter para saltar)");
     if (!vars.constraints && !flags.constraints) vars.constraints = await boxedInput(ask, "Restricciones (qué NO hacer)", "(Enter para saltar)");
+    if (!vars._clarified && isTTY) await askClarifications(ask, vars);
+    if (!vars._styled && isTTY) await askOpStyle(ask, vars);
+    if (vars.preferAnon && !flags.profile) flags.profile = "anon";
     if (!flags.shot && !flags.exec && !flags.dry && !flags.json) {
       const m = await ask(c.gray("  Modo [Enter=AGENTE en vivo (internet+shell) / m=chat multi-turno (sin tools) / s=chat single-shot (sin tools)]: "));
       mode = /^m/i.test(m) ? "multi" : /^s/i.test(m) ? "single" : "exec";

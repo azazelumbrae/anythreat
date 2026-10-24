@@ -19,7 +19,7 @@ tools/osint/.go.list
 tools/osint/.git.list
 tools/bin/
 tools/whatweb/
-tools/tor-data/
+tools/tor-data*/
 
 # misc
 .DS_Store

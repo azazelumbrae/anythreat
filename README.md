@@ -101,10 +101,31 @@ at --run <id> --task "..." --json        # dump messages as JSON
 ```
 
 In the interactive menu the flow is: **logo → model → framework → objective →
-target → role → constraints → mode** (default is the live agent). Each field is a
-framed input; **constraints** is free-text for things the agent must **not** do
-(e.g. "don't touch production, no destructive payloads") and is injected into the
-run as hard constraints (also available as `--constraints "..."`).
+target → role → constraints → clarifications → operation-style → mode** (default is
+the live agent). Each field is a framed input; **constraints** is free-text for things
+the agent must **not** do (e.g. "don't touch production, no destructive payloads") and is
+injected into the run as hard constraints (also available as `--constraints "..."`).
+
+### Guided intake (clarifications + operation style)
+
+Before recon, the agent asks what it still needs to know, then how you want it to behave:
+
+**◈ Clarifications** — anything not already stated that matters:
+- Do you have **access/credentials** (user, token, VPN, session, insider)?
+- Any **clues/indicia** (emails, usernames, versions, endpoints, repos, subdomains)?
+- Any **scope limits** (ranges, don't-touch, time window, rate limit)?
+- Need **deep research first** (stack CVEs, owner OSINT, leaks, history)?
+
+**Operation style** — choices that shape the actions:
+- ⏱ **Pace**: short-term (one vector) vs long-term (persistence, stealth)
+- 🔊 **Noise**: silent (evade IDS) vs loud (speed)
+- 🕵️ **Anonymity**: anonymous (everything via Tor — auto-enables `--profile anon`) vs normal
+- 🎭 **Style**: professional / aggressive / stealthy / bug-bounty
+- ⛔ **Hard limits**: no destructive / no real data exfiltration / no DoS / no prod
+
+All answers are injected into the run as **OPERATOR INTEL** and **OPERATION STYLE**, and the
+recon phase is instructed to use them (and to run deep research first when requested).
+Only after this does recon → `PLANNING` → approval → attack begin.
 
 ### Modes
 
