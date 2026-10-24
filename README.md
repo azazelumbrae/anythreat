@@ -366,7 +366,7 @@ the web or execution.
 | `AT_API_KEY` | — |
 | `AT_MODEL` | `gpt-4o-mini` |
 | `AT_TEMPERATURE` | `0.4` |
-| `AT_PRESET` | — |
+| `AT_PRESET` | `flash` (DeepSeek: no thinking) |
 | `NOPECHA_KEY` | — (optional, for `captcha`) |
 | `AT_SEARXNG` | `http://127.0.0.1:8080` |
 | `AT_CAMOFOX_URL` | `http://127.0.0.1:9377` |

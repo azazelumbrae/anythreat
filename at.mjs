@@ -11,6 +11,7 @@ import { c, levelColor, bar } from "./lib/render.mjs";
 import { startSpinner, stopSpinner, pauseSpinner, resumeSpinner } from "./lib/spinner.mjs";
 import { startInputBar, stopInputBar, takeLine } from "./lib/inputbar.mjs";
 import { cleanupSync } from "./lib/exec.mjs";
+import { listSessions, createSession, loadSession, saveSession } from "./lib/sessions.mjs";
 
 const VERSION = "0.1.0";
 const isTTY = process.stdout.isTTY && process.stdin.isTTY;
@@ -173,7 +174,7 @@ ${c.bold("Opciones")}
       --cwd <dir>      Dir de trabajo del EXEC (def: un dir temporal aislado)
       --timeout <s>    Timeout por comando (def: 60s)
       --max-iters <n>  Paso máx. del loop agéntico (def: 500; sin tope práctico)
-  -p, --preset <n>     Preset de modelo: flash | pro | pro-nt | flash-nt
+  -p, --preset <n>     Preset de modelo (def: flash): flash | pro | pro-nt | flash-nt
       --profile <p>    Perfil: offensive (def) | defensive (blue team) | anon (Tor)
       --thinking <m>   'enabled' | 'disabled' (sobre-escrIBE el thinking del preset)
       --reasoning <m>  'low' | 'medium' | 'high' (reasoning_effort)
@@ -184,11 +185,11 @@ ${c.bold("Opciones")}
       --model <m>      Modelo         Def: $AT_MODEL / (preset)
       --temp <n>       Temperatura    Def: 0.4
 
-${c.bold("Presets (DeepSeek)")}
-  flash     deepseek-flash   sin thinking (rápido)
+${c.bold("Presets (DeepSeek)")}  — default: ${c.bold("flash")} (sin thinking)
+  flash     deepseek-flash   sin thinking (rápido)   ← DEFAULT
+  flash-nt  deepseek-flash   sin thinking
   pro       deepseek-v4-pro  con thinking (más fuerte)
   pro-nt    deepseek-v4-pro  sin thinking
-  flash-nt  deepseek-flash   sin thinking
       --system <text>  Reemplaza el system prompt base
       --no-color       Sin color
   -l, --list           Listar
@@ -601,6 +602,47 @@ async function interactive(flags, cfg) {
   printLogo();
   cfg = await chooseModel(ask, cfg);
 
+  // ---- session picker: New (named) or resume an old session ----
+  const sessions = listSessions();
+  let session = null;
+  {
+    const opts = [{ label: c.green("New session") + c.gray(" — empezar de cero (le das nombre)") }];
+    sessions.slice(0, 15).forEach((s) => {
+      const when = (s.updatedAt || "").slice(0, 13).replace("T", " ");
+      const fw = s.framework ? " · " + s.framework : "";
+      opts.push({ label: c.cyan(s.name) + c.gray(` — ${when}${fw}`) });
+    });
+    const pick = await askChoice(ask, "📂 Sesión", opts, { multi: false, hint: "(Enter = New)" });
+    const idx = pick.length ? opts.findIndex((o) => o.label === pick[0]) : 0;
+    if (idx > 0) {
+      session = loadSession(sessions[idx - 1].dir);
+      if (!session) { console.log(c.yellow("  No pude cargar la sesión; arranco New.")); }
+    }
+    if (!session) {
+      const nm = (await boxedInput(ask, "Nombre de la sesión", "(Enter = auto)")).trim();
+      session = createSession(nm || "sesion-" + new Date().toISOString().slice(0, 10));
+    }
+    console.log(c.gray(`  📂 sesión: `) + c.bold(session.name) + c.gray(`  · ${session.workdir}`));
+  }
+
+  // Resume: jump straight into continuing the stored conversation.
+  let resumed = false;
+  if (session.messages && session.framework) {
+    const fw0 = byId(session.framework) || loadFrameworks().find((f) => f.name === session.framework);
+    if (fw0) {
+      console.log(c.gray(`  ↻ resumiendo (${session.messages.length - 1} mensajes previos)…`));
+      const client = new Client(cfg, { baseSystem: flags.system || undefined });
+      const vars0 = session.vars || { task: "", target: "", role: "", constraints: "" };
+      const msg = (await boxedInput(ask, "¿Qué querés hacer ahora?", "(Enter = seguir donde quedó)")).trim();
+      const res = await runInteractiveAgent(client, fw0, vars0, cfg, rl, ask, flags, {
+        initialMessages: session.messages, followup: msg || "Continuá donde quedaste.", cwd: session.workdir,
+      });
+      if (res && res.messages) { session.messages = res.messages; session.vars = vars0; saveSession(session); }
+      resumed = true;
+    }
+  }
+  if (resumed) { rl.close(); return; }
+
   let vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "", constraints: flags.constraints || "" };
   let mode = flags.exec ? "exec" : flags.shot ? "single" : "exec"; // default: agente en vivo
   let current = null;
@@ -631,6 +673,7 @@ async function interactive(flags, cfg) {
     }
     if (!vars.task) { console.log(c.yellow("  Falta la tarea.")); current = null; continue; }
 
+    if (session && !flags.cwd) flags.cwd = session.workdir;
     let res = null;
     try {
       if (mode === "exec" && isTTY) {
@@ -643,6 +686,15 @@ async function interactive(flags, cfg) {
     } catch (e) {
       stopSpinner();
       console.log(c.red(`\n  ✗ ${e.message}`));
+    }
+
+    // Persist this session (messages + vars + framework + workdir).
+    if (session) {
+      session.framework = fw.id; session.vars = vars;
+      if (res && res.messages) session.messages = res.messages;
+      session.name = session.name || fw.name;
+      saveSession(session);
+      console.log(c.gray(`  💾 sesión guardada: `) + c.bold(session.name) + c.gray(` (${session.dir})`));
     }
 
     // After finishing, allow continuing the SAME session (keep talking to the agent).
