@@ -8,7 +8,8 @@ import { loadFrameworks, byId, nextStronger, BASE_SYSTEM, fillTemplate, contextB
 import { Client } from "./lib/client.mjs";
 import { resolveConfig, hasCreds } from "./lib/config.mjs";
 import { c, levelColor, bar } from "./lib/render.mjs";
-import { startSpinner, stopSpinner } from "./lib/spinner.mjs";
+import { startSpinner, stopSpinner, pauseSpinner, resumeSpinner } from "./lib/spinner.mjs";
+import { startInputBar, stopInputBar, takeLine } from "./lib/inputbar.mjs";
 import { cleanupSync } from "./lib/exec.mjs";
 
 const VERSION = "0.1.0";
@@ -271,8 +272,19 @@ function dumpFindings(cwd) {
     const p = cwd && path.join(cwd, "findings.md");
     const f = cachedFindings();
     if (p && fs.existsSync(p) && f.length) {
-      console.log(c.bold(c.cyan(`\n  📋 Hallazgos cacheados (${f.length}) · ${p}`)));
+      console.log(c.bold(c.cyan(`\n  📋 Hallazgos cacheados (${f.length}) `)) + c.gray("▸ colapsado · presioná 'v' abajo para expandir") + c.gray(`  · ${p}`));
+    }
+  } catch {}
+}
+function showFindings(cwd) {
+  try {
+    const p = cwd && path.join(cwd, "findings.md");
+    const f = cachedFindings();
+    if (p && fs.existsSync(p) && f.length) {
+      console.log(c.bold(c.cyan(`\n  📋 Hallazgos (${f.length}) · ${p}`)));
       f.forEach((l) => console.log(c.gray("   " + l)));
+    } else {
+      console.log(c.gray("  (sin hallazgos)"));
     }
   } catch {}
 }
@@ -314,15 +326,55 @@ function wrapAnsi(str, w) {
   if (cur) lines.push(cur + "\x1b[0m");
   return lines;
 }
+// Render a markdown string to ANSI lines (headings, bold, inline code, code blocks,
+// bullets, rules, links). Returns an array of rendered lines (no wrapping of code).
+function renderMarkdownLines(text, W) {
+  const out = [];
+  const lines = String(text || "").split("\n");
+  let inCode = false;
+  for (const raw of lines) {
+    const fence = raw.match(/^\s*```/);
+    if (fence) { inCode = !inCode; continue; }
+    if (inCode) { out.push("  " + c.gray(raw)); continue; }
+    if (/^\s*$/.test(raw)) { out.push(""); continue; }
+    // horizontal rule
+    if (/^\s*([-*_])\1{2,}\s*$/.test(raw)) { out.push(c.gray("─".repeat(Math.min(W, 60)))); continue; }
+    // heading
+    const h = raw.match(/^\s{0,3}(#{1,6})\s+(.*)$/);
+    if (h) {
+      const t = mdToAnsi(h[2]);
+      out.push("");
+      out.push(c.bold(c.cyan(t)));
+      if (h[1].length <= 2) out.push(c.gray("─".repeat(Math.min(W, vlen(t) + 2))));
+      continue;
+    }
+    // blockquote
+    const bq = raw.match(/^\s*>\s?(.*)$/);
+    if (bq) { for (const w of wrapAnsi(mdToAnsi(bq[1]), W - 2)) out.push(c.gray("│ ") + c.italic(w)); continue; }
+    // bullets / numbered
+    const li = raw.match(/^(\s*)([-*+]|\d+\.)\s+(.*)$/);
+    if (li) {
+      const indent = " ".repeat(Math.min(li[1].length, 8));
+      const bullet = /^\d+\.$/.test(li[2]) ? mdToAnsi(li[2]) + " " : c.red("• ");
+      const wrapped = wrapAnsi(mdToAnsi(li[3]), W - li[1].length - 2);
+      wrapped.forEach((w, idx) => out.push(li[1] + (idx === 0 ? bullet : "  ") + w));
+      continue;
+    }
+    for (const w of wrapAnsi(mdToAnsi(raw), W)) out.push(w);
+  }
+  return out;
+}
+function renderMarkdown(text, W) {
+  const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
+  const width = W || Math.max(60, cols - 6);
+  for (const l of renderMarkdownLines(text, width)) console.log(l);
+}
+
 function printPlanBox(text) {
   const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
   const W = Math.max(60, cols - 6);
   const inner = String(text || "").replace(/^\s*PLAN\s*READY\s*:?\s*/i, "").trim();
-  const lines = [];
-  for (const raw of inner.split("\n")) {
-    if (raw.trim() === "") { lines.push(""); continue; }
-    for (const w of wrapAnsi(mdToAnsi(raw), W)) lines.push(w);
-  }
+  const lines = renderMarkdownLines(inner, W);
   const head = "  ╭─ 🎯 PLANNING ";
   const topBar = "─".repeat(Math.max(0, W + 4 - vlen(head)));
   console.log("");
@@ -424,7 +476,7 @@ async function doRun(fw, vars, mode, cfg, flags) {
     const { final, cwd, done } = await client.runAgent(fw, vars, { maxIters, cwd: flags.cwd || "", timeoutMs, onStep: (e) => printAgent(e), profile: flags.profile || "offensive", approve: async () => true });
     console.log(c.gray(`\n  ${done ? "✓ terminado" : "⏸ llegó al límite de pasos"} en ${((Date.now() - start) / 1000).toFixed(1)}s · workdir ${cwd}`));
     console.log(c.bold(`\n${done ? c.green("  ◂ RESULTADO FINAL") : c.yellow("  ◂ último output")}:\n`));
-    console.log(stripFinalMarker(final));
+    renderMarkdown(stripFinalMarker(final));
     dumpFindings(cwd);
     return final;
   }
@@ -444,7 +496,7 @@ async function doRun(fw, vars, mode, cfg, flags) {
 }
 function stripFinalMarker(s) {
   const m = String(s || "").match(/FINAL\s*:\s*([\s\S]*)/i);
-  return m ? indent(m[1].trim(), "    ") : indent(s, "    ");
+  return m ? m[1].trim() : String(s || "").trim();
 }
 
 // ---------- model switch (start of session) ----------
@@ -474,53 +526,68 @@ async function chooseModel(ask, cfg) {
 }
 
 // ---------- interactive agent (interrupt / ask / inject) ----------
-async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags) {
+async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, cont = {}) {
   const timeoutMs = flags.timeout ? parseInt(flags.timeout, 10) * 1000 : 90000;
   const maxIters = flags.maxIters ? parseInt(flags.maxIters, 10) : 500;
   client.onEvent = (e) => printAgent(e);
   console.log(c.bold(`\n  ▶ AGENTE ${fw.name} ${c.gray(`(${cfg.model} · ${timeoutMs / 1000}s/cmd${(flags.profile && flags.profile!=="offensive")?" · profile:"+flags.profile:""})`)}`));
-  console.log(c.gray("  " + "Ctrl-C = pausar · escribir = inyectar al modelo · Enter = seguir · q = salir\n"));
+  console.log(c.gray("  Enter = inject at the next step · Ctrl-C = pause · q (at pause) = stop\n"));
   wantInterrupt = false;
   const prevHandler = sigintHandler;
-  sigintHandler = () => { wantInterrupt = true; process.stdout.write("\n"); };
+  sigintHandler = () => { wantInterrupt = true; resumeSpinner(); };
   const start = Date.now();
   let res;
+  startInputBar();
   try {
     res = await client.runAgent(fw, vars, {
       maxIters,
-      cwd: flags.cwd || "",
+      cwd: cont.cwd || flags.cwd || "",
       timeoutMs,
       profile: flags.profile || "offensive",
+      initialMessages: cont.initialMessages || null,
+      followup: cont.followup || "",
       onStep: (e) => printAgent(e),
       approve: async () => {
+        stopInputBar();
         const ans = (await ask(c.bold("\n  ¿Aceptás el ataque? ") + c.gray("[Enter=sí / n=no]: "))).trim();
+        startInputBar();
         return !/^n/i.test(ans);
       },
       userInput: async () => {
+        // 1) lines typed live during the run (queue) — inject anytime
+        const live = takeLine();
+        if (live) {
+          if (/^q$/i.test(live)) return { stop: true };
+          return { inject: live };
+        }
+        // 2) Ctrl-C pause: let the operator type one line / continue / stop
         if (!wantInterrupt) return null;
         wantInterrupt = false;
-        process.stdout.write(c.yellow("  ⏸  pausado") + c.gray("  —  escribe para inyectar al modelo, Enter=seguir, q=salir\n"));
+        stopInputBar();
+        process.stdout.write(c.yellow("  ⏸  pausado") + c.gray("  —  escribe para inyectar, Enter=seguir, q=salir\n"));
         let line;
-        try { line = (await ask("  " + c.red("❯ ") + c.gray("inyecta (Enter=seguir, q=salir): "))).trim(); } catch { return { stop: true }; }
+        try { line = (await ask("  " + c.red("❯ ") + c.gray("inyecta (Enter=seguir, q=salir): "))).trim(); } catch { startInputBar(); return { stop: true }; }
+        startInputBar();
         if (/^q$/i.test(line)) return { stop: true };
         if (line === "") return null;
         return { inject: line };
       },
     });
   } finally {
+    stopInputBar();
     sigintHandler = prevHandler;
   }
   const secs = ((Date.now() - start) / 1000).toFixed(1);
   if (res.rejected) {
     console.log(c.gray(`\n  ⏸ ataque NO aprobado (${secs}s). No se ejecutó nada.`));
     dumpFindings(res.cwd);
-    return res.final;
+    return res;
   }
   console.log(c.gray(`\n  ${res.done ? "✓ FINAL" : res.interrupted ? "⏸ lo detuviste" : "⏸ límite de pasos"} en ${secs}s`));
   console.log(c.bold(`\n${res.done ? c.green("  ◂ RESULTADO FINAL") : c.yellow("  ◂ último output")}:\n`));
-  console.log(stripFinalMarker(res.final));
+  renderMarkdown(stripFinalMarker(res.final));
   dumpFindings(res.cwd);
-  return res.final;
+  return res;
 }
 
 // ---------- interactive loop ----------
@@ -564,11 +631,12 @@ async function interactive(flags, cfg) {
     }
     if (!vars.task) { console.log(c.yellow("  Falta la tarea.")); current = null; continue; }
 
+    let res = null;
     try {
       if (mode === "exec" && isTTY) {
         const client = new Client(cfg, { baseSystem: flags.system || undefined });
         if (!hasCreds(cfg) && cfg.baseUrl.includes("api.openai.com")) throw new Error("Sin API key. Usa --key o AT_API_KEY, o ponlo en .env.");
-        await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags);
+        res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags);
       } else {
         await doRun(fw, vars, mode, cfg, flags);
       }
@@ -577,8 +645,30 @@ async function interactive(flags, cfg) {
       console.log(c.red(`\n  ✗ ${e.message}`));
     }
 
-    const choice = await ask(c.bold("\n  ¿Funcionó? ") + c.gray("[1 sí / 2 no→siguiente más fuerte / q salir]: "));
-    if (/^2$/i.test(choice)) {
+    // After finishing, allow continuing the SAME session (keep talking to the agent).
+    let escalate = false;
+    if (res && res.messages && isTTY) {
+      let keepGoing = true;
+      while (keepGoing) {
+        const choice = await ask(c.bold("\n  ¿Funcionó? ") + c.gray("[1 sí / 2 no→más fuerte / c = seguir hablando / v = ver hallazgos / q salir]: "));
+        if (/^v$/i.test(choice)) { showFindings(res.cwd); continue; }
+        if (/^2$/i.test(choice)) { escalate = true; keepGoing = false; break; }
+        if (/^c$/i.test(choice)) {
+          const msg = (await boxedInput(ask, "Seguir hablando con el agente", "(qué querés que haga ahora)")).trim();
+          if (!msg) continue;
+          const client = new Client(cfg, { baseSystem: flags.system || undefined });
+          res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, { initialMessages: res.messages, followup: msg, cwd: res.cwd });
+          continue;
+        }
+        // 1 / q / Enter -> leave the agent menu
+        keepGoing = false;
+      }
+    } else {
+      const choice = await ask(c.bold("\n  ¿Funcionó? ") + c.gray("[1 sí / 2 no→siguiente más fuerte / q salir]: "));
+      escalate = /^2$/i.test(choice);
+    }
+
+    if (escalate) {
       const nxt = nextStronger(fw);
       if (nxt) {
         console.log(`\n  ${c.bold("  Escalando a ")}${c.bold(nxt.name)} ${c.gray(`(${nxt.level})`)}${c.gray(" con la misma tarea…")}`);
@@ -589,8 +679,6 @@ async function interactive(flags, cfg) {
       current = null;
       continue;
     }
-    if (/^q$/i.test(choice) || /^1$/i.test(choice)) break;
-    if (choice === "") break;
     current = null;
   }
   rl.close();
