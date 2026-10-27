@@ -24,3 +24,12 @@ tools/tor-data*/
 # misc
 .DS_Store
 *.log
+
+# sessions (transcripts de pentest: contienen objetivos, credenciales y hallazgos)
+sessions/
+
+# firefox-devtools bridge state (socket/pid/log generados en runtime)
+tools/firefox/.sock
+tools/firefox/.pid
+tools/firefox/.log
+tools/firefox/shots/

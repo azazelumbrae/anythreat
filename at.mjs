@@ -8,7 +8,8 @@ import { loadFrameworks, byId, nextStronger, BASE_SYSTEM, fillTemplate, contextB
 import { Client } from "./lib/client.mjs";
 import { resolveConfig, hasCreds } from "./lib/config.mjs";
 import { c, levelColor, bar } from "./lib/render.mjs";
-import { startSpinner, stopSpinner, pauseSpinner, resumeSpinner } from "./lib/spinner.mjs";
+import { renderMarkdown, renderMarkdownLines, renderLog, vlen } from "./lib/markdown.mjs";
+import { startSpinner, stopSpinner, pauseSpinner, resumeSpinner, setBusy } from "./lib/spinner.mjs";
 import { startInputBar, stopInputBar, takeLine } from "./lib/inputbar.mjs";
 import { cleanupSync } from "./lib/exec.mjs";
 import { listSessions, createSession, loadSession, saveSession } from "./lib/sessions.mjs";
@@ -251,12 +252,18 @@ function printTurn(evt) {
 }
 function printReply(evt) {
   console.log(`\n${c.bold(c.green("  ◂ respuesta"))}`);
-  console.log(indent(evt.reply || "", "    "));
+  renderMarkdown(evt.reply || "");
 }
 function indent(s, pad) { return String(s).split("\n").map((l) => pad + l).join("\n"); }
 function stripExecBlock(s) { return String(s || "").replace(/```exec[^\n]*\n[\s\S]*?```/gi, "").trim(); }
 function clip(s, n = 400) { s = String(s || "").trim(); return s.length > n ? s.slice(0, n) + "…" : s; }
-function oneline(s) { return String(s || "").replace(/\s*\n\s*/g, " ").trim(); }
+// Prose of an assistant reply, minus exec blocks and the trailing `FINAL:` content
+// (both get their own dedicated rendering). Returns "" for plan-ready turns.
+function replyProse(reply) {
+  const s = stripExecBlock(reply);
+  if (/^\s*PLAN\s*READY\s*:?/i.test(s)) return "";
+  return s.replace(/FINAL\s*:[\s\S]*$/i, "").trim();
+}
 
 // #3: cache de hallazgos — el agente apenda a findings.md; acá lo leemos y contamos.
 let agentWorkdir = null;
@@ -290,87 +297,6 @@ function showFindings(cwd) {
   } catch {}
 }
 
-const ANSI_RE = /\x1b\[[0-9;]*m/g;
-function vlen(s) { return String(s).replace(ANSI_RE, "").length; }
-function mdToAnsi(s) {
-  s = String(s || "");
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1 ($2)");
-  s = s.replace(/^\s{0,3}#{1,6}\s+(.*)$/gm, (_, t) => "\x1b[1m" + t + "\x1b[0m");
-  s = s.replace(/\*\*([^*]+)\*\*/g, (_, t) => "\x1b[1m" + t + "\x1b[0m");
-  s = s.replace(/`([^`]+)`/g, (_, t) => "\x1b[36m" + t + "\x1b[0m");
-  return s;
-}
-function wrapAnsi(str, w) {
-  const lines = [];
-  let cur = "", curLen = 0;
-  const parts = [];
-  let idx = 0, m;
-  ANSI_RE.lastIndex = 0;
-  while ((m = ANSI_RE.exec(str))) {
-    if (m.index > idx) parts.push({ t: str.slice(idx, m.index) });
-    parts.push({ a: m[0] });
-    idx = ANSI_RE.lastIndex;
-  }
-  if (idx < str.length) parts.push({ t: str.slice(idx) });
-  for (const p of parts) {
-    if (p.a) { cur += p.a; continue; }
-    for (const word of p.t.split(/(\s+)/)) {
-      const wl = word.length;
-      if (curLen + wl > w && curLen > 0 && word.trim()) {
-        lines.push(cur + "\x1b[0m");
-        cur = ""; curLen = 0;
-      }
-      if (!cur && /^\s+$/.test(word)) continue;
-      cur += word; curLen += wl;
-    }
-  }
-  if (cur) lines.push(cur + "\x1b[0m");
-  return lines;
-}
-// Render a markdown string to ANSI lines (headings, bold, inline code, code blocks,
-// bullets, rules, links). Returns an array of rendered lines (no wrapping of code).
-function renderMarkdownLines(text, W) {
-  const out = [];
-  const lines = String(text || "").split("\n");
-  let inCode = false;
-  for (const raw of lines) {
-    const fence = raw.match(/^\s*```/);
-    if (fence) { inCode = !inCode; continue; }
-    if (inCode) { out.push("  " + c.gray(raw)); continue; }
-    if (/^\s*$/.test(raw)) { out.push(""); continue; }
-    // horizontal rule
-    if (/^\s*([-*_])\1{2,}\s*$/.test(raw)) { out.push(c.gray("─".repeat(Math.min(W, 60)))); continue; }
-    // heading
-    const h = raw.match(/^\s{0,3}(#{1,6})\s+(.*)$/);
-    if (h) {
-      const t = mdToAnsi(h[2]);
-      out.push("");
-      out.push(c.bold(c.cyan(t)));
-      if (h[1].length <= 2) out.push(c.gray("─".repeat(Math.min(W, vlen(t) + 2))));
-      continue;
-    }
-    // blockquote
-    const bq = raw.match(/^\s*>\s?(.*)$/);
-    if (bq) { for (const w of wrapAnsi(mdToAnsi(bq[1]), W - 2)) out.push(c.gray("│ ") + c.italic(w)); continue; }
-    // bullets / numbered
-    const li = raw.match(/^(\s*)([-*+]|\d+\.)\s+(.*)$/);
-    if (li) {
-      const indent = " ".repeat(Math.min(li[1].length, 8));
-      const bullet = /^\d+\.$/.test(li[2]) ? mdToAnsi(li[2]) + " " : c.red("• ");
-      const wrapped = wrapAnsi(mdToAnsi(li[3]), W - li[1].length - 2);
-      wrapped.forEach((w, idx) => out.push(li[1] + (idx === 0 ? bullet : "  ") + w));
-      continue;
-    }
-    for (const w of wrapAnsi(mdToAnsi(raw), W)) out.push(w);
-  }
-  return out;
-}
-function renderMarkdown(text, W) {
-  const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
-  const width = W || Math.max(60, cols - 6);
-  for (const l of renderMarkdownLines(text, width)) console.log(l);
-}
-
 function printPlanBox(text) {
   const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
   const W = Math.max(60, cols - 6);
@@ -385,8 +311,9 @@ function printPlanBox(text) {
 }
 
 function printAgent(evt) {
-  // Spinner is continuous during the whole agent run; we only pause it around prints.
-  if (evt.type === "thinking" || evt.type === "think_done") return;
+  // The "Hacking…" spinner line only animates while the model is actually thinking.
+  if (evt.type === "thinking") { setBusy(true); return; }
+  if (evt.type === "think_done") { setBusy(false); return; }
   stopSpinner();
   const resume = () => startSpinner();
 
@@ -404,8 +331,11 @@ function printAgent(evt) {
     resume(); return;
   }
   if (evt.type === "reply") {
-    const reasoning = oneline(stripExecBlock(evt.reply));
-    if (reasoning) console.log(c.gray("  │ 💭 ") + c.gray(clip(reasoning, 500)));
+    const prose = replyProse(evt.reply);
+    if (prose) {
+      console.log(c.gray("  │ 💭"));
+      renderMarkdown(prose);
+    }
     resume(); return;
   }
   if (evt.type === "exec") {
@@ -419,8 +349,8 @@ function printAgent(evt) {
     );
     const out = (evt.result.stdout || "").trim();
     const err = (evt.result.stderr || "").trim();
-    if (out) console.log(indent(clip(out, 1500), c.gray("  │   ")));
-    if (err) console.log(indent(c.red(clip(err, 600)), c.gray("  │   ")));
+    if (out) for (const l of renderLog(out, { gutter: c.gray("  │   "), maxLen: 1500 })) console.log(l);
+    if (err) for (const l of renderLog(err, { gutter: c.gray("  │   "), maxLen: 600 })) console.log(c.red(l));
     const n = cachedFindings().length;
     console.log(
       c.gray("  │   ") +
@@ -434,10 +364,11 @@ function printAgent(evt) {
     resume(); return;
   }
   if (evt.type === "agent_done") {
+    setBusy(false);
     console.log(c.gray("  ╰─") + c.bold(c.green(" FINAL")));
     return; // stop spinner (no resume)
   }
-  if (evt.type === "agent_maxiters") { return; }
+  if (evt.type === "agent_maxiters") { setBusy(false); return; }
   resume();
 }
 
@@ -483,8 +414,8 @@ async function doRun(fw, vars, mode, cfg, flags) {
   }
 
   client.onEvent = (evt) => {
-    if (evt.type === "thinking") return startSpinner();
-    if (evt.type === "think_done") return stopSpinner();
+    if (evt.type === "thinking") { setBusy(true); return startSpinner(); }
+    if (evt.type === "think_done") { stopSpinner(); setBusy(false); return; }
     if (evt.type === "turn") printTurn(evt); else printReply(evt);
   };
   console.log(c.bold(`\n  ▶ ${fw.name} ${c.gray(`(${fw.level} · ${mode === "single" ? "single-shot" : "multi-turno"} · ${cfg.model})`)}`));
@@ -550,8 +481,10 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, cont =
       onStep: (e) => printAgent(e),
       approve: async () => {
         stopInputBar();
+        stopSpinner();
         const ans = (await ask(c.bold("\n  ¿Aceptás el ataque? ") + c.gray("[Enter=sí / n=no]: "))).trim();
         startInputBar();
+        startSpinner();
         return !/^n/i.test(ans);
       },
       userInput: async () => {
@@ -565,10 +498,12 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, cont =
         if (!wantInterrupt) return null;
         wantInterrupt = false;
         stopInputBar();
+        stopSpinner();
         process.stdout.write(c.yellow("  ⏸  pausado") + c.gray("  —  escribe para inyectar, Enter=seguir, q=salir\n"));
         let line;
-        try { line = (await ask("  " + c.red("❯ ") + c.gray("inyecta (Enter=seguir, q=salir): "))).trim(); } catch { startInputBar(); return { stop: true }; }
+        try { line = (await ask("  " + c.red("❯ ") + c.gray("inyecta (Enter=seguir, q=salir): "))).trim(); } catch { startInputBar(); startSpinner(); return { stop: true }; }
         startInputBar();
+        startSpinner();
         if (/^q$/i.test(line)) return { stop: true };
         if (line === "") return null;
         return { inject: line };
@@ -591,6 +526,102 @@ async function runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, cont =
   return res;
 }
 
+// ---------- helpers: sessions / history rendering ----------
+function relTime(iso) {
+  if (!iso) return "";
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return String(iso).slice(0, 13).replace("T", " ");
+  const diff = Date.now() - t;
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return "ahora";
+  if (m < 60) return `hace ${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `hace ${h}h`;
+  const d = Math.floor(h / 24);
+  if (d < 30) return `hace ${d}d`;
+  return new Date(t).toISOString().slice(0, 10);
+}
+function sessionPreview(s) {
+  for (const m of s.messages || []) {
+    if (m.role !== "assistant") continue;
+    const prose = replyProse(m.content);
+    const first = prose.split("\n").map((l) => l.trim()).find(Boolean);
+    if (first) return first.slice(0, 90);
+  }
+  return "";
+}
+function findingsCount(workdir) {
+  try {
+    const p = path.join(workdir, "findings.md");
+    if (!fs.existsSync(p)) return 0;
+    return fs.readFileSync(p, "utf8").split("\n").filter((l) => /^[-*]\s+\S/.test(l.trim())).length;
+  } catch { return 0; }
+}
+// Card list of sessions (0 = new, 1..N = resume). Pure rendering; caller reads a number.
+function renderSessionPicker(sessions) {
+  const cols = Number(process.env.AT_COLS) || process.stdout.columns || 100;
+  const W = Math.max(60, cols - 4);
+  console.log("");
+  console.log(c.bold("  📂 SESIONES") + c.gray("  — 0 nueva · número para reanudar"));
+  const draw = (num, name, nameColor, meta, preview) => {
+    const head = `  ${num}. ` + nameColor(name);
+    const fill = Math.max(4, W - vlen(head) + 2);
+    console.log(c.gray("  ╭─" + "─".repeat(fill)) + c.gray("╮"));
+    console.log(c.gray("  │ ") + head + c.gray(" ".repeat(Math.max(0, fill - vlen(head) - 1))) + c.gray("│"));
+    if (meta) console.log(c.gray("  │  ") + c.gray(meta));
+    if (preview) console.log(c.gray("  │  ") + c.gray("…" + preview));
+    console.log(c.gray("  ╰─" + "─".repeat(fill)) + c.gray("╯"));
+  };
+  draw("0", "＋ Nueva sesión", c.green, "empezar de cero", "");
+  sessions.slice(0, 15).forEach((s, i) => {
+    const n = i + 1;
+    const nMsg = (s.messages || []).length;
+    const meta = `${relTime(s.updatedAt)}  ·  ${s.framework || "—"}  ·  ${nMsg} msj  ·  ${findingsCount(s.workdir)} hallazgos`;
+    draw(String(n), s.name, c.cyan, meta, sessionPreview(s));
+  });
+  console.log("");
+}
+
+// Replay a stored conversation as a readable transcript (assistant prose fully
+// rendered; command/output collapsed). Lets you see what happened before resuming.
+function renderHistory(messages) {
+  const msgs = (messages || []).slice(1); // drop the system prompt
+  if (!msgs.length) return;
+  console.log(c.gray(`  ╭─ ${c.bold("historial")} ─ `) + c.gray(`${msgs.length} mensajes`));
+  for (const m of msgs) {
+    const content = String(m.content || "");
+    if (m.role === "user") {
+      if (content.startsWith("[OPERADOR]")) {
+        const t = content.slice("[OPERADOR]".length).trim();
+        if (t) console.log(c.green("  👤 tú: ") + t);
+      } else if (content.startsWith("[CMD]")) {
+        const cmd = (content.match(/\[CMD\]\n([\s\S]*?)\n\[STDOUT\]/) || [])[1] || "";
+        const first = cmd.trim().split("\n")[0].slice(0, 120);
+        console.log(c.gray("  │ $ ") + c.yellow(first) + c.gray("  · salida omitida"));
+      } else if (/^OBJECTIVE:/.test(content)) {
+        console.log(c.bold(c.magenta("  🎯 ")) + content.replace(/^OBJECTIVE:\s*/i, "").split("\n")[0]);
+      } else {
+        const first = content.trim().split("\n")[0].slice(0, 140);
+        if (first) console.log(c.gray("  ▶ ") + first);
+      }
+    } else if (m.role === "assistant") {
+      const prose = replyProse(content);
+      if (prose) renderMarkdown(prose);
+      const execs = content.match(/```exec[^\n]*\n([\s\S]*?)```/gi) || [];
+      for (const b of execs) {
+        const cmd = b.replace(/```exec[^\n]*\n/i, "").replace(/```\s*$/, "").trim();
+        const first = cmd.split("\n")[0].slice(0, 120);
+        console.log(c.gray("  │ $ ") + c.yellow(first) + (cmd.includes("\n") ? c.gray(`  ⏎ +${cmd.split("\n").length - 1}`) : ""));
+      }
+      if (/FINAL\s*:/i.test(content)) {
+        console.log(c.green("  ◂ ") + c.gray(stripFinalMarker(content).split("\n")[0].slice(0, 140)));
+      }
+    }
+  }
+  console.log(c.gray("  ╰" + "─".repeat(40)));
+  console.log("");
+}
+
 // ---------- interactive loop ----------
 async function interactive(flags, cfg) {
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
@@ -602,21 +633,16 @@ async function interactive(flags, cfg) {
   printLogo();
   cfg = await chooseModel(ask, cfg);
 
-  // ---- session picker: New (named) or resume an old session ----
+  // ---- session picker: card list (0 = new, N = resume) ----
   const sessions = listSessions();
   let session = null;
   {
-    const opts = [{ label: c.green("New session") + c.gray(" — empezar de cero (le das nombre)") }];
-    sessions.slice(0, 15).forEach((s) => {
-      const when = (s.updatedAt || "").slice(0, 13).replace("T", " ");
-      const fw = s.framework ? " · " + s.framework : "";
-      opts.push({ label: c.cyan(s.name) + c.gray(` — ${when}${fw}`) });
-    });
-    const pick = await askChoice(ask, "📂 Sesión", opts, { multi: false, hint: "(Enter = New)" });
-    const idx = pick.length ? opts.findIndex((o) => o.label === pick[0]) : 0;
-    if (idx > 0) {
+    renderSessionPicker(sessions);
+    const pick = await ask(c.bold("  Elige una sesión ") + c.gray("(0 = nueva, número = reanudar, Enter = 0): "));
+    const idx = parseInt(pick, 10);
+    if (idx > 0 && idx <= sessions.length) {
       session = loadSession(sessions[idx - 1].dir);
-      if (!session) { console.log(c.yellow("  No pude cargar la sesión; arranco New.")); }
+      if (!session) console.log(c.yellow("  No pude cargar la sesión; arranco nueva."));
     }
     if (!session) {
       const nm = (await boxedInput(ask, "Nombre de la sesión", "(Enter = auto)")).trim();
@@ -625,76 +651,91 @@ async function interactive(flags, cfg) {
     console.log(c.gray(`  📂 sesión: `) + c.bold(session.name) + c.gray(`  · ${session.workdir}`));
   }
 
-  // Resume: jump straight into continuing the stored conversation.
-  let resumed = false;
-  if (session.messages && session.framework) {
-    const fw0 = byId(session.framework) || loadFrameworks().find((f) => f.name === session.framework);
-    if (fw0) {
-      console.log(c.gray(`  ↻ resumiendo (${session.messages.length - 1} mensajes previos)…`));
-      const client = new Client(cfg, { baseSystem: flags.system || undefined });
-      const vars0 = session.vars || { task: "", target: "", role: "", constraints: "" };
-      const msg = (await boxedInput(ask, "¿Qué querés hacer ahora?", "(Enter = seguir donde quedó)")).trim();
-      const res = await runInteractiveAgent(client, fw0, vars0, cfg, rl, ask, flags, {
-        initialMessages: session.messages, followup: msg || "Continuá donde quedaste.", cwd: session.workdir,
-      });
-      if (res && res.messages) { session.messages = res.messages; session.vars = vars0; saveSession(session); }
-      resumed = true;
-    }
-  }
-  if (resumed) { rl.close(); return; }
-
   let vars = { task: flags.task || "", target: flags.target || "", role: flags.role || "", constraints: flags.constraints || "" };
   let mode = flags.exec ? "exec" : flags.shot ? "single" : "exec"; // default: agente en vivo
   let current = null;
 
-  while (true) {
-    if (!current) printMenu(cfg);
-    const pick = await ask(c.bold("  Elige un framework ") + c.gray("(número, 'q' salir): "));
-    if (!pick) { current = null; continue; }
-    if (/^q$/i.test(pick)) break;
-    const idx = parseInt(pick, 10);
-    const all = loadFrameworks();
-    const fw = all.find((f) => String(f.order) === pick) || all[idx - 1] || all.find((f) => f.id === pick);
-    if (!fw) { console.log(c.yellow("  Opción inválida.")); continue; }
-    current = fw;
-    console.log(`\n  ${c.bold(fw.name)} ${c.gray(`· ${fw.level} · ${fw.mechanism}`)}`);
-
-    if (!vars.task) vars.task = await boxedInput(ask, "Tu tarea/objetivo");
-    if (!vars.target && !flags.target) vars.target = await boxedInput(ask, "Target", "(Enter para saltar)");
-    if (!vars.role && !flags.role) vars.role = await boxedInput(ask, "Rol/persona", "(Enter para saltar)");
-    if (!vars.constraints && !flags.constraints) vars.constraints = await boxedInput(ask, "Restricciones (qué NO hacer)", "(Enter para saltar)");
-    if (!vars._clarified && isTTY) await askClarifications(ask, vars);
-    if (!vars._styled && isTTY) await askOpStyle(ask, vars);
-    if (vars.preferAnon && !flags.profile) flags.profile = "anon";
-    if (!flags.shot && !flags.exec && !flags.dry && !flags.json) {
-      const m = await ask(c.gray("  Modo [Enter=AGENTE en vivo (internet+shell) / m=chat multi-turno (sin tools) / s=chat single-shot (sin tools)]: "));
-      mode = /^m/i.test(m) ? "multi" : /^s/i.test(m) ? "single" : "exec";
-      if (mode !== "exec") console.log(c.yellow("  ⚠ modo chat: SIN internet ni ejecución. Para navegar/buscar usá AGENTE (Enter)."));
-    }
-    if (!vars.task) { console.log(c.yellow("  Falta la tarea.")); current = null; continue; }
-
-    if (session && !flags.cwd) flags.cwd = session.workdir;
-    let res = null;
-    try {
-      if (mode === "exec" && isTTY) {
+  // Resume an old session: show the history, then continue where it left off. After the
+  // follow-up run we fall into the SAME post-run menu as a fresh run (no early exit).
+  let resumeState = null;
+  if (session.messages && session.framework) {
+    const fw0 = byId(session.framework) || loadFrameworks().find((f) => f.name === session.framework);
+    if (fw0) {
+      renderHistory(session.messages);
+      const vars0 = session.vars || { task: "", target: "", role: "", constraints: "" };
+      const msg = (await boxedInput(ask, "¿Qué querés hacer ahora?", "(Enter = seguir donde quedó)")).trim();
+      console.log(c.gray(`  ↻ reanudando (${session.messages.length} mensajes previos)…`));
+      try {
         const client = new Client(cfg, { baseSystem: flags.system || undefined });
-        if (!hasCreds(cfg) && cfg.baseUrl.includes("api.openai.com")) throw new Error("Sin API key. Usa --key o AT_API_KEY, o ponlo en .env.");
-        res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags);
-      } else {
-        await doRun(fw, vars, mode, cfg, flags);
+        const res = await runInteractiveAgent(client, fw0, vars0, cfg, rl, ask, flags, {
+          initialMessages: session.messages, followup: msg || "Continuá donde quedaste.", cwd: session.workdir,
+        });
+        if (res && res.messages) { session.messages = res.messages; session.vars = vars0; saveSession(session); }
+        vars = vars0;
+        current = fw0;
+        resumeState = { fw: fw0, res };
+      } catch (e) {
+        stopSpinner();
+        console.log(c.red(`\n  ✗ ${e.message}`));
+        console.log(c.gray("  No pude reanudar; seguí con una nueva operación."));
       }
-    } catch (e) {
-      stopSpinner();
-      console.log(c.red(`\n  ✗ ${e.message}`));
     }
+  }
 
-    // Persist this session (messages + vars + framework + workdir).
-    if (session) {
-      session.framework = fw.id; session.vars = vars;
-      if (res && res.messages) session.messages = res.messages;
-      session.name = session.name || fw.name;
-      saveSession(session);
-      console.log(c.gray(`  💾 sesión guardada: `) + c.bold(session.name) + c.gray(` (${session.dir})`));
+  while (true) {
+    let fw, res;
+    if (resumeState) {
+      ({ fw, res } = resumeState);
+      resumeState = null;
+    } else {
+      if (!current) printMenu(cfg);
+      const pick = await ask(c.bold("  Elige un framework ") + c.gray("(número, 'q' salir): "));
+      if (!pick) { current = null; continue; }
+      if (/^q$/i.test(pick)) break;
+      const idx = parseInt(pick, 10);
+      const all = loadFrameworks();
+      fw = all.find((f) => String(f.order) === pick) || all[idx - 1] || all.find((f) => f.id === pick);
+      if (!fw) { console.log(c.yellow("  Opción inválida.")); continue; }
+      current = fw;
+      console.log(`\n  ${c.bold(fw.name)} ${c.gray(`· ${fw.level} · ${fw.mechanism}`)}`);
+
+      if (!vars.task) vars.task = await boxedInput(ask, "Tu tarea/objetivo");
+      if (!vars.target && !flags.target) vars.target = await boxedInput(ask, "Target", "(Enter para saltar)");
+      if (!vars.role && !flags.role) vars.role = await boxedInput(ask, "Rol/persona", "(Enter para saltar)");
+      if (!vars.constraints && !flags.constraints) vars.constraints = await boxedInput(ask, "Restricciones (qué NO hacer)", "(Enter para saltar)");
+      if (!vars._clarified && isTTY) await askClarifications(ask, vars);
+      if (!vars._styled && isTTY) await askOpStyle(ask, vars);
+      if (vars.preferAnon && !flags.profile) flags.profile = "anon";
+      if (!flags.shot && !flags.exec && !flags.dry && !flags.json) {
+        const m = await ask(c.gray("  Modo [Enter=AGENTE en vivo (internet+shell) / m=chat multi-turno (sin tools) / s=chat single-shot (sin tools)]: "));
+        mode = /^m/i.test(m) ? "multi" : /^s/i.test(m) ? "single" : "exec";
+        if (mode !== "exec") console.log(c.yellow("  ⚠ modo chat: SIN internet ni ejecución. Para navegar/buscar usá AGENTE (Enter)."));
+      }
+      if (!vars.task) { console.log(c.yellow("  Falta la tarea.")); current = null; continue; }
+
+      if (session && !flags.cwd) flags.cwd = session.workdir;
+      res = null;
+      try {
+        if (mode === "exec" && isTTY) {
+          const client = new Client(cfg, { baseSystem: flags.system || undefined });
+          if (!hasCreds(cfg) && cfg.baseUrl.includes("api.openai.com")) throw new Error("Sin API key. Usa --key o AT_API_KEY, o ponlo en .env.");
+          res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags);
+        } else {
+          await doRun(fw, vars, mode, cfg, flags);
+        }
+      } catch (e) {
+        stopSpinner();
+        console.log(c.red(`\n  ✗ ${e.message}`));
+      }
+
+      // Persist this session (messages + vars + framework + workdir).
+      if (session) {
+        session.framework = fw.id; session.vars = vars;
+        if (res && res.messages) session.messages = res.messages;
+        session.name = session.name || fw.name;
+        saveSession(session);
+        console.log(c.gray(`  💾 sesión guardada: `) + c.bold(session.name) + c.gray(` (${session.dir})`));
+      }
     }
 
     // After finishing, allow continuing the SAME session (keep talking to the agent).
@@ -708,8 +749,15 @@ async function interactive(flags, cfg) {
         if (/^c$/i.test(choice)) {
           const msg = (await boxedInput(ask, "Seguir hablando con el agente", "(qué querés que haga ahora)")).trim();
           if (!msg) continue;
-          const client = new Client(cfg, { baseSystem: flags.system || undefined });
-          res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, { initialMessages: res.messages, followup: msg, cwd: res.cwd });
+          try {
+            const client = new Client(cfg, { baseSystem: flags.system || undefined });
+            res = await runInteractiveAgent(client, fw, vars, cfg, rl, ask, flags, { initialMessages: res.messages, followup: msg, cwd: res.cwd });
+            if (session) { session.messages = res.messages; saveSession(session); console.log(c.gray(`  💾 sesión guardada (${session.dir})`)); }
+          } catch (e) {
+            stopSpinner();
+            console.log(c.red(`\n  ✗ ${e.message}`));
+            console.log(c.gray("  La sesión sigue activa — elegí otra opción."));
+          }
           continue;
         }
         // 1 / q / Enter -> leave the agent menu
