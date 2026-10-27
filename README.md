@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/any-threat-cover.png" alt="Any Threat — when good wasn't enough, i'm always waiting" width="1000">
+<img src="assets/any-threat-cover.webp" alt="Any Threat — when good wasn't enough, i'm always waiting" width="1000">
 
 <b>An agentic security toolkit for any LLM</b><br>
 <sub>ranked jailbreak frameworks · real execution · attack / defense / opsec arsenal</sub>
