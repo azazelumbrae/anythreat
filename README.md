@@ -2,7 +2,7 @@
 
 <img src="assets/any-threat-logo-v2.png" alt="Any Threat" width="900">
 
-<b>An agentic security toolkit for any LLM</b><br>
+<b>An agentic attack toolkit for any LLM</b><br>
 <sub>ranked jailbreak frameworks · real execution · attack / defense / opsec arsenal</sub>
 
 </div>
